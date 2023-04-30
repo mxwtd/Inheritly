@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import Navbar from './components/Navbar.jsx';
+import Navbar from './components/Navbar';
+import SidebarV2 from './components/SidebarV2';
 
 const App = () => {
   useEffect(() => {
@@ -51,6 +52,7 @@ const App = () => {
   return (
     <div className='w-full min-h-screen bg-stone-100 dark:bg-stone-600'>
       <Navbar />
+      <SidebarV2 />
         <div className='flex justify-center'>
           <p className="text-4xl w-[50%] bg-stone-300 text-black dark:bg-gray-800 dark:text-white flex justify-center align-middle m-52 p-5 rounded-box">
             Hola Amigo
