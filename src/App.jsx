@@ -54,7 +54,7 @@ const App = () => {
         <div className='flex justify-center'>
           <p className="text-4xl w-[50%] bg-stone-300 text-black dark:bg-gray-800 dark:text-white flex justify-center align-middle m-52 p-5 rounded-box">
             Hola Amigo
-            Qué Mas Nea
+            Qué Mas Nea?
           </p>
         </div>
     </div>
