@@ -12,6 +12,8 @@
     "build:css": "tailwindcss -i ./src/index.css -o ./public/output.css"
   },
   "dependencies": {
+    "flowbite": "^1.6.5",
+    "flowbite-react": "^0.4.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
