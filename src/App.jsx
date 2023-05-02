@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import SidebarV2 from './components/SidebarV2';
+import Dashboard from './components/Dashboard';
 
 const App = () => {
 
@@ -49,14 +50,9 @@ const App = () => {
   }, []);
 
   return (
-    <div className='w-full min-h-screen bg-stone-100 dark:bg-stone-600'>
+    <div className='w-full min-h-screen bg-stone-200 dark:bg-stone-700'>
       <SidebarV2 />
-        <div className='flex justify-center'>
-          <p className="text-4xl w-[50%] bg-stone-300 text-black dark:bg-gray-800 dark:text-white flex justify-center align-middle m-52 p-5">
-            Hola Amigo
-            Qué Mas Nea?
-          </p>
-        </div>
+      <Dashboard />
     </div>
   );
 };
