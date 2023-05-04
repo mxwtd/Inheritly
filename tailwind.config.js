@@ -3,6 +3,9 @@ export default {
   content: ['./src/**/*.{js,jsx}', 'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}'],
   darkMode: 'class',
   theme: {
+    fontFamily: {
+      'body': ['Helvetica', 'Arial', 'sans-serif'],
+    },
     extend: {
       "rounded": {
         "xl": "1rem",
