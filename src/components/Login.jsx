@@ -23,12 +23,12 @@ const Login = () => {
                       </div>
                       <div className="flex items-center justify-between">
                           <div className="flex items-start">
-                              <div className="flex items-center h-5">
-                                <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-slate-300 rounded bg-slate-50 focus:ring-3 focus:ring-slate-300 dark:bg-slate-700 dark:border-slate-600 dark:focus:ring-slate-600 dark:ring-offset-slate-800" required=""/>
-                              </div>
-                              <div className="ml-3 text-sm">
-                                <label htmlFor="remember" className="text-slate-600 dark:text-slate-300">Remember me</label>
-                              </div>
+                            <div className="flex items-center h-5">
+                              <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-slate-300 rounded bg-slate-50 focus:ring-3 focus:ring-slate-300 dark:bg-slate-700 dark:border-slate-600 dark:focus:ring-slate-600 dark:ring-offset-slate-800" required=""/>
+                            </div>
+                            <div className="ml-3 text-sm">
+                              <label htmlFor="remember" className="text-slate-600 dark:text-slate-300">Remember me</label>
+                            </div>
                           </div>
                           <a href="#" className="text-sm font-medium text-slate-600 hover:underline dark:text-slate-400">Forgot password?</a>
                       </div>
