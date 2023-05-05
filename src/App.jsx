@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import SidebarV2 from './components/SidebarV2';
 import Overview from './components/Overview';
 import Investments from './components/Investments';
+import Login from './components/Login';
 
 const App = () => {
 
@@ -51,10 +52,11 @@ const App = () => {
   }, []);
 
   return (
-    <div className='w-full min-h-screen bg-stone-200 dark:bg-stone-700'>
+    <div className='w-full min-h-screen bg-slate-200 dark:bg-slate-700'>
       <SidebarV2 />
       <Overview />
       <Investments />
+      <Login />
     </div>
   );
 };
