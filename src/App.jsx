@@ -4,6 +4,7 @@ import Overview from './components/Overview';
 import Investments from './components/Investments';
 import Login from './components/Login';
 import AssetList from './components/AssetList';
+import AssetDetailPage from './components/AssetDetailPage';
 
 const App = () => {
 
@@ -59,6 +60,7 @@ const App = () => {
       <Investments />
       <Login />
       <AssetList />
+      <AssetDetailPage />
     </div>
   );
 };
