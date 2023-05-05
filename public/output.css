@@ -2315,8 +2315,8 @@ input:checked + .toggle-bg {
   background-color: rgb(226 232 240 / var(--tw-bg-opacity));
 }
 
-.bg-slate-300\/\[\.3\] {
-  background-color: rgb(203 213 225 / .3);
+.bg-slate-400\/\[\.3\] {
+  background-color: rgb(148 163 184 / .3);
 }
 
 .bg-slate-50 {
@@ -2383,8 +2383,8 @@ input:checked + .toggle-bg {
   --tw-bg-opacity: 0.5;
 }
 
-.bg-\[url\(\'https\:\/\/res\.cloudinary\.com\/djr22sgp3\/image\/upload\/v1683275849\/blob-scene-haikei_1_cmhbgv\.svg\'\)\] {
-  background-image: url('https://res.cloudinary.com/djr22sgp3/image/upload/v1683275849/blob-scene-haikei_1_cmhbgv.svg');
+.bg-\[url\(\'https\:\/\/res\.cloudinary\.com\/djr22sgp3\/image\/upload\/v1683277801\/Light_ekxcia\.svg\'\)\] {
+  background-image: url('https://res.cloudinary.com/djr22sgp3/image/upload/v1683277801/Light_ekxcia.svg');
 }
 
 .bg-gradient-to-b {
@@ -3720,9 +3720,9 @@ body {
   color: rgb(17 24 39 / var(--tw-text-opacity));
 }
 
-.hover\:text-slate-400:hover {
+.hover\:text-slate-300:hover {
   --tw-text-opacity: 1;
-  color: rgb(148 163 184 / var(--tw-text-opacity));
+  color: rgb(203 213 225 / var(--tw-text-opacity));
 }
 
 .hover\:underline:hover {
@@ -4488,8 +4488,8 @@ body {
   background-color: rgb(30 41 59 / var(--tw-bg-opacity));
 }
 
-:is(.dark .dark\:bg-slate-800\/\[\.09\]) {
-  background-color: rgb(30 41 59 / .09);
+:is(.dark .dark\:bg-slate-800\/\[\.3\]) {
+  background-color: rgb(30 41 59 / .3);
 }
 
 :is(.dark .dark\:bg-teal-200) {
@@ -4530,8 +4530,8 @@ body {
   --tw-bg-opacity: 0.8;
 }
 
-:is(.dark .dark\:bg-\[url\(\'https\:\/\/res\.cloudinary\.com\/djr22sgp3\/image\/upload\/v1683211486\/blob-scene-haikei_dnceay\.svg\'\)\]) {
-  background-image: url('https://res.cloudinary.com/djr22sgp3/image/upload/v1683211486/blob-scene-haikei_dnceay.svg');
+:is(.dark .dark\:bg-\[url\(\'https\:\/\/res\.cloudinary\.com\/djr22sgp3\/image\/upload\/v1683278025\/Dark_b0r36s\.svg\'\)\]) {
+  background-image: url('https://res.cloudinary.com/djr22sgp3/image/upload/v1683278025/Dark_b0r36s.svg');
 }
 
 :is(.dark .dark\:bg-gradient-to-b) {
