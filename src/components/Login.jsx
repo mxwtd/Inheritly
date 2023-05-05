@@ -1,13 +1,13 @@
 const Login = () => {
   return (
     <>
-      <div className="p-4 sm:ml-64 bg-[url('https://res.cloudinary.com/djr22sgp3/image/upload/v1683275849/blob-scene-haikei_1_cmhbgv.svg')] dark:bg-[url('https://res.cloudinary.com/djr22sgp3/image/upload/v1683211486/blob-scene-haikei_dnceay.svg')] bg-cover bg-center bg-no-repeat">
+      <div className="p-4 sm:ml-64 bg-[url('https://res.cloudinary.com/djr22sgp3/image/upload/v1683277801/Light_ekxcia.svg')] dark:bg-[url('https://res.cloudinary.com/djr22sgp3/image/upload/v1683278025/Dark_b0r36s.svg')] bg-cover bg-center bg-no-repeat">
         <div className="p-4 mt-14">
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
               <a href="#" className="flex items-center mb-12 text-4xl font-semibold text-slate-700 dark:text-white">
                   Inheritly
               </a>
-              <div className="w-full bg-white/[.09] backdrop-blur-md rounded-xl shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-slate-800/[.09] dark:border-slate-700">
+              <div className="w-full bg-white/[.09] backdrop-blur-md rounded-xl shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-slate-800/[.3] dark:border-slate-700">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                   <h1 className="text-xl font-bold leading-tight tracking-tight text-slate-700 md:text-2xl dark:text-white">
                       Sign in to your account
@@ -32,7 +32,7 @@ const Login = () => {
                           </div>
                           <a href="#" className="text-sm font-medium text-slate-600 hover:underline dark:text-slate-400">Forgot password?</a>
                       </div>
-                      <button type="submit" className="w-full text-slate-600 hover:text-slate-400 bg-slate-300/[.3] hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-500 dark:hover:bg-slate-700 dark:focus:ring-slate-800 dark:text-slate-300 dark:hover:text-slate-100">Sign in</button>
+                      <button type="submit" className="w-full text-slate-600 hover:text-slate-300 bg-slate-400/[.3] hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-500 dark:hover:bg-slate-700 dark:focus:ring-slate-800 dark:text-slate-300 dark:hover:text-slate-100">Sign in</button>
                       <p className="text-sm font-light text-slate-500 dark:text-slate-400">
                         <button href="#" className="p-2 rounded-lg font-medium text-slate-600 hover:underline dark:text-slate-500">Sign up</button>
                       </p>
