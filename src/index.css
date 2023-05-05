@@ -20,18 +20,8 @@ body {
   background-color: transparent;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 6px;
-}
-
 ::-webkit-scrollbar-track {
   background-color: opacity(0);
-}
-
-/* Transparent scrollbar for Chrome, Safari, and Edge */
-::-webkit-scrollbar {
-  width: 12px;
 }
 
 ::-webkit-scrollbar-thumb {

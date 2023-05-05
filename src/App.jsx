@@ -3,6 +3,7 @@ import SidebarV2 from './components/SidebarV2';
 import Overview from './components/Overview';
 import Investments from './components/Investments';
 import Login from './components/Login';
+import AssetList from './components/AssetList';
 
 const App = () => {
 
@@ -57,6 +58,7 @@ const App = () => {
       <Overview />
       <Investments />
       <Login />
+      <AssetList />
     </div>
   );
 };
