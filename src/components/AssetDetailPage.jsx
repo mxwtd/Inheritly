@@ -2,7 +2,7 @@ const AssetDetailPage = () => {
 
   return (
     <>
-      <div className="p-4 sm:ml-64 h-screen">
+      <div className="p-4 sm:ml-64 h-[100%]">
         <div className="p-4 mt-14">
           <div>
             <h1 className="text-xl md:text-3xl lg:text-4xl font-semibold text-gray-800 dark:text-gray-100 my-8">
