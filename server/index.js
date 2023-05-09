@@ -42,10 +42,6 @@ app.use(logger)
 app.use(Sentry.Handlers.requestHandler())
 app.use(Sentry.Handlers.tracingHandler())
 
-app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>')
-})
-
 app.use('/api/login', loginRouter)
 
 app.use('/api/reviews', reviewsRouter)
