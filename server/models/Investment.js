@@ -1,21 +1,40 @@
 const { model, Schema } = require('mongoose')
 
+const INVESTMENT_TYPES = {
+  PROPERTY: require('./InvestmentTypes/Property').schema,
+  VEHICLE: require('./InvestmentTypes/Vehicle').schema
+}
+
 const investmentSchema = new Schema({
   name: {
     type: String,
     required: true,
   },
-  description: String,
   currency: String,
   date: Date,
   value: Number,
   purchaseDate: Date,
   TaxStatus: String,
+  description: String,
   photo: String,
   type: {
-    type: Schema.Types.ObjectId,
-    ref: 'InvestmentType'
+    type: String,
+    required: true,
+    enum: ['Property', 'Vehicle']
+  },
+  details: {
+    type: Schema.Types.Mixed,
   }
+})
+
+investmentSchema.pre('validate', function (next) {
+  const schemaFunc = INVESTMENT_TYPES[this.type]
+  if (schemaFunc) {
+    this.details = schemaFunc(this.details)
+  } else {
+    throw new Error('Invalid investment type')
+  }
+  next()
 })
 
 investmentSchema.set('toJSON', {

@@ -5,7 +5,7 @@ const investmentTypeSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-  }
+  },
 })
 
 investmentTypeSchema.set('toJSON', {
