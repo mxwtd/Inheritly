@@ -6,7 +6,6 @@ const Sentry = require('@sentry/node')
 const Tracing = require('@sentry/tracing')
 
 // import middleware
-const logger = require('./middleware/loggerMiddleware')
 const notFound = require('./middleware/notFound')
 const handleErrors = require('./middleware/handleErrors')
 
@@ -36,8 +35,6 @@ Sentry.init({
   // We recommend adjusting this value in production
   tracesSampleRate: 1.0
 })
-
-app.use(logger)
 
 app.use(Sentry.Handlers.requestHandler())
 app.use(Sentry.Handlers.tracingHandler())
