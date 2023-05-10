@@ -5,7 +5,8 @@ const User = require('../../models/User')
 const { api } = require('../global_test_helper')
 const {
   initialProperties,
-  getAllContentFromProperties
+  getIdFromFirstProperty,
+  getAllProperties
 } = require('./properties_test_helper')
 
 beforeAll(async () => {
@@ -27,26 +28,32 @@ beforeEach(async () => {
   // sequential
   for (const property of initialProperties) {
     const propertyObject = new Property(property)
-
-    console.log('investmentObject: ', propertyObject)
-
     await propertyObject.save()
   }
 })
 
 describe('Get Properties', () => {
-  // test return the reviews as json
-  test.only('get all Properties as a json', async () => {
+  test('get all Properties as a json', async () => {
     await api
       .get('/properties')
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
 
-  // test return all the reviews
   test('all Properties are returned', async () => {
-    const { response } = await getAllContentFromProperties()
-    expect(response.body).toHaveLength(initialProperties.length)
+    const { body } = await getAllProperties()
+    expect(body).toHaveLength(initialProperties.length)
+  })
+
+  test('the specific first property name with the id', async () => {
+    const { id } = await getIdFromFirstProperty()
+
+    const response = await api
+      .get(`/properties/${id}`)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    expect(response.body.name).toContain('Property 1')
   })
 })
 

@@ -1,19 +1,8 @@
 const { model, Schema } = require('mongoose')
-
-const defaultProperties = {
-  type: { type: String, required: true, enum: ['Property', 'Vehicle'] },
-  name: { type: String, required: true },
-  currency: String,
-  date: Date,
-  value: Number,
-  purchaseDate: Date,
-  taxStatus: String,
-  description: String,
-  photo: String
-}
+const defaultProperties = require('./globalProperties')
 
 const vehicleSchema = new Schema({
-  defaultProperties,
+  ...defaultProperties,
   brand: {
     type: String,
     required: true

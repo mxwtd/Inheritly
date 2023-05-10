@@ -8,4 +8,9 @@ userRouter.get('/', async (request, response) => {
   response.json(properties)
 })
 
+userRouter.get('/:id', async (request, response) => {
+  const property = await Property.findById(request.params.id)
+  response.json(property)
+})
+
 module.exports = userRouter

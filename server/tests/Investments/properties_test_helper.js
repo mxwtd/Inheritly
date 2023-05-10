@@ -2,7 +2,7 @@ const { api } = require('../global_test_helper')
 
 const initialProperties = [
   {
-    name: 'Investment 1',
+    name: 'Property 1',
     currency: 'USD',
     date: new Date(),
     value: 1000,
@@ -15,7 +15,7 @@ const initialProperties = [
     zip: '12345'
   },
   {
-    name: 'Investment 2',
+    name: 'Property 2',
     currency: 'USD',
     date: new Date(),
     value: 1000,
@@ -29,16 +29,26 @@ const initialProperties = [
   }
 ]
 
-const getAllContentFromProperties = async () => {
+const getIdFromFirstProperty = async () => {
   const response = await api.get('/properties')
-  const contents = response.body.map(r => r.content)
+  const id = response.body.map(r => r.id)[0]
+
   return {
     response,
-    contents
+    id
+  }
+}
+
+const getAllProperties = async () => {
+  const response = await api.get('/properties')
+
+  return {
+    body: response.body
   }
 }
 
 module.exports = {
   initialProperties,
-  getAllContentFromProperties
+  getIdFromFirstProperty,
+  getAllProperties
 }
