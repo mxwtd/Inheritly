@@ -9,6 +9,7 @@ import Settings from './components/Settings'
 import Beneficiaries from './components/Beneficiaries'
 import Report from './components/Report'
 import Manage from './components/Manage'
+import Login from './components/Login'
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
@@ -61,7 +62,12 @@ const App = () => {
   return (
     <div className='w-full min-h-screen bg-slate-200 dark:bg-slate-700'>
       <BrowserRouter>
+        <Routes>
+          <Route path='/login' element={<Login />} />
+        </Routes>
+
         <SidebarV2 />
+
         <Routes>
           <Route path='/' element={<Dashboard />} />
           <Route path='/overview' element={<Overview />} />
