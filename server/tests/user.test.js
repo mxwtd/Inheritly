@@ -2,7 +2,8 @@ const mongoose = require('mongoose')
 const { server } = require('../index')
 const bcrypt = require('bcrypt')
 const User = require('../models/User')
-const { api, getUsers } = require('./test_helper')
+const { api } = require('./global_test_helper')
+const { getUsers } = require('./user_test_helper')
 
 beforeEach(async () => {
   await User.deleteMany({})

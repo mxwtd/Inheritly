@@ -1,6 +1,19 @@
-const mongoose = require('mongoose')
+const { model, Schema } = require('mongoose')
 
-const vehicleSchema = new mongoose.Schema({
+const defaultProperties = {
+  type: { type: String, required: true, enum: ['Property', 'Vehicle'] },
+  name: { type: String, required: true },
+  currency: String,
+  date: Date,
+  value: Number,
+  purchaseDate: Date,
+  taxStatus: String,
+  description: String,
+  photo: String
+}
+
+const vehicleSchema = new Schema({
+  defaultProperties,
   brand: {
     type: String,
     required: true
@@ -15,4 +28,6 @@ const vehicleSchema = new mongoose.Schema({
   }
 })
 
-module.exports = vehicleSchema
+const Vehicle = model('Vehicle', vehicleSchema)
+
+module.exports = Vehicle

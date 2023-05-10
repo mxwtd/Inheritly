@@ -12,7 +12,7 @@ const handleErrors = require('./middleware/handleErrors')
 // Import controllers
 const usersRouter = require('./controllers/users')
 const reviewsRouter = require('./controllers/reviews')
-const investmentsRouter = require('./controllers/investments')
+const propertiesRouter = require('./controllers/properties')
 const loginRouter = require('./controllers/login')
 
 const app = express()
@@ -44,7 +44,7 @@ app.use('/api/login', loginRouter)
 
 app.use('/api/reviews', reviewsRouter)
 
-app.use('/investments', investmentsRouter)
+app.use('/properties', propertiesRouter)
 
 app.use('/api/users', usersRouter)
 

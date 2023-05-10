@@ -1,6 +1,8 @@
-const mongoose = require('mongoose')
+const { model, Schema } = require('mongoose')
+const defaultProperties = require('./globalProperties')
 
-const propertySchema = new mongoose.Schema({
+const propertySchema = new Schema({
+  ...defaultProperties,
   city: {
     type: String,
     required: true
@@ -19,6 +21,6 @@ const propertySchema = new mongoose.Schema({
   }
 })
 
-const Property = mongoose.model('Property', propertySchema)
+const Property = model('Property', propertySchema)
 
 module.exports = Property
