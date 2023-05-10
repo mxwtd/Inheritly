@@ -3,16 +3,16 @@ const mongoose = require('mongoose')
 const vehicleSchema = new mongoose.Schema({
   brand: {
     type: String,
-    required: true,
+    required: true
   },
   model: {
     type: String,
-    required: false,
+    required: true
   },
   year: {
     type: String,
-    required: false,
-  },
+    required: true
+  }
 })
 
 module.exports = vehicleSchema

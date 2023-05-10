@@ -4,23 +4,38 @@ const User = require('../models/User')
 
 const api = supertest(app)
 
-const initialReviews = [
+const initialInvestments = [
   {
-    title: 'Review 1',
-    content: 'This is the content of the review 1',
+    name: 'Investment 1',
+    currency: 'USD',
     date: new Date(),
-    important: true
+    value: 1000,
+    TaxStatus: 'Taxable',
+    type: 'Property',
+    details: {
+      city: 'New York',
+      country: 'USA',
+      address: '123 Main St',
+      zip: '12345'
+    }
   },
   {
-    title: 'Review 2',
-    content: 'This is the content of the review 2',
+    name: 'Investment 2',
+    currency: 'USD',
     date: new Date(),
-    important: true
+    value: 2000,
+    TaxStatus: 'Taxable',
+    type: 'Vehicle',
+    details: {
+      brand: 'Tesla',
+      model: 'Model 3',
+      year: 2020
+    }
   }
 ]
 
-const getAllContentFromReviews = async () => {
-  const response = await api.get('/api/reviews')
+const getAllContentFromInvestments = async () => {
+  const response = await api.get('/investments')
   const contents = response.body.map(r => r.content)
   return {
     response,
@@ -35,7 +50,7 @@ const getUsers = async () => {
 
 module.exports = {
   api,
-  initialReviews,
-  getAllContentFromReviews,
+  initialInvestments,
+  getAllContentFromInvestments,
   getUsers
 }

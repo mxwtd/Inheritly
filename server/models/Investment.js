@@ -1,14 +1,14 @@
 const { model, Schema } = require('mongoose')
 
 const INVESTMENT_TYPES = {
-  PROPERTY: require('./InvestmentTypes/Property').schema,
-  VEHICLE: require('./InvestmentTypes/Vehicle').schema
+  Property: require('./InvestmentTypes/Property').schema,
+  Vehicle: require('./InvestmentTypes/Vehicle').schema
 }
 
 const investmentSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: true
   },
   currency: String,
   date: Date,
@@ -23,7 +23,7 @@ const investmentSchema = new Schema({
     enum: ['Property', 'Vehicle']
   },
   details: {
-    type: Schema.Types.Mixed,
+    type: Schema.Types.Mixed
   }
 })
 

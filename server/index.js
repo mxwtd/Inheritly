@@ -12,6 +12,7 @@ const handleErrors = require('./middleware/handleErrors')
 // Import controllers
 const usersRouter = require('./controllers/users')
 const reviewsRouter = require('./controllers/reviews')
+const investmentsRouter = require('./controllers/investments')
 const loginRouter = require('./controllers/login')
 
 const app = express()
@@ -42,6 +43,8 @@ app.use(Sentry.Handlers.tracingHandler())
 app.use('/api/login', loginRouter)
 
 app.use('/api/reviews', reviewsRouter)
+
+app.use('/investments', investmentsRouter)
 
 app.use('/api/users', usersRouter)
 
