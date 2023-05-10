@@ -27,13 +27,16 @@ beforeEach(async () => {
   // sequential
   for (const investment of initialInvestments) {
     const investmentObject = new Investment(investment)
+
+    console.log('investmentObject: ', investmentObject)
+
     await investmentObject.save()
   }
 })
 
 describe('Get Investments', () => {
   // test return the reviews as json
-  test('get all investments as a json', async () => {
+  test.only('get all investments as a json', async () => {
     await api
       .get('/investments')
       .expect(200)
