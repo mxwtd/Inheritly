@@ -57,6 +57,33 @@ describe('Get Properties', () => {
   })
 })
 
+describe('Create Properties', () => {
+  test('create a new property', async () => {
+    const newProperty = {
+      name: 'Property 3',
+      currency: 'USD',
+      date: new Date(),
+      value: 1000,
+      TaxStatus: 'Taxable',
+      type: 'Property',
+
+      city: 'city',
+      country: 'Kenya',
+      address: '123 St',
+      zip: '1567'
+    }
+
+    await api
+      .post('/properties')
+      .send(newProperty)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const { body } = await getAllProperties()
+    expect(body).toHaveLength(initialProperties.length + 1)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
   server.close()
