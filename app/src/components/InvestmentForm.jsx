@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 const InvestmentForm = () => {
+  // Modal Open and Close
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
