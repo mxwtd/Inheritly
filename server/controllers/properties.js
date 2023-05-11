@@ -41,7 +41,7 @@ propertyRouter.post('/', async (request, response, next) => {
     const savedProperty = await newProperty.save()
     response.json(savedProperty)
   } catch (error) {
-    next(error)
+    (isNaN(newProperty)) ? response.status(422).end() : next(error)
   }
 })
 

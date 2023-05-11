@@ -64,7 +64,7 @@ describe('Get Properties', () => {
 })
 
 describe('Create Properties', () => {
-  test('create a new property', async () => {
+  test('a new property', async () => {
     const newProperty = {
       name: 'Property 3',
       currency: 'USD',
@@ -87,6 +87,23 @@ describe('Create Properties', () => {
 
     const { body } = await getAllProperties()
     expect(body).toHaveLength(initialProperties.length + 1)
+  })
+
+  test('new property without obligatory fields', async () => {
+    const newProperty = {
+      name: 'Property 3',
+      currency: 'USD',
+      date: new Date(),
+      value: 1000
+    }
+
+    await api
+      .post('/api/properties')
+      .send(newProperty)
+      .expect(422)
+
+    const { body } = await getAllProperties()
+    expect(body).toHaveLength(initialProperties.length)
   })
 })
 

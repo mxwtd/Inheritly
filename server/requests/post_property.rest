@@ -1,8 +1,16 @@
-POST http://localhost:3001/api/reviews 
+POST http://localhost:3001/api/properties
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NTI0NzM0MzkwY2ExMzk0YjUyMDcyOCIsInVzZXJuYW1lIjoic29zcGluYWkiLCJpYXQiOjE2ODMxMzI1NTV9.mDOZCgXWSXNW81Yg4SqBGwS0Yqs1GVhA-aPF7WgcRP8
 
 {
-  "title": "It's working the post methid",
-  "content": "It's working the post methid content"
+  "name": "Property 2",
+  "currency": "GBP",
+  "date": "2022-01-01",
+  "value": 2000,
+  "TaxStatus": "Taxable",
+  "type": "Property",
+
+  "city": "London",
+  "country": "United Kingdom",
+  "address": "123 Main St",
+  "zip": "123"
 }
