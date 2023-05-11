@@ -35,7 +35,7 @@ beforeEach(async () => {
 describe('Get Properties', () => {
   test('get all Properties as a json', async () => {
     await api
-      .get('/properties')
+      .get('/api/properties')
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
@@ -49,7 +49,7 @@ describe('Get Properties', () => {
     const { id } = await getIdFromFirstProperty()
 
     const response = await api
-      .get(`/properties/${id}`)
+      .get(`/api/properties/${id}`)
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -74,7 +74,7 @@ describe('Create Properties', () => {
     }
 
     await api
-      .post('/properties')
+      .post('/api/properties')
       .send(newProperty)
       .expect(200)
       .expect('Content-Type', /application\/json/)
