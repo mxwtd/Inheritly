@@ -5,6 +5,7 @@ import Investments from './components/Investments';
 import Login from './components/Login';
 import AssetList from './components/AssetList';
 import AssetDetailPage from './components/AssetDetailPage';
+import InvestmentForm from './components/InvestmentForm';
 
 const App = () => {
 
@@ -61,6 +62,7 @@ const App = () => {
       <Login />
       <AssetList />
       <AssetDetailPage />
+      <InvestmentForm />
     </div>
   );
 };
