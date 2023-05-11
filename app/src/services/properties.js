@@ -1,5 +1,5 @@
 import axios from 'axios'
-const API_URL = 'http://localhost:3001/'
+const API_URL = '/'
 
 export const getAllProperties = async () => {
   const response = await axios.get(`${API_URL}api/properties`)
