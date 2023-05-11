@@ -55,6 +55,12 @@ describe('Get Properties', () => {
 
     expect(response.body.name).toContain('Property 1')
   })
+
+  test('not found id', async () => {
+    await api
+      .get('/api/properties/123456789')
+      .expect(404)
+  })
 })
 
 describe('Create Properties', () => {

@@ -3,12 +3,7 @@ const mongoose = require('mongoose')
 
 // Get the env variables that we need
 const { MONGO_URL, MONGO_URL_TEST, NODE_ENV } = process.env
-
-console.log('NODE_ENV: ', NODE_ENV)
-
 const connectionString = NODE_ENV === 'test' ? MONGO_URL_TEST : MONGO_URL
-
-console.log('url db link: ', connectionString)
 
 // Connect to mongodb
 mongoose.connect(connectionString)
