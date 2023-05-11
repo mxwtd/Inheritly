@@ -9,6 +9,9 @@
   ],
   "main": "index.js",
   "scripts": {
+    "build": "npm run build --workspace=app",
+    "start": "npm run start --workspace=server",
+    "dev:server": "npm run build && npm run dev --workspace=server",
     "test": "NODE_ENV=test PORT=1234 jest --detectOpenHandles --verbose server/tests/investments/properties.test.js",
     "lint": "eslint ./server ./app"
   },
