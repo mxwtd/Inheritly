@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 const Investments = () => {
   return (
     <>
@@ -22,15 +24,15 @@ const Investments = () => {
             <div className='flex items-center justify-center rounded-xl bg-gradient-to-b from-slate-300 to-blue-300 dark:bg-gradient-to-b dark:from-slate-800 dark:to-blue-300 h-48 md:hover:scale-102 transition-all cursor-pointer'>
               <p className='text-md lg:text-2xl text-slate-600 dark:text-slate-200'>Crypto</p>
             </div>
-            <div className='flex items-center justify-center rounded-xl bg-gradient-to-b from-slate-300 to-blue-300 dark:bg-gradient-to-b dark:from-slate-800 dark:to-blue-300 h-48 md:hover:scale-102 transition-all cursor-pointer'>
+            <Link to='/properties' className='flex items-center justify-center rounded-xl bg-gradient-to-b from-slate-300 to-blue-300 dark:bg-gradient-to-b dark:from-slate-800 dark:to-blue-300 h-48 md:hover:scale-102 transition-all cursor-pointer'>
               <p className='text-md lg:text-2xl text-slate-600 dark:text-slate-200'>Property</p>
-            </div>
+            </Link>
             <div className='flex items-center justify-center rounded-xl bg-gradient-to-b from-slate-300 to-blue-300 dark:bg-gradient-to-b dark:from-slate-800 dark:to-blue-300 h-48 md:hover:scale-102 transition-all cursor-pointer'>
               <p className='text-md lg:text-2xl text-slate-600 dark:text-slate-200'>Vehicles</p>
             </div>
-            <div className='flex items-center justify-center rounded-xl bg-gradient-to-b from-slate-300 to-blue-300 dark:bg-gradient-to-b dark:from-slate-800 dark:to-blue-300 h-48 md:hover:scale-102 transition-all cursor-pointer'>
+            <Link to='/jewelery' className='flex items-center justify-center rounded-xl bg-gradient-to-b from-slate-300 to-blue-300 dark:bg-gradient-to-b dark:from-slate-800 dark:to-blue-300 h-48 md:hover:scale-102 transition-all cursor-pointer'>
               <p className='text-md lg:text-2xl text-slate-600 dark:text-slate-200'>Jewelery</p>
-            </div>
+            </Link>
             <div className='flex items-center justify-center rounded-xl bg-gradient-to-b from-slate-300 to-blue-300 dark:bg-gradient-to-b dark:from-slate-800 dark:to-blue-300 h-48 md:hover:scale-102 transition-all cursor-pointer'>
               <p className='text-md lg:text-2xl text-slate-600 dark:text-slate-200'>Miscellaneous</p>
             </div>

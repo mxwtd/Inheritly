@@ -35,7 +35,7 @@ beforeEach(async () => {
 describe('Get Properties', () => {
   test('get all Properties as a json', async () => {
     await api
-      .get('/properties')
+      .get('/api/properties')
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
@@ -49,16 +49,22 @@ describe('Get Properties', () => {
     const { id } = await getIdFromFirstProperty()
 
     const response = await api
-      .get(`/properties/${id}`)
+      .get(`/api/properties/${id}`)
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
     expect(response.body.name).toContain('Property 1')
   })
+
+  test('not found id', async () => {
+    await api
+      .get('/api/properties/123456789')
+      .expect(404)
+  })
 })
 
 describe('Create Properties', () => {
-  test('create a new property', async () => {
+  test('a new property', async () => {
     const newProperty = {
       name: 'Property 3',
       currency: 'USD',
@@ -74,13 +80,30 @@ describe('Create Properties', () => {
     }
 
     await api
-      .post('/properties')
+      .post('/api/properties')
       .send(newProperty)
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
     const { body } = await getAllProperties()
     expect(body).toHaveLength(initialProperties.length + 1)
+  })
+
+  test('new property without obligatory fields', async () => {
+    const newProperty = {
+      name: 'Property 3',
+      currency: 'USD',
+      date: new Date(),
+      value: 1000
+    }
+
+    await api
+      .post('/api/properties')
+      .send(newProperty)
+      .expect(422)
+
+    const { body } = await getAllProperties()
+    expect(body).toHaveLength(initialProperties.length)
   })
 })
 

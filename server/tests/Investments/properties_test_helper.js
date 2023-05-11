@@ -30,7 +30,7 @@ const initialProperties = [
 ]
 
 const getIdFromFirstProperty = async () => {
-  const response = await api.get('/properties')
+  const response = await api.get('/api/properties')
   const id = response.body.map(r => r.id)[0]
 
   return {
@@ -40,7 +40,7 @@ const getIdFromFirstProperty = async () => {
 }
 
 const getAllProperties = async () => {
-  const response = await api.get('/properties')
+  const response = await api.get('/api/properties')
 
   return {
     body: response.body

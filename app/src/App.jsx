@@ -10,6 +10,7 @@ import Beneficiaries from './components/Beneficiaries'
 import Report from './components/Report'
 import Manage from './components/Manage'
 import Login from './components/Login'
+import Properties from './components/Properties'
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
@@ -77,6 +78,7 @@ const App = () => {
           <Route path='/manage' element={<Manage />} />
           <Route path='/settings' element={<Settings />} />
           <Route path='/report' element={<Report />} />
+          <Route path='/properties' element={<Properties />} />
         </Routes>
 
       </BrowserRouter>
