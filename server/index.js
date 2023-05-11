@@ -20,6 +20,8 @@ const app = express()
 app.use(cors())
 app.use(express.json()) // initial Parse JSON bodies
 
+app.use(express.static('../app/dist'))
+
 Sentry.init({
   dsn: 'https://05a850a7ff3a47c6a6edcd93f8c1a6ab@o4505107991822336.ingest.sentry.io/4505107993853952',
   integrations: [

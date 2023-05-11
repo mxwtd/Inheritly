@@ -1,3 +1,7 @@
+
+
+
+
 POST http://localhost:3001/api/properties
 Content-Type: application/json
 
