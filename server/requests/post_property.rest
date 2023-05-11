@@ -2,15 +2,15 @@ POST http://localhost:3001/api/properties
 Content-Type: application/json
 
 {
-  "name": "Property 2",
-  "currency": "GBP",
-  "date": "2022-01-01",
-  "value": 2000,
+  "name": "My super house",
+  "currency": "USD",
+  "date": "2023-01-01",
+  "value": 5000,
   "TaxStatus": "Taxable",
   "type": "Property",
 
-  "city": "London",
+  "city": "Manchester",
   "country": "United Kingdom",
   "address": "123 Main St",
-  "zip": "123"
+  "zip": "05332"
 }
