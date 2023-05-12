@@ -1,3 +1,5 @@
+import AssetList from './AssetList'
+
 const Overview = () => {
   return (
     <>
@@ -27,6 +29,7 @@ const Overview = () => {
           </div>
         </div>
       </div>
+      <AssetList />
     </>
   )
 }
