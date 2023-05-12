@@ -9,7 +9,7 @@ const AssetList = () => {
       <div className='p-4 sm:ml-64 h-screen'>
         <div className='p-4 mt-14'>
           <div>
-            <h1 className='text-4xl font-semibold text-gray-800 dark:text-gray-100 my-8'>Your {'{'} Assets {'}'}</h1>
+            <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Your {'{'} Assets {'}'}</h1>
           </div>
           <div>
             {/* Modal overlay */}
@@ -22,9 +22,9 @@ const AssetList = () => {
                 <div className='relative p-4 rounded-lg dark:bg-slate-800 sm:p-5'>
                   {/* Modal header */}
                   <div className='flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-slate-600'>
-                    <h3 className='text-lg font-semibold text-slate-900 dark:text-white'>
+                    <h2 className='text-xl font-semibold text-slate-900 dark:text-white'>
                       Add Investment
-                    </h3>
+                    </h2>
                     <button type='button' className='text-slate-400 bg-transparent hover:bg-slate-200 hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-slate-600 dark:hover:text-white' onClick={() => setIsModalOpen(false)}>
                       <svg aria-hidden='true' className='w-5 h-5' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
                         <path fillRule='evenodd' d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z' clipRule='evenodd' />
@@ -50,7 +50,7 @@ const AssetList = () => {
                       <div>
                         <label htmlFor='category' className='block mb-2 text-sm font-medium text-slate-900 dark:text-white'>Category</label>
                         <select id='category' className='bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
-                          <option selected=''>Select category</option>
+                          <option selected=''><span className='text-slate-500 dark:text-slate-400'>Select Category</span></option>
                           <option value='Stocks' id='Stocks'>Stocks</option>
                           <option value='Bonds' id='Bonds'>Bonds</option>
                           <option value='Funds' id='Funds'>Funds</option>
@@ -65,6 +65,17 @@ const AssetList = () => {
                       <div className='sm:col-span-2'>
                         <label htmlFor='description' className='block mb-2 text-sm font-medium text-slate-900 dark:text-white'>Description</label>
                         <textarea id='description' rows='4' className='block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' placeholder='Write Investment description here' />
+                      </div>
+                      <div className='sm:col-span-2'>
+                        <label className='block mb-2 text-sm font-medium text-slate-900 dark:text-white'>Add a file</label>
+                        <label htmlFor='dropzone-file' className='flex flex-col items-center justify-center w-full h-64 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 dark:hover:bg-bray-800 dark:bg-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:hover:border-slate-500 dark:hover:bg-slate-600'>
+                          <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+                            <svg aria-hidden='true' className='w-10 h-10 mb-3 text-slate-400' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12' /></svg>
+                            <p className='mb-2 text-sm text-slate-500 dark:text-slate-400'><span className='font-semibold'>Click to upload</span> or drag and drop</p>
+                            <p className='text-xs text-slate-500 dark:text-slate-400'>PDF, PNG, JPG or GIF</p>
+                          </div>
+                          <input id='dropzone-file' type='file' className='hidden' />
+                        </label>
                       </div>
                     </div>
                     <button type='submit' className='text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
