@@ -12,6 +12,8 @@
     "build": "npm run build --workspace=app",
     "start": "npm run start --workspace=server",
     "dev:server": "npm run build && npm run dev --workspace=server",
+    "dev:app": "npm run dev --workspace=app",
+    "dev": "concurrently \"npm run dev --workspace=server\" \"npm run dev:app\"",
     "test": "NODE_ENV=test PORT=1234 jest --detectOpenHandles --verbose server/tests/investments/properties.test.js",
     "lint": "eslint ./server ./app"
   },
@@ -28,7 +30,8 @@
   },
   "devDependencies": {
     "eslint-plugin-cypress": "2.13.3",
-    "standard": "17.0.0"
+    "standard": "17.0.0",
+    "concurrently": "8.0.1"
   },
   "repository": {
     "type": "git",
