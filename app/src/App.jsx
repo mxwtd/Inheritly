@@ -42,7 +42,7 @@ const App = () => {
   // States
   const [error, setError] = useState(null)
 
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
@@ -56,10 +56,15 @@ const App = () => {
     }
   }, [])
 
-  const handleLogin = async (event) => {
+  const handleLoginSubmit = async (event) => {
     event.preventDefault()
+
+    console.log('email', email)
+
+    console.log('password', password)
+
     try {
-      const user = await login({ username, password })
+      const user = await login({ email, password })
 
       window.localStorage.setItem(
         'loggedReviewAppUser', JSON.stringify(user)
@@ -68,7 +73,7 @@ const App = () => {
       setToken(user.token)
 
       setUser(user)
-      setUsername('')
+      setEmail('')
       setPassword('')
     } catch (error) {
       setError('Wrong credentials')
@@ -83,7 +88,7 @@ const App = () => {
     <div className='w-full min-h-screen bg-slate-200 dark:bg-slate-700'>
       <BrowserRouter>
         <Routes>
-          <Route path='/login' element={<Login handleLogin={handleLogin} handleChangeUserName={[username, setUsername, password, setPassword]} />} />
+          <Route path='/login' element={<Login handleLoginSubmit={handleLoginSubmit} handleChangeUserName={[email, setEmail, password, setPassword]} />} />
         </Routes>
         <MainComponent />
         {user === null
