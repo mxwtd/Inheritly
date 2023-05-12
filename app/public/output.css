@@ -941,10 +941,6 @@ input[type="range"]::-ms-fill-lower {
   grid-row: span 2 / span 2;
 }
 
-.m-5 {
-  margin: 1.25rem;
-}
-
 .mx-8 {
   margin-left: 2rem;
   margin-right: 2rem;
@@ -1331,11 +1327,6 @@ input[type="range"]::-ms-fill-lower {
 .bg-blue-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(225 239 254 / var(--tw-bg-opacity));
-}
-
-.bg-blue-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(63 131 248 / var(--tw-bg-opacity));
 }
 
 .bg-blue-600 {
