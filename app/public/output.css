@@ -1968,8 +1968,8 @@ body {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-:is(.dark .dark\:to-blue-300) {
-  --tw-gradient-to: #A4CAFE var(--tw-gradient-to-position);
+:is(.dark .dark\:to-blue-300\/20) {
+  --tw-gradient-to: rgb(164 202 254 / 0.2) var(--tw-gradient-to-position);
 }
 
 :is(.dark .dark\:stroke-slate-400) {
