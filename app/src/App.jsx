@@ -1,4 +1,6 @@
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+
+import { BrowserRouter, Route, Routes, useLocation, Navigate } from 'react-router-dom'
 
 import SidebarV2 from './components/SidebarV2'
 import Dashboard from './components/Dashboard'
@@ -11,6 +13,9 @@ import Report from './components/Report'
 import Manage from './components/Manage'
 import Login from './components/Login'
 import Properties from './components/Properties'
+
+import { setToken } from './services/properties'
+import { login } from './services/login'
 
 const MainComponent = () => {
   const location = useLocation()
@@ -34,13 +39,56 @@ const MainComponent = () => {
 }
 
 const App = () => {
+  // States
+  const [error, setError] = useState(null)
+
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
+
+  // Read Local Storage
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedReviewAppUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      setToken(user.token)
+    }
+  }, [])
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+    try {
+      const user = await login({ username, password })
+
+      window.localStorage.setItem(
+        'loggedReviewAppUser', JSON.stringify(user)
+      )
+
+      setToken(user.token)
+
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    } catch (error) {
+      setError('Wrong credentials')
+      setTimeout(() => {
+        setError(null)
+      }
+      , 5000)
+    }
+  }
+
   return (
     <div className='w-full min-h-screen bg-slate-200 dark:bg-slate-700'>
       <BrowserRouter>
         <Routes>
-          <Route path='/login' element={<Login />} />
+          <Route path='/login' element={<Login handleLogin={handleLogin} handleChangeUserName={[username, setUsername, password, setPassword]} />} />
         </Routes>
         <MainComponent />
+        {user === null
+          ? <Navigate to='/login' replace />
+          : <Navigate to='/' replace />}
       </BrowserRouter>
     </div>
   )
