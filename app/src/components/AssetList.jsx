@@ -37,19 +37,19 @@ const AssetList = () => {
                     <div className='grid gap-4 mb-4 sm:grid-cols-2'>
                       <div>
                         <label htmlFor='name' className='block mb-2 text-sm font-medium text-slate-900 dark:text-white'>Name</label>
-                        <input type='text' name='name' id='name' className='bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500' placeholder='Investment Name (E.g. Microsoft)' required='' />
+                        <input type='text' name='name' id='name' className='bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' placeholder='Investment Name (E.g. Microsoft)' required='' />
                       </div>
                       <div>
                         <label htmlFor='identification' className='block mb-2 text-sm font-medium text-slate-900 dark:text-white'>Identification</label>
-                        <input type='text' name='identification' id='identification' className='bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500' placeholder='Identification (E.g. Stock Ticker)' required='' />
+                        <input type='text' name='identification' id='identification' className='bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' placeholder='Identification (E.g. Stock Ticker)' required='' />
                       </div>
                       <div>
                         <label htmlFor='units' className='block mb-2 text-sm font-medium text-slate-900 dark:text-white'>Units</label>
-                        <input type='number' name='units' id='units' className='bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500' placeholder='45' required='' />
+                        <input type='number' name='units' id='units' className='bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' placeholder='45' required='' />
                       </div>
                       <div>
                         <label htmlFor='category' className='block mb-2 text-sm font-medium text-slate-900 dark:text-white'>Category</label>
-                        <select id='category' className='bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'>
+                        <select id='category' className='bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
                           <option selected=''>Select category</option>
                           <option value='Stocks' id='Stocks'>Stocks</option>
                           <option value='Bonds' id='Bonds'>Bonds</option>
@@ -64,10 +64,10 @@ const AssetList = () => {
                       </div>
                       <div className='sm:col-span-2'>
                         <label htmlFor='description' className='block mb-2 text-sm font-medium text-slate-900 dark:text-white'>Description</label>
-                        <textarea id='description' rows='4' className='block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500' placeholder='Write Investment description here' />
+                        <textarea id='description' rows='4' className='block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' placeholder='Write Investment description here' />
                       </div>
                     </div>
-                    <button type='submit' className='text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'>
+                    <button type='submit' className='text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
                       <svg className='mr-1 -ml-1 w-6 h-6' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path fillRule='evenodd' d='M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z' clipRule='evenodd' /></svg>
                       Add new Investment
                     </button>
