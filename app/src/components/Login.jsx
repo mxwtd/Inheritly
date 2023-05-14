@@ -11,7 +11,7 @@ const Login = () => {
 
   const toggleForgotPassword = (e) => {
     e.preventDefault()
-    setIsForgotPassword(!isForgotPassword) // toggle isForgotPassword state
+    setIsForgotPassword(!isForgotPassword)
   }
   return (
     <>
