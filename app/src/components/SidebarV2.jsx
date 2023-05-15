@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 
 const SidebarV2 = () => {
   useEffect(() => {
@@ -170,6 +170,7 @@ const SidebarV2 = () => {
           </ul>
         </div>
       </aside>
+      <Outlet />
     </>
   )
 }

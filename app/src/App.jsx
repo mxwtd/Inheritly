@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import { Route, Routes, useLocation, Navigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 
 import SidebarV2 from './components/SidebarV2'
 
@@ -15,12 +15,12 @@ import Manage from './pages/Manage'
 import Properties from './pages/Properties'
 import Login from './pages/Login'
 
+import { ProtectedRoute } from './components/security/ProtectedRoute'
+
 import { setToken } from './services/properties'
 import { login } from './services/login'
 
 const App = () => {
-  const location = useLocation()
-
   // States
   const [error, setError] = useState(null)
 
@@ -68,19 +68,22 @@ const App = () => {
 
   return (
     <>
-      {location.pathname !== '/login' && <SidebarV2 />}
       <div className='w-full min-h-screen bg-slate-200 dark:bg-slate-700'>
         <Routes>
+
           <Route path='/login' element={<Login handleLoginSubmit={handleLoginSubmit} handleChangeUserName={[email, setEmail, password, setPassword]} />} />
-          <Route path='/' element={<Dashboard />} />
-          <Route path='/overview' element={<Overview />} />
-          <Route path='/investments' element={<Investments />} />
-          <Route path='/inbox' element={<Inbox />} />
-          <Route path='/beneficiaries' element={<Beneficiaries />} />
-          <Route path='/manage' element={<Manage />} />
-          <Route path='/settings' element={<Settings />} />
-          <Route path='/report' element={<Report />} />
-          <Route path='/properties' element={<Properties />} />
+
+          <Route path='/' element={<SidebarV2 />}>
+            <Route path='/' element={<Dashboard />} />
+            <Route path='/overview' element={<Overview />} />
+            <Route path='/investments' element={<Investments />} />
+            <Route path='/inbox' element={<Inbox />} />
+            <Route path='/beneficiaries' element={<Beneficiaries />} />
+            <Route path='/manage' element={<Manage />} />
+            <Route path='/settings' element={<Settings />} />
+            <Route path='/report' element={<Report />} />
+            <Route path='/properties' element={<Properties />} />
+          </Route>
         </Routes>
       </div>
     </>
