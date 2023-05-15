@@ -17,7 +17,7 @@ const ForgotPassword = () => {
 
   return (
     <>
-      <Template title='Forgot password' subtitle='Enter your email to reset your password.'>
+      <Template formTitle='Recover password'>
         <form onSubmit={handleSubmit} className='space-y-4 md:space-y-6' action='#'>
           <div>
             <label htmlFor='email' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Your email</label>
