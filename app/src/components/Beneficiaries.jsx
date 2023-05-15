@@ -1,4 +1,17 @@
+import { useState } from 'react'
+
 const Beneficiaries = () => {
+  const [modalOpen, setModalOpen] = useState(false)
+  const [cardInfo, setCardInfo] = useState(null)
+
+  const handleButtonClick = (info) => {
+    setCardInfo(info)
+    setModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setModalOpen(false)
+  }
   return (
     <>
       <div className='p-4 sm:ml-64'>
@@ -46,10 +59,42 @@ const Beneficiaries = () => {
                     </div>
                   </div>
                   <div>
-                    <button type='submit' className='w-full text-slate-600 hover:text-slate-100 bg-slate-400/[.3] hover:bg-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-500 dark:hover:bg-slate-700 dark:text-slate-300 dark:hover:text-slate-100'>View</button>
+                    <button
+                      type='submit'
+                      className='w-full text-slate-600 hover:text-slate-100 bg-slate-400/[.3] hover:bg-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-500 dark:hover:bg-slate-700 dark:text-slate-300 dark:hover:text-slate-100'
+                      onClick={() => handleButtonClick({ title: 'Family Estate', surname: '{ Family Surname }', members: '{ 7 }' })}
+                    >
+                      View
+                    </button>
                   </div>
                 </div>
               </div>
+              {modalOpen && (
+                <>
+                  <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center z-50' style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                    <div className='bg-white dark:bg-slate-800 py-6 px-6 rounded-3xl w-3/4 h-3/4 my-4 shadow-xl overflow-y-auto'>
+                      <button onClick={closeModal} className='float-right'>Close</button>
+                      <div>
+                        <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>{cardInfo.title}</h1>
+                      </div>
+                      <div className='grid grid-cols-3 gap-6'>
+                        <div className='bg-slate-400 p-4 rounded-xl min-h-[90%]'>
+                          <p>{cardInfo.surname}</p>
+                          <p>{cardInfo.members}</p>
+                        </div>
+                        <div className='bg-slate-400 p-4 rounded-xl min-h-[90%]'>
+                          <p>{cardInfo.surname}</p>
+                          <p>{cardInfo.members}</p>
+                        </div>
+                        <div className='bg-slate-400 p-4 rounded-xl min-h-[90%]'>
+                          <p>{cardInfo.surname}</p>
+                          <p>{cardInfo.members}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
