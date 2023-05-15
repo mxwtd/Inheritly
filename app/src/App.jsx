@@ -84,6 +84,8 @@ const App = () => {
             <Route path='/report' element={<Report />} />
             <Route path='/properties' element={<Properties />} />
           </Route>
+
+          <Route path='*' element={<h1>Not Found</h1>} />
         </Routes>
       </div>
     </>
