@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import { BrowserRouter, Route, Routes, useLocation, Navigate } from 'react-router-dom'
+import { Route, Routes, useLocation, Navigate } from 'react-router-dom'
 
 import SidebarV2 from './components/SidebarV2'
 import Dashboard from './components/Dashboard'
@@ -17,28 +17,9 @@ import Properties from './components/Properties'
 import { setToken } from './services/properties'
 import { login } from './services/login'
 
-const MainComponent = () => {
+const App = () => {
   const location = useLocation()
 
-  return (
-    <>
-      {location.pathname !== '/login' && <SidebarV2 />}
-      <Routes>
-        <Route path='/' element={<Dashboard />} />
-        <Route path='/overview' element={<Overview />} />
-        <Route path='/investments' element={<Investments />} />
-        <Route path='/inbox' element={<Inbox />} />
-        <Route path='/beneficiaries' element={<Beneficiaries />} />
-        <Route path='/manage' element={<Manage />} />
-        <Route path='/settings' element={<Settings />} />
-        <Route path='/report' element={<Report />} />
-        <Route path='/properties' element={<Properties />} />
-      </Routes>
-    </>
-  )
-}
-
-const App = () => {
   // States
   const [error, setError] = useState(null)
 
@@ -85,17 +66,23 @@ const App = () => {
   }
 
   return (
-    <div className='w-full min-h-screen bg-slate-200 dark:bg-slate-700'>
-      <BrowserRouter>
+    <>
+      {location.pathname !== '/login' && <SidebarV2 />}
+      <div className='w-full min-h-screen bg-slate-200 dark:bg-slate-700'>
         <Routes>
           <Route path='/login' element={<Login handleLoginSubmit={handleLoginSubmit} handleChangeUserName={[email, setEmail, password, setPassword]} />} />
+          <Route path='/' element={<Dashboard />} />
+          <Route path='/overview' element={<Overview />} />
+          <Route path='/investments' element={<Investments />} />
+          <Route path='/inbox' element={<Inbox />} />
+          <Route path='/beneficiaries' element={<Beneficiaries />} />
+          <Route path='/manage' element={<Manage />} />
+          <Route path='/settings' element={<Settings />} />
+          <Route path='/report' element={<Report />} />
+          <Route path='/properties' element={<Properties />} />
         </Routes>
-        <MainComponent />
-        {user === null
-          ? <Navigate to='/login' replace />
-          : <Navigate to='/' replace />}
-      </BrowserRouter>
-    </div>
+      </div>
+    </>
   )
 }
 
