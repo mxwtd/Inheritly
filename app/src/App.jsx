@@ -71,7 +71,6 @@ const App = () => {
     <>
       <div className='w-full min-h-screen bg-slate-200 dark:bg-slate-700'>
         <Routes>
-
           <Route path='login' element={<Login handleLoginSubmit={handleLoginSubmit} handleChangeUserName={[email, setEmail, password, setPassword]} />} />
 
           <Route path='/' element={<SidebarV2 />}>
