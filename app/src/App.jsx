@@ -14,6 +14,7 @@ import Report from './pages/Report'
 import Manage from './pages/Manage'
 import Properties from './pages/Properties'
 import Login from './pages/Login'
+import Error from './pages/Error'
 
 import { ProtectedRoute } from './components/security/ProtectedRoute'
 
@@ -85,7 +86,7 @@ const App = () => {
             <Route path='/properties' element={<Properties />} />
           </Route>
 
-          <Route path='*' element={<h1>Not Found</h1>} />
+          <Route path='*' element={<Error type='Not Found' />} />
         </Routes>
       </div>
     </>
