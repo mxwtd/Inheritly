@@ -4,16 +4,19 @@ import { Route, Routes, Outlet } from 'react-router-dom'
 
 import SidebarV2 from './components/SidebarV2'
 
+import Login from './pages/user/Login'
+import SignUp from './pages/user/SignUp'
+import ForgotPassword from './pages/user/ForgotPassword'
+
 import Dashboard from './pages/Dashboard'
 import Overview from './pages/Overview'
-import Investments from './pages/Investments'
+import Investments from './pages/investments/Investments'
 import Inbox from './pages/Inbox'
 import Settings from './pages/Settings'
 import Beneficiaries from './pages/Beneficiaries'
 import Report from './pages/Report'
 import Manage from './pages/Manage'
-import Properties from './pages/Properties'
-import Login from './pages/Login'
+import Properties from './pages/investments/Properties'
 import Error from './pages/Error'
 
 import { ProtectedRoute } from './components/security/ProtectedRoute'
@@ -72,6 +75,8 @@ const App = () => {
       <div className='w-full min-h-screen bg-slate-200 dark:bg-slate-700'>
         <Routes>
           <Route path='login' element={<Login handleLoginSubmit={handleLoginSubmit} handleChangeUserName={[email, setEmail, password, setPassword]} />} />
+          <Route path='signUp' element={<SignUp />} />
+          <Route path='forgotPassword' element={<ForgotPassword />} />
 
           <Route path='/' element={<SidebarV2 />}>
             <Route path='/' element={<Dashboard />} />

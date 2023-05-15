@@ -1,4 +1,4 @@
-import InvestmentCard from '../components/InvestmentCard'
+import InvestmentCard from '../../components/InvestmentCard'
 
 const Investments = () => {
   return (
