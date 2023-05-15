@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Outlet } from 'react-router-dom'
 
 import SidebarV2 from './components/SidebarV2'
 
@@ -72,18 +72,22 @@ const App = () => {
       <div className='w-full min-h-screen bg-slate-200 dark:bg-slate-700'>
         <Routes>
 
-          <Route path='/login' element={<Login handleLoginSubmit={handleLoginSubmit} handleChangeUserName={[email, setEmail, password, setPassword]} />} />
+          <Route path='login' element={<Login handleLoginSubmit={handleLoginSubmit} handleChangeUserName={[email, setEmail, password, setPassword]} />} />
 
           <Route path='/' element={<SidebarV2 />}>
             <Route path='/' element={<Dashboard />} />
-            <Route path='/overview' element={<Overview />} />
-            <Route path='/investments' element={<Investments />} />
-            <Route path='/inbox' element={<Inbox />} />
-            <Route path='/beneficiaries' element={<Beneficiaries />} />
-            <Route path='/manage' element={<Manage />} />
-            <Route path='/settings' element={<Settings />} />
-            <Route path='/report' element={<Report />} />
-            <Route path='/properties' element={<Properties />} />
+            <Route path='overview' element={<Overview />} />
+
+            <Route path='investments' element={<Outlet />}>
+              <Route index element={<Investments />} />
+              <Route path='properties' element={<Properties />} />
+            </Route>
+
+            <Route path='inbox' element={<Inbox />} />
+            <Route path='beneficiaries' element={<Beneficiaries />} />
+            <Route path='manage' element={<Manage />} />
+            <Route path='settings' element={<Settings />} />
+            <Route path='report' element={<Report />} />
           </Route>
 
           <Route path='*' element={<Error type='Not Found' />} />
