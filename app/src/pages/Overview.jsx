@@ -1,4 +1,4 @@
-import AssetList from './AssetList'
+import AssetList from '../components/AssetList'
 
 const Overview = () => {
   return (

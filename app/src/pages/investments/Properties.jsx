@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 
-import Property from './Property'
+import Property from '../../components/Property'
 
-import { getAllProperties } from '../services/properties'
+import { getAllProperties } from '../../services/properties'
 
 const Properties = () => {
   const [properties, updateProperties] = useState([])

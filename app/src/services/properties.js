@@ -1,8 +1,18 @@
 import axios from 'axios'
 const API_URL = '/'
 
+let token = null
+
+export const setToken = (newToken) => {
+  token = `bearer ${newToken}`
+}
+
 export const getAllProperties = async () => {
-  const response = await axios.get(`${API_URL}api/properties`)
+  const config = {
+    headers: { Authorization: token }
+  }
+
+  const response = await axios.get(`${API_URL}api/properties`, config)
   return response.data
 }
 
@@ -12,6 +22,10 @@ export const getPropertyById = async (id) => {
 }
 
 export const createProperty = async (newProperty) => {
-  const response = await axios.post(`${API_URL}api/properties`, newProperty)
+  const config = {
+    headers: { Authorization: token }
+  }
+
+  const response = await axios.post(`${API_URL}api/properties`, newProperty, config)
   return response.data
 }
