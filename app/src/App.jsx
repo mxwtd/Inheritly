@@ -56,6 +56,8 @@ const App = () => {
         'loggedReviewAppUser', JSON.stringify(user)
       )
 
+      console.log('user', user)
+
       setToken(user.token)
 
       setUser(user)
@@ -72,13 +74,14 @@ const App = () => {
 
   return (
     <>
+      <h1>{error}</h1>
       <div className='w-full min-h-screen bg-slate-200 dark:bg-slate-700'>
         <Routes>
           <Route path='login' element={<Login handleLoginSubmit={handleLoginSubmit} handleChangeUserName={[email, setEmail, password, setPassword]} />} />
           <Route path='signUp' element={<SignUp />} />
           <Route path='forgotPassword' element={<ForgotPassword />} />
 
-          <Route path='/' element={<SidebarV2 />}>
+          <Route path='/' element={<ProtectedRoute isAuthenticated={user}><SidebarV2 /></ProtectedRoute>}>
             <Route path='/' element={<Dashboard />} />
             <Route path='overview' element={<Overview />} />
 
