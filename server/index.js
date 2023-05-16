@@ -1,6 +1,7 @@
 require('./mongo')
 
 const cors = require('cors')
+const corsOptions = require('./config/corsOptions')
 const express = require('express')
 const Sentry = require('@sentry/node')
 const Tracing = require('@sentry/tracing')
@@ -23,7 +24,7 @@ const app = express()
 
 app.use(logger)
 
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(express.json()) // initial Parse JSON bodies
 
 app.use(cookieParser())
