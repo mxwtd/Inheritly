@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import AddButton from './AddButton'
+import ModalAddButton from './ModalAddButton'
+import ModalCloseButton from './ModalCloseButton'
 
 const AssetList = () => {
   // Modal Open and Close
@@ -30,12 +31,9 @@ const AssetList = () => {
                     <h2 className='text-xl font-semibold text-slate-900 dark:text-white'>
                       Add Investment
                     </h2>
-                    <button type='button' className='text-slate-400 bg-transparent hover:bg-slate-200 hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-slate-600 dark:hover:text-white' onClick={() => setIsModalOpen(false)}>
-                      <svg aria-hidden='true' className='w-5 h-5' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
-                        <path fillRule='evenodd' d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z' clipRule='evenodd' />
-                      </svg>
-                      <span className='sr-only'>Close modal</span>
-                    </button>
+                    <div>
+                      <ModalCloseButton onClick={() => setIsModalOpen(false)} />
+                    </div>
                   </div>
                   {/* Modal body */}
                   <form action='#'>
@@ -102,7 +100,7 @@ const AssetList = () => {
                 <input type='text' id='table-search' className='block p-2 pl-10 ml-0.5 text-sm text-slate-900 border border-slate-300 rounded-lg w-60 lg:w-80 bg-slate-50 focus:ring-slate-600 focus:border-slate-700 dark:bg-slate-700 dark:border-slate-400 dark:placeholder-slate-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-200' placeholder='Search...' />
               </div>
               <div className='ml-2 mt-1'>
-                <AddButton onClick={openModal} />
+                <ModalAddButton onClick={openModal} />
               </div>
             </div>
             <table className='w-full text-sm text-left text-slate-500 dark:text-slate-400'>

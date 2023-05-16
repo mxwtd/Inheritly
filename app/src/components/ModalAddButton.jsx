@@ -1,4 +1,4 @@
-const AddButton = ({ onClick, children }) => {
+const ModalAddButton = ({ onClick, children }) => {
   return (
     <button id='defaultModalButton' className='py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md' onClick={onClick}>
       <svg className='w-5 h-5' viewBox='0 0 20 20' fill='currentColor'>
@@ -9,4 +9,4 @@ const AddButton = ({ onClick, children }) => {
   )
 }
 
-export default AddButton
+export default ModalAddButton
