@@ -8,6 +8,7 @@ const Tracing = require('@sentry/tracing')
 // import middleware
 const notFound = require('./middleware/notFound')
 const handleErrors = require('./middleware/handleErrors')
+const { logger } = require('./middleware/logger')
 
 // Import controllers
 const usersRouter = require('./controllers/users')
@@ -15,7 +16,11 @@ const reviewsRouter = require('./controllers/reviews')
 const propertiesRouter = require('./controllers/properties')
 const loginRouter = require('./controllers/login')
 
+// const authRoutes = require('./routes/authRoutes')
+
 const app = express()
+
+app.use(logger)
 
 app.use(cors())
 app.use(express.json()) // initial Parse JSON bodies
@@ -47,6 +52,8 @@ app.get('/', (request, response) => {
 })
 
 app.use('/api/login', loginRouter)
+
+// app.use('api/auth', authRoutes)
 
 app.use('/api/reviews', reviewsRouter)
 
