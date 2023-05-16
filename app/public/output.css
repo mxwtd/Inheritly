@@ -949,10 +949,6 @@ input[type="range"]::-ms-fill-lower {
   grid-row: span 2 / span 2;
 }
 
-.float-right {
-  float: right;
-}
-
 .m-8 {
   margin: 2rem;
 }
@@ -1352,10 +1348,6 @@ input[type="range"]::-ms-fill-lower {
 
 .rounded {
   border-radius: 0.25rem;
-}
-
-.rounded-3xl {
-  border-radius: 1.5rem;
 }
 
 .rounded-full {
