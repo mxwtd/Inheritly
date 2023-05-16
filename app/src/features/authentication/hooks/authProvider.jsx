@@ -1,9 +1,9 @@
-import { createContext, useContext, useMemo } from 'react'
+import { createContext, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLocalStorage } from '../../../hook/useLocalStorage'
 import { setToken } from '../../../services/properties'
 
-const AuthContext = createContext()
+export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useLocalStorage('user', null)
@@ -23,17 +23,10 @@ export const AuthProvider = ({ children }) => {
 
   const value = useMemo(
     () => ({
-      user,
-      login,
-      logout
+      user
     }),
     [user]
   )
 
   return <AuthContext.Provider value={{ value, login, logout }}>{children}</AuthContext.Provider>
-}
-
-export const useAuth = () => {
-  console.log('useAuth')
-  return useContext(AuthContext)
 }

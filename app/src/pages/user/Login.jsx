@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Template from '../../components/form/user/template'
 import { loginRequest } from '../../services/login'
-import { useAuth } from '../../features/authentication/hooks/authProvider'
+import { useAuth } from '../../features/authentication/hooks/useAuth'
 
 const Login = () => {
   const [email, setEmail] = useState('')

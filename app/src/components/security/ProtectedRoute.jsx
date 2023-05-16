@@ -1,8 +1,11 @@
 import { Navigate } from 'react-router-dom'
-import { useAuth } from '../../features/authentication/hooks/authProvider'
+import { useAuth } from '../../features/authentication/hooks/useAuth'
 
 export const ProtectedRoute = ({ children }) => {
   const auth = useAuth()
+
+  console.log('auth', auth)
+
   if (!auth.value.user) {
     console.log('user is not authenticated')
     // user is not authenticated
