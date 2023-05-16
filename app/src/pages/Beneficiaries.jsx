@@ -1,17 +1,15 @@
 import { useState } from 'react'
+import ModalCloseButton from '../components/ModalCloseButton'
 
 const Beneficiaries = () => {
-  const [modalOpen, setModalOpen] = useState(false)
-  const [cardInfo, setCardInfo] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [cardInfo, setCardInfo] = useState({})
 
   const handleButtonClick = (info) => {
     setCardInfo(info)
-    setModalOpen(true)
+    setIsModalOpen(true)
   }
 
-  const closeModal = () => {
-    setModalOpen(false)
-  }
   return (
     <>
       <div className='p-4 sm:ml-64'>
@@ -69,34 +67,36 @@ const Beneficiaries = () => {
                   </div>
                 </div>
               </div>
-              {modalOpen && (
-                <>
-                  <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center z-50' style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                    <div className='bg-white dark:bg-slate-800 py-6 px-6 rounded-3xl w-3/4 h-3/4 my-4 shadow-xl overflow-y-auto'>
-                      <button onClick={closeModal} className='float-right'>Close</button>
-                      <div>
-                        <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>{cardInfo.title}</h1>
-                      </div>
-                      <div className='grid grid-cols-3 gap-6'>
-                        <div className='bg-slate-400 p-4 rounded-xl min-h-[90%]'>
-                          <p>{cardInfo.surname}</p>
-                          <p>{cardInfo.members}</p>
-                        </div>
-                        <div className='bg-slate-400 p-4 rounded-xl min-h-[90%]'>
-                          <p>{cardInfo.surname}</p>
-                          <p>{cardInfo.members}</p>
-                        </div>
-                        <div className='bg-slate-400 p-4 rounded-xl min-h-[90%]'>
-                          <p>{cardInfo.surname}</p>
-                          <p>{cardInfo.members}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
             </div>
           </div>
+          {isModalOpen && (
+            <>
+              <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center z-50' style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                <div className='bg-white dark:bg-slate-800 py-6 px-6 rounded-lg w-3/4 h-3/4 my-4 shadow-xl overflow-y-auto'>
+                  <div className='flex flex-end'>
+                    <ModalCloseButton onClick={() => setIsModalOpen(false)} />
+                  </div>
+                  <div>
+                    <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>{cardInfo.title}</h1>
+                  </div>
+                  <div className='grid grid-cols-3 gap-6'>
+                    <div className='bg-slate-400 p-4 rounded-xl min-h-[90%]'>
+                      <p>{cardInfo.surname}</p>
+                      <p>{cardInfo.members}</p>
+                    </div>
+                    <div className='bg-slate-400 p-4 rounded-xl min-h-[90%]'>
+                      <p>{cardInfo.surname}</p>
+                      <p>{cardInfo.members}</p>
+                    </div>
+                    <div className='bg-slate-400 p-4 rounded-xl min-h-[90%]'>
+                      <p>{cardInfo.surname}</p>
+                      <p>{cardInfo.members}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </>
