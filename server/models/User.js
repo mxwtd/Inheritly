@@ -10,6 +10,7 @@ const userSchema = new Schema({
   name: String,
   passwordHash: String,
   email: String,
+  profilePic: String, // Profile Picture
   reviews: [{
     type: Schema.Types.ObjectId,
     ref: 'Review'
