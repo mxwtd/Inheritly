@@ -1,8 +1,55 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Template from '../../components/form/user/template'
+import { loginRequest } from '../../services/login'
+import { useAuth } from '../../features/authentication/hooks/authProvider'
 
-const Login = ({ handleLoginSubmit, handleChangeUserName }) => {
-  const [email, setEmail, password, setPassword] = handleChangeUserName
+const Login = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const auth = useAuth()
+
+  const handleLoginSubmit = async (event) => {
+    event.preventDefault()
+
+    console.log('handleLoginSubmit')
+    console.log('email', email)
+    console.log('password', password)
+
+    const user = await loginRequest({ email, password })
+
+    window.localStorage.setItem(
+      'loggedReviewAppUser', JSON.stringify(user)
+    )
+    // setToken(user.token)
+    auth.login(user)
+
+    // setUser(user)
+    setEmail('')
+    setPassword('')
+
+    // try {
+    //   const user = await loginRequest({ email, password })
+
+    //   window.localStorage.setItem(
+    //     'loggedReviewAppUser', JSON.stringify(user)
+    //   )
+    //   // setToken(user.token)
+    //   auth.login(user)
+
+    //   // setUser(user)
+    //   setEmail('')
+    //   setPassword('')
+    // } catch (error) {
+    //   // setError('Wrong credentials')
+    //   // setTimeout(() => {
+    //   //   setError(null)
+    //   // }
+    //   // , 5000)
+    //   console.log('login error')
+    // }
+  }
 
   return (
     <>

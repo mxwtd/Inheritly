@@ -8,14 +8,15 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useLocalStorage('user', null)
   const navigate = useNavigate()
 
-  const login = async (data) => {
+  const login = (data) => {
+    console.log('login')
     setUser(data)
-    navigate('/profile')
+    navigate('/')
   }
 
   const logout = () => {
     setUser(null)
-    navigate('/', { replace: true })
+    navigate('/login', { replace: true })
   }
 
   const value = useMemo(
@@ -27,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     [user]
   )
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={{ value, login, logout }}>{children}</AuthContext.Provider>
 }
 
 export const useAuth = () => {
