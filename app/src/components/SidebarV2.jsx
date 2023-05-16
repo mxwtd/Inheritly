@@ -60,6 +60,7 @@ const SidebarV2 = () => {
                 </svg>
               </button>
               <Link to='/' className='flex ml-2 md:mr-24'>
+                <img className='w-12 h-12 mr-2' src='https://res.cloudinary.com/djr22sgp3/image/upload/v1684267350/Inheritly_-_Third_design_qodghx.png' />
                 <span className='self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white'>Inheritly</span>
               </Link>
             </div>

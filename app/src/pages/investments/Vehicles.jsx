@@ -1,23 +1,23 @@
 import { useState, useEffect } from 'react'
 
-import Property from '../../components/Property'
+import Vehicle from '../../components/Vehicle'
 
-import { getAllProperties } from '../../services/properties'
+import { getAllVehicles } from '../../services/vehicles'
 import ModalAddButton from '../../components/ModalAddButton'
 
-const Properties = () => {
-  const [properties, updateProperties] = useState([])
+const Vehicles = () => {
+  const [vehicles, updateVehicles] = useState([])
 
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    fetchProperties()
+    fetchVehicles()
   }, [])
 
-  const fetchProperties = async () => {
-    const reviews = await getAllProperties()
+  const fetchVehicles = async () => {
+    const reviews = await getAllVehicles()
     try {
-      updateProperties(reviews)
+      updateVehicles(reviews)
     } catch {
       setError('Error')
       setTimeout(() => {
@@ -33,7 +33,7 @@ const Properties = () => {
         <div className='p-4 mt-14'>
           <div>
             <div className='flex justify-between'>
-              <h1 className='text-4xl font-semibold text-gray-800 dark:text-gray-100 my-8'>Properties</h1>
+              <h1 className='text-4xl font-semibold text-gray-800 dark:text-gray-100 my-8'>Vehicles</h1>
               <div className='flex justify-end items-center'>
                 <ModalAddButton />
               </div>
@@ -51,8 +51,8 @@ const Properties = () => {
               </div>}
 
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4'>
-              {properties.map((property) => (
-                <Property key={property.id} property={property} />
+              {vehicles.map((vehicle) => (
+                <Vehicle key={vehicle.id} vehicle={vehicle} />
               ))}
             </div>
           </div>
@@ -62,4 +62,4 @@ const Properties = () => {
   )
 }
 
-export default Properties
+export default Vehicles
