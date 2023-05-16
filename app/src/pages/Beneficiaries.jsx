@@ -67,40 +67,22 @@ const Beneficiaries = () => {
                   <div>
                     <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>{cardInfo.title}</h1>
                   </div>
-                  <div
-                    className='grid grid-cols-3 grid-rows-3 gap-6 h-[70%]'
-                    style={{
-                      gridTemplateAreas: `
-                        "item1 item3 item4"
-                        "item2 item3 item4"
-                        "item2 item3 item4"
-                      `
-                    }}
-                  >
-                    <div
-                      className='bg-slate-300 dark:bg-slate-500 dark:text-white p-4 rounded-xl col-span-1 row-span-1'
-                      style={{ gridArea: 'item1' }}
-                    >
-                      <h1>{cardInfo.surname}</h1>
+                  <div className='grid grid-cols-1 lg:grid-cols-3 grid-rows-3 gap-6 h-[70%]'>
+                    <div className='bg-slate-200 dark:bg-slate-500 text-white p-4 rounded-xl col-start-1 col-end-2 row-start-1 row-end-2'>
+                      <h1 className='text-xl font-semibold text-slate-800 dark:text-white'>{cardInfo.surname}</h1>
+                      <div className='flex flex-start py-5'>
+                        <MemberCircles />
+                        <p className='text-slate-800 dark:text-white'>{cardInfo.members}</p>
+                      </div>
                     </div>
-                    <div
-                      className='bg-slate-300 dark:bg-slate-500 dark:text-white p-4 rounded-xl col-span-1 row-span-2'
-                      style={{ gridArea: 'item2' }}
-                    >
-                      <h1>Members</h1>
-                      <p>{cardInfo.members}</p>
+                    <div className='bg-slate-200 dark:bg-slate-500 text-white p-4 rounded-xl col-start-1 col-end-2 row-start-2 row-end-4'>
+                      <h1 className='text-xl font-semibold text-slate-800 dark:text-white'>Proportions</h1>
                     </div>
-                    <div
-                      className='bg-slate-300 dark:bg-slate-500 dark:text-white p-4 rounded-xl col-span-1 row-span-3'
-                      style={{ gridArea: 'item3' }}
-                    >
-                      <span>Item 3</span>
+                    <div className='bg-slate-200 dark:bg-slate-500 text-white p-4 rounded-xl col-start-2 col-end-3 row-start-1 row-end-4'>
+                      <h1 className='text-lg font-semibold text-slate-800 dark:text-white'>Distribution</h1>
                     </div>
-                    <div
-                      className='bg-slate-300 dark:bg-slate-500 dark:text-white p-4 rounded-xl col-span-1 row-span-3'
-                      style={{ gridArea: 'item4' }}
-                    >
-                      <span>Item 4</span>
+                    <div className='bg-slate-200 dark:bg-slate-500 text-white p-4 rounded-xl col-start-3 col-end-4 row-start-1 row-end-4'>
+                      <h1 className='text-lg font-semibold text-slate-800 dark:text-white'>Asset List</h1>
                     </div>
                   </div>
                 </div>
