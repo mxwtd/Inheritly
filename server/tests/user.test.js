@@ -65,7 +65,7 @@ describe('Create a new User', () => {
 describe('Login a User', () => {
   test('succeeds with valid credentials', async () => {
     const credentials = {
-      username: 'root',
+      email: 'root@gmail.com',
       password: 'password'
     }
 
@@ -80,7 +80,7 @@ describe('Login a User', () => {
 
   test('fails with invalid credentials', async () => {
     const credentials = {
-      username: 'root',
+      email: 'root@gmail.com',
       password: 'invalid'
     }
 

@@ -4,10 +4,11 @@ const cors = require('cors')
 const express = require('express')
 const Sentry = require('@sentry/node')
 const Tracing = require('@sentry/tracing')
+const cookieParser = require('cookie-parser')
 
 // import middleware
 const notFound = require('./middleware/notFound')
-const handleErrors = require('./middleware/handleErrors')
+const errorHandler = require('./middleware/errorHandler')
 const { logger } = require('./middleware/logger')
 
 // Import controllers
@@ -24,6 +25,8 @@ app.use(logger)
 
 app.use(cors())
 app.use(express.json()) // initial Parse JSON bodies
+
+app.use(cookieParser())
 
 app.use(express.static('../app/dist'))
 
@@ -65,7 +68,7 @@ app.use(notFound)
 
 app.use(Sentry.Handlers.errorHandler())
 
-app.use(handleErrors)
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 
