@@ -3,6 +3,7 @@ const { server } = require('../../index')
 const Property = require('../../models/InvestmentTypes/Property')
 const User = require('../../models/User')
 const { api } = require('../global_test_helper')
+const bcrypt = require('bcrypt')
 const {
   initialProperties,
   getIdFromFirstProperty,
@@ -10,14 +11,8 @@ const {
 } = require('./properties_test_helper')
 
 beforeAll(async () => {
-  await User.deleteMany({})
-
-  // create a user
-  const user = new User({
-    username: 'test',
-    name: 'test',
-    password: 'test'
-  })
+  const passwordHash = await bcrypt.hash('password', 10)
+  const user = new User({ username: 'user', name: 'user', email: 'user@gmail.com', passwordHash })
 
   await user.save()
 })
@@ -65,6 +60,15 @@ describe('Get Properties', () => {
 
 describe('Create Properties', () => {
   test('a new property', async () => {
+    // const user = await User.findOne({ username: 'test' })
+
+    // console.log(user)
+
+    // const userForToken = {
+    //   id: user._id,
+    //   username: user.username
+    // }
+
     const newProperty = {
       name: 'Property 3',
       currency: 'USD',

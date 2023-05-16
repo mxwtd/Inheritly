@@ -10,9 +10,9 @@ const userSchema = new Schema({
   name: String,
   passwordHash: String,
   email: String,
-  reviews: [{
+  properties: [{
     type: Schema.Types.ObjectId,
-    ref: 'Review'
+    ref: 'Property'
   }]
 })
 
