@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import ModalCloseButton from '../components/ModalCloseButton'
+import MemberCircles from '../components/MemberCircles'
 
 const Beneficiaries = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -35,12 +36,7 @@ const Beneficiaries = () => {
                 <div className='border-t dark:border-slate-500' />
                 <div className='flex justify-between'>
                   <div className='my-5'>
-                    <div className='flex -space-x-4'>
-                      <img className='w-10 h-10 border-2 rounded-full border-slate-600 dark:border-slate-300' src='https://flowbite.com/docs/images/people/profile-picture-5.jpg' alt='' />
-                      <img className='w-10 h-10 border-2 rounded-full border-slate-600 dark:border-slate-300' src='https://flowbite.com/docs/images/people/profile-picture-5.jpg' alt='' />
-                      <img className='w-10 h-10 border-2 rounded-full border-slate-600 dark:border-slate-300' src='https://flowbite.com/docs/images/people/profile-picture-5.jpg' alt='' />
-                      <img className='w-10 h-10 border-2 rounded-full border-slate-600 dark:border-slate-300' src='https://flowbite.com/docs/images/people/profile-picture-5.jpg' alt='' />
-                    </div>
+                    <MemberCircles />
                   </div>
                   <div className='my-3'>
                     <p className='font-semibold text-base text-slate-600 dark:text-white'>Members</p>
