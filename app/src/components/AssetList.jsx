@@ -1,8 +1,13 @@
 import { useState } from 'react'
+import AddButton from './AddButton'
 
 const AssetList = () => {
   // Modal Open and Close
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const openModal = () => {
+    setIsModalOpen(true)
+  }
 
   return (
     <>
@@ -14,7 +19,7 @@ const AssetList = () => {
           <div>
             {/* Modal overlay */}
             {isModalOpen &&
-              <div className='fixed inset-0 bg-black bg-opacity-70 z-40' />}
+              <div className='fixed inset-0 bg-black bg-opacity-70 z-50' />}
             {/* Main modal */}
             <div id='defaultModal' className={`fixed inset-0 z-50 flex items-center justify-center w-full h-full ${isModalOpen ? '' : 'hidden'}`}>
               <div className='relative z-40 p-4 w-full max-w-2xl md:h-auto bg-white rounded-lg shadow dark:bg-slate-800 sm:p-5 mx-8'>
@@ -96,9 +101,9 @@ const AssetList = () => {
                 </div>
                 <input type='text' id='table-search' className='block p-2 pl-10 ml-0.5 text-sm text-slate-900 border border-slate-300 rounded-lg w-60 lg:w-80 bg-slate-50 focus:ring-slate-600 focus:border-slate-700 dark:bg-slate-700 dark:border-slate-400 dark:placeholder-slate-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-200' placeholder='Search...' />
               </div>
-              <button id='defaultModalButton' onClick={() => setIsModalOpen(true)} className='ml-2 mt-1 py-2 px-3 bg-blue-600 hover:bg-blue-700 hover:bg-blue text-white font-semibold rounded-lg shadow-md'>
-                <svg className='w-5 h-5' viewBox='0 0 20 20' fill='currentColor'><path fillRule='evenodd' clipRule='evenodd' d='M11 9V5a1 1 0 00-2 0v4H5a1 1 0 100 2h4v4a1 1 0 102 0v-4h4a1 1 0 100-2h-4z' /></svg>
-              </button>
+              <div className='ml-2 mt-1'>
+                <AddButton onClick={openModal} />
+              </div>
             </div>
             <table className='w-full text-sm text-left text-slate-500 dark:text-slate-400'>
               <thead className='text-xs text-slate-700 uppercase bg-slate-50 dark:bg-slate-500 dark:text-slate-800'>
