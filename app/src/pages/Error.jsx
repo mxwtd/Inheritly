@@ -5,7 +5,7 @@ const Error = ({ type }) => {
     <>
       <div className="min-h-screen flex items-center justify-center bg-[url('https://res.cloudinary.com/djr22sgp3/image/upload/v1683277801/Light_ekxcia.svg')] dark:bg-[url('https://res.cloudinary.com/djr22sgp3/image/upload/v1683278025/Dark_b0r36s.svg')] bg-cover bg-center bg-no-repeat overflow-y-hidden relative">
         <div className='absolute top-0 left-0 m-8'>
-          <Link to='/' className='text-lg font-semibold text-gray-800 dark:text-gray-100'>❮ Go back</Link>
+          <Link to='/' className='text-lg font-semibold text-slate-800 dark:text-slate-100'>❮ Go back</Link>
         </div>
         <div className='flex flex-col justify-center items-center'>
           <Link to='/' className='flex items-center mb-12 text-4xl font-semibold text-slate-700 dark:text-white'>

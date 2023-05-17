@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 
 const NotificationsDropdown = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -33,7 +34,7 @@ const NotificationsDropdown = () => {
           <div className='block px-4 py-2 font-medium text-center text-slate-700 rounded-t-lg bg-slate-50 dark:bg-slate-800 dark:text-white'>
             Notifications
           </div>
-          <a href='#' className='flex px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700'>
+          <Link to='/inbox' className='flex px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700' onClick={() => setIsOpen(false)}>
             <div className='flex-shrink-0'>
               <img className='rounded-full w-11 h-11' src='https://res.cloudinary.com/djr22sgp3/image/upload/v1678799098/peeps-avatar_ogmqgh.png' alt='User Profile Picture' />
               <div className='absolute flex items-center justify-center w-5 h-5 ml-6 -mt-5 bg-slate-900 border border-white rounded-full dark:border-slate-800'>
@@ -44,7 +45,7 @@ const NotificationsDropdown = () => {
               <div className='text-slate-500 text-sm mb-1.5 dark:text-slate-400'><span className='font-semibold text-slate-900 dark:text-white'>Santi Mr Worldwide</span> and <span className='font-medium text-slate-900 dark:text-white'>2 others</span> have joined {'{ Family Estate }'}</div>
               <div className='text-xs text-blue-600 dark:text-blue-500'>10 minutes ago</div>
             </div>
-          </a>
+          </Link>
         </div>
       )}
     </>

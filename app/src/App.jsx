@@ -18,11 +18,13 @@ import Report from './pages/Report'
 import Manage from './pages/Manage'
 import Properties from './pages/investments/Properties'
 import Error from './pages/Error'
+import Footer from './components/Footer'
 
 import { ProtectedRoute } from './components/security/ProtectedRoute'
 
 import { setToken } from './services/properties'
 import { login } from './services/login'
+import GenerateWill from './pages/GenerateWill'
 
 const App = () => {
   // States
@@ -90,12 +92,14 @@ const App = () => {
             <Route path='inbox' element={<Inbox />} />
             <Route path='beneficiaries' element={<Beneficiaries />} />
             <Route path='manage' element={<Manage />} />
+            <Route path='generate' element={<GenerateWill />} />
             <Route path='settings' element={<Settings />} />
             <Route path='report' element={<Report />} />
           </Route>
 
           <Route path='*' element={<Error type='Not Found' />} />
         </Routes>
+        <Footer />
       </div>
     </>
   )
