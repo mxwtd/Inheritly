@@ -17,9 +17,7 @@ const { logger } = require('./middleware/logger')
 const userRoutes = require('./routes/userRoutes')
 // const reviewsRouter = require('./controllers/reviews')
 // const propertiesRouter = require('./controllers/properties')
-// const loginRouter = require('./controllers/login')
-
-// const authRoutes = require('./routes/authRoutes')
+const authRoutes = require('./routes/authRoutes')
 
 const app = express()
 
@@ -56,8 +54,6 @@ app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
 
-// app.use('/api/login', loginRouter)
-
 // app.use('api/auth', authRoutes)
 
 // app.use('/api/reviews', reviewsRouter)
@@ -65,6 +61,8 @@ app.get('/', (request, response) => {
 // app.use('/api/properties', propertiesRouter)
 
 app.use(userRoutes)
+
+app.use(authRoutes)
 
 app.use(notFound)
 

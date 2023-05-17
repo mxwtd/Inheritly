@@ -75,6 +75,38 @@ describe('Create a new User', () => {
   })
 })
 
+describe('Login a User', () => {
+  test('succeeds with valid credentials', async () => {
+    const credentials = {
+      email: 'root@gmail.com',
+      password: 'password'
+    }
+
+    const result = await api
+      .post('/api/auth/login')
+      .send(credentials)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.token).toBeDefined()
+  })
+
+  test('fails with invalid credentials', async () => {
+    const credentials = {
+      email: 'root@gmail.com',
+      password: 'invalid'
+    }
+
+    const result = await api
+      .post('/api/auth/login')
+      .send(credentials)
+      .expect(401)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('invalid username or password')
+  })
+})
+
 // describe('Login a User', () => {
 //   test('succeeds with valid credentials', async () => {
 //     const credentials = {
