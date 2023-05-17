@@ -48,55 +48,32 @@ describe('Create a new User', () => {
     const usernames = usersAtEnd.map(u => u.username)
     expect(usernames).toContain(newUser.username)
   })
+
+  test('is not possible with an already taken email', async () => {
+    const usersAtStart = await getUsers()
+
+    const newUser = {
+      username: 'root',
+      name: 'root',
+      email: 'root@gmail.com',
+      password: 'password',
+      question: 'question',
+      answer: 'answer',
+      lastNames: 'lastNames'
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(409)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('`email` to be unique')
+
+    const usersAtEnd = await getUsers()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+  })
 })
-
-// describe('Create a new User', () => {
-//   test('is possible with a fresh username', async () => {
-//     const usersAtStart = await getUsers()
-
-//     const newUser = {
-//       username: 'user',
-//       name: 'user',
-//       email: 'user@gmail.com',
-//       password: 'password'
-//     }
-
-//     await api
-//       .post('/api/users')
-//       .send(newUser)
-//       .expect(201)
-//       .expect('Content-Type', /application\/json/)
-
-//     const usersAtEnd = await getUsers()
-
-//     expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
-
-//     const usernames = usersAtEnd.map(u => u.username)
-//     expect(usernames).toContain(newUser.username)
-//   })
-
-//   test('is not possible with an already taken username', async () => {
-//     const usersAtStart = await getUsers()
-
-//     const newUser = {
-//       username: 'root',
-//       name: 'root',
-//       email: 'root@gmail.com',
-//       password: 'password'
-//     }
-
-//     const result = await api
-//       .post('/api/users')
-//       .send(newUser)
-//       .expect(400)
-//       .expect('Content-Type', /application\/json/)
-
-//     expect(result.body.error.errors.username.message).toContain('`username` to be unique')
-
-//     const usersAtEnd = await getUsers()
-//     expect(usersAtEnd).toHaveLength(usersAtStart.length)
-//   })
-// })
 
 // describe('Login a User', () => {
 //   test('succeeds with valid credentials', async () => {
