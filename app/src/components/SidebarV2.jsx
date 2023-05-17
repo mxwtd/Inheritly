@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Link, Outlet } from 'react-router-dom'
+import NotificationsDropdown from './NotificationsDropdown'
 
 const SidebarV2 = () => {
   useEffect(() => {
@@ -60,29 +61,27 @@ const SidebarV2 = () => {
                 </svg>
               </button>
               <Link to='/' className='flex ml-2 md:mr-24'>
-                <img className='w-12 h-12 mr-2' src='https://res.cloudinary.com/djr22sgp3/image/upload/v1684267350/Inheritly_-_Third_design_qodghx.png' />
-                <span className='self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white'>Inheritly</span>
+                <img className='w-10 h-10 md:w-12 md:h-12 mr-2' src='https://res.cloudinary.com/djr22sgp3/image/upload/v1684267350/Inheritly_-_Third_design_qodghx.png' />
+                <span className='self-center text-lg md:text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white'>Inheritly</span>
               </Link>
             </div>
             <div className='flex items-center'>
               <div className='flex items-center ml-3'>
-                <div className='flex items-center space-x-2'>
-                  <div className='border-r-[1.5px] border-slate-500 dark:border-slate-400 pr-3'>
-                    <button className='hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg mt-0.5 p-2'>
-                      <svg className='w-6 h-6 stroke-slate-700 dark:stroke-slate-400' fill='none' stroke='currentColor' strokeWidth='1.5' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' aria-hidden='true'>
-                        <path strokeLinecap='round' strokeLinejoin='round' d='M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0' />
-                      </svg>
-                    </button>
+                <div className='flex items-center space-x-1 md:space-x-2'>
+                  <div className='border-r-[1.5px] border-slate-500 dark:border-slate-400 pr-1 md:pr-3'>
+                    <div className='mt-2.5 relative'>
+                      <NotificationsDropdown />
+                    </div>
                   </div>
                   <div className='pl-1'>
-                    <button id='theme-toggle' type='button' className='text-slate-800 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-sm p-2'>
-                      <svg id='theme-toggle-dark-icon' className='hidden w-6 h-6' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path d='M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z' /></svg>
-                      <svg id='theme-toggle-light-icon' className='hidden w-6 h-6' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path d='M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z' fillRule='evenodd' clipRule='evenodd' /></svg>
+                    <button id='theme-toggle' type='button' className='text-slate-700 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-sm p-2'>
+                      <svg id='theme-toggle-dark-icon' className='hidden w-5 h-5 md:w-6 md:h-6' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path d='M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z' /></svg>
+                      <svg id='theme-toggle-light-icon' className='hidden w-5 h-5 md:w-6 md:h-6' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path d='M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z' fillRule='evenodd' clipRule='evenodd' /></svg>
                     </button>
                   </div>
                   <button type='button' className='flex text-sm bg-slate-800 rounded-full focus:ring-4 focus:ring-slate-300 dark:focus:ring-slate-600' aria-expanded='false' data-dropdown-toggle='dropdown-user'>
                     <span className='sr-only'>Open user menu</span>
-                    <div className='w-8 h-8 rounded-full overflow-hidden'>
+                    <div className='w-7 h-7 md:w-8 md:h-8 rounded-full overflow-hidden'>
                       <img className='w-full h-full object-cover' src='https://flowbite.com/docs/images/people/profile-picture-5.jpg' alt='user photo' />
                     </div>
                   </button>
