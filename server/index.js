@@ -13,8 +13,8 @@ const errorHandler = require('./middleware/errorHandler')
 const { logger } = require('./middleware/logger')
 
 // Import controllers
-// const usersRouter = require('./controllers/users')
 const userRoutes = require('./routes/userRoutes')
+const propertyRoutes = require('./routes/propertyRoutes')
 // const reviewsRouter = require('./controllers/reviews')
 // const propertiesRouter = require('./controllers/properties')
 const authRoutes = require('./routes/authRoutes')
@@ -56,11 +56,11 @@ app.get('/', (request, response) => {
 
 // app.use('/api/reviews', reviewsRouter)
 
-// app.use('/api/properties', propertiesRouter)
-
 app.use(userRoutes)
 
 app.use(authRoutes)
+
+app.use(propertyRoutes)
 
 app.use(notFound)
 

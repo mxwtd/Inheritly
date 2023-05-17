@@ -1,12 +1,57 @@
 const propertyRouter = require('express').Router()
 // const User = require('../models/User')
 const Property = require('../models/InvestmentTypes/Property')
+const User = require('../models/User')
 // const userExtractor = require('../middleware/userExtractor')
 
-propertyRouter.get('/', async (request, response) => {
-  const properties = await Property.find({})
-  response.json(properties)
-})
+const getAllProperties = async (req, res, next) => {
+  // Get all properties that has the user ID in the request
+  const { userId } = req
+
+  try {
+    const properties = await Property.find({ user: userId })
+    res.json(properties)
+  } catch (error) {
+    next(error)
+  }
+}
+
+const createProperty = async (req, res, next) => {
+  const {
+    name,
+    currency,
+    date,
+    value,
+    taxStatus,
+    type,
+    city,
+    country,
+    address,
+    zip
+  } = req.body
+
+  const property = { name, currency, date, value, taxStatus, type, city, country, address, zip }
+
+  // Get user ID from token
+  const { userId } = req
+  const user = await User.findById(userId)
+
+  const newProperty = new Property({
+    ...property,
+    user: user._id
+  })
+
+  try {
+    const savedProperty = await newProperty.save()
+
+    user.properties = user.properties.concat(savedProperty._id)
+    await user.save()
+
+    res.status(201).json(savedProperty)
+  } catch (error) {
+    next(error)
+  }
+}
 
 propertyRouter.get('/:id', async (request, response, next) => {
   const { id } = request.params
@@ -19,30 +64,33 @@ propertyRouter.get('/:id', async (request, response, next) => {
   }
 })
 
-propertyRouter.post('/', async (request, response, next) => {
-  const {
-    name,
-    currency,
-    date,
-    value,
-    taxStatus,
-    type,
-    city,
-    country,
-    address,
-    zip
-  } = request.body
+// propertyRouter.post('/', async (request, response, next) => {
+//   const {
+//     name,
+//     currency,
+//     date,
+//     value,
+//     taxStatus,
+//     type,
+//     city,
+//     country,
+//     address,
+//     zip
+//   } = request.body
 
-  const property = { name, currency, date, value, taxStatus, type, city, country, address, zip }
+//   const property = { name, currency, date, value, taxStatus, type, city, country, address, zip }
 
-  const newProperty = new Property(property)
+//   const newProperty = new Property(property)
 
-  try {
-    const savedProperty = await newProperty.save()
-    response.json(savedProperty)
-  } catch (error) {
-    (isNaN(newProperty)) ? response.status(422).end() : next(error)
-  }
-})
+//   try {
+//     const savedProperty = await newProperty.save()
+//     response.json(savedProperty)
+//   } catch (error) {
+//     (isNaN(newProperty)) ? response.status(422).end() : next(error)
+//   }
+// })
 
-module.exports = propertyRouter
+module.exports = {
+  getAllProperties,
+  createProperty
+}

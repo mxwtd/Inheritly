@@ -2,12 +2,10 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const User = require('../models/User')
 
-const loginUser = async (request, response, next) => {
+const loginUser = async (req, res, next) => {
   try {
-    const { body } = request
+    const { body } = req
     const { email, password } = body
-
-    console.log('body response: ', body)
 
     const user = await User.findOne({ email })
     const passwordCorrect = user === null
@@ -32,7 +30,7 @@ const loginUser = async (request, response, next) => {
       { expiresIn: 60 }
     )
 
-    response.status(200).send({
+    res.status(200).send({
       name: user.name,
       email: user.email,
       token
