@@ -1,8 +1,28 @@
-import { useEffect } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import NotificationsDropdown from './NotificationsDropdown'
 
 const SidebarV2 = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const ref = useRef(null)
+
+  const handleClickOutside = (event) => {
+    if (ref.current && !ref.current.contains(event.target)) {
+      setIsOpen(false)
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen)
+  }
+
   useEffect(() => {
     const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon')
     const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon')
@@ -62,10 +82,10 @@ const SidebarV2 = () => {
               </button>
               <Link to='/' className='flex ml-2 md:mr-24'>
                 <img className='w-10 h-10 md:w-12 md:h-12 mr-2' src='https://res.cloudinary.com/djr22sgp3/image/upload/v1684267350/Inheritly_-_Third_design_qodghx.png' />
-                <span className='self-center text-lg md:text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white'>Inheritly</span>
+                <span className='self-center text-lg md:text-2xl font-semibold whitespace-nowrap dark:text-white'>Inheritly</span>
               </Link>
             </div>
-            <div className='flex items-center'>
+            <div className='flex items-center' ref={ref}>
               <div className='flex items-center ml-3'>
                 <div className='flex items-center space-x-1 md:space-x-2'>
                   <div className='border-r-[1.5px] border-slate-500 dark:border-slate-400 pr-1 md:pr-3'>
@@ -79,37 +99,36 @@ const SidebarV2 = () => {
                       <svg id='theme-toggle-light-icon' className='hidden w-5 h-5 md:w-6 md:h-6' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path d='M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z' fillRule='evenodd' clipRule='evenodd' /></svg>
                     </button>
                   </div>
-                  <button type='button' className='flex text-sm bg-slate-800 rounded-full focus:ring-4 focus:ring-slate-300 dark:focus:ring-slate-600' aria-expanded='false' data-dropdown-toggle='dropdown-user'>
+                  <button type='button' onClick={toggleMenu} className='flex text-sm bg-slate-800 rounded-full focus:ring-4 focus:ring-slate-300 dark:focus:ring-slate-600' aria-expanded='false' data-dropdown-toggle='dropdown-user'>
                     <span className='sr-only'>Open user menu</span>
                     <div className='w-7 h-7 md:w-8 md:h-8 rounded-full overflow-hidden'>
                       <img className='w-full h-full object-cover' src='https://flowbite.com/docs/images/people/profile-picture-5.jpg' alt='user photo' />
                     </div>
                   </button>
                 </div>
-                <div className='z-50 hidden my-4 text-base list-none bg-white divide-y divide-slate-100 rounded shadow dark:bg-slate-700 dark:divide-slate-600' id='dropdown-user'>
-                  <div className='px-4 py-3' role='none'>
-                    <p className='text-sm text-slate-900 dark:text-white' role='none'>
-                      Neil Sims
-                    </p>
-                    <p className='text-sm font-medium text-slate-900 truncate dark:text-slate-300' role='none'>
-                      neil.sims@flowbite.com
-                    </p>
+                {isOpen && (
+                  <div className='z-50 fixed right-2 top-20 mt-3 text-base list-none bg-white divide-y divide-slate-100 rounded-lg shadow dark:bg-slate-700 dark:divide-slate-600' id='dropdown-user'>
+                    <div className='px-4 py-3 bg-slate-100 dark:bg-slate-500 rounded-t-lg' role='none'>
+                      <p className='text-sm text-slate-900 dark:text-white' role='none'>
+                        Santi Ospina
+                      </p>
+                      <p className='text-sm font-medium text-slate-600 truncate dark:text-slate-300' role='none'>
+                        santi@MrWorldwide.com
+                      </p>
+                    </div>
+                    <ul className='py-1' role='none'>
+                      <li>
+                        <Link to='/' className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white' role='menuitem'>Dashboard</Link>
+                      </li>
+                      <li>
+                        <Link to='/settings' className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white' role='menuitem'>Settings</Link>
+                      </li>
+                      <li>
+                        <Link to='/signOut' className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white' role='menuitem'>Sign out</Link>
+                      </li>
+                    </ul>
                   </div>
-                  <ul className='py-1' role='none'>
-                    <li>
-                      <Link to='/' className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white' role='menuitem'>Dashboard</Link>
-                    </li>
-                    <li>
-                      <Link to='/settings' className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white' role='menuitem'>Settings</Link>
-                    </li>
-                    <li>
-                      <Link to='/earnings' className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white' role='menuitem'>Earnings</Link>
-                    </li>
-                    <li>
-                      <Link to='/signOut' className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white' role='menuitem'>Sign out</Link>
-                    </li>
-                  </ul>
-                </div>
+                )}
               </div>
             </div>
           </div>
