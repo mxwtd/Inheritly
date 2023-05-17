@@ -33,7 +33,7 @@ const Vehicles = () => {
         <div className='p-4 mt-14'>
           <div>
             <div className='flex justify-between'>
-              <h1 className='text-4xl font-semibold text-gray-800 dark:text-gray-100 my-8'>Vehicles</h1>
+              <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Vehicles</h1>
               <div className='flex justify-end items-center'>
                 <ModalAddButton />
               </div>

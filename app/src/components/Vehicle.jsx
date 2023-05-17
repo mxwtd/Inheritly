@@ -1,7 +1,7 @@
 const Vehicle = ({ vehicle }) => {
   return (
     <>
-      <div key={vehicle.id} className='bg-white dark:bg-gray-800 shadow-lg rounded-xl'>
+      <div key={vehicle.id} className='bg-white dark:bg-slate-800 shadow-lg rounded-xl'>
         <div className='z-5 relative flex flex-col rounded-xl bg-white dark:bg-slate-800 bg-clip-border shadow-3xl shadow-shadow-500 w-full p-4'>
           <div className='h-full w-full'>
             <div className='relative w-full'>
