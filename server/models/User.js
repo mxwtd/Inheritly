@@ -1,36 +1,71 @@
 const uniqueValidator = require('mongoose-unique-validator')
 const { Schema, model } = require('mongoose')
 
-// Define a schema
 const userSchema = new Schema({
-  username: {
+  email: {
     type: String,
+    required: true,
     unique: true
   },
-  name: String,
-  passwordHash: String,
-  email: String,
-  properties: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Property'
-  }]
-})
+  username: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  passwordHash: {
+    type: String,
+    required: true
+  },
+  question: {
+    type: String,
+    required: true
+  },
+  answer: {
+    type: String,
+    required: true
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  lastNames: {
+    type: String,
+    required: true
+  },
+  profilePhoto: {
+    type: String
+  },
+  assets: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Property'
+    },
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Vehicle'
+    }
+  ],
+  groups: [
+    {
+      group: {
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
+      }
+    }
+  ]
+}, { timestamps: true })
 
-// Transform the object returned by Mongoose
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
-    // Delete the _id and __v properties
     delete returnedObject._id
     delete returnedObject.__v
-
-    delete returnedObject.passwordHash
+    delete returnedObject.hashPassword
   }
 })
 
 userSchema.plugin(uniqueValidator)
 
-// Define a model to create users
 const User = model('User', userSchema)
 
 module.exports = User

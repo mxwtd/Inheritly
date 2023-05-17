@@ -13,10 +13,11 @@ const errorHandler = require('./middleware/errorHandler')
 const { logger } = require('./middleware/logger')
 
 // Import controllers
-const usersRouter = require('./controllers/users')
-const reviewsRouter = require('./controllers/reviews')
-const propertiesRouter = require('./controllers/properties')
-const loginRouter = require('./controllers/login')
+// const usersRouter = require('./controllers/users')
+const userRoutes = require('./routes/userRoutes')
+// const reviewsRouter = require('./controllers/reviews')
+// const propertiesRouter = require('./controllers/properties')
+// const loginRouter = require('./controllers/login')
 
 // const authRoutes = require('./routes/authRoutes')
 
@@ -55,15 +56,15 @@ app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
 
-app.use('/api/login', loginRouter)
+// app.use('/api/login', loginRouter)
 
 // app.use('api/auth', authRoutes)
 
-app.use('/api/reviews', reviewsRouter)
+// app.use('/api/reviews', reviewsRouter)
 
-app.use('/api/properties', propertiesRouter)
+// app.use('/api/properties', propertiesRouter)
 
-app.use('/api/users', usersRouter)
+app.use(userRoutes)
 
 app.use(notFound)
 
