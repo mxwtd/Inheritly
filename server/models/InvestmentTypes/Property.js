@@ -19,7 +19,7 @@ const propertySchema = new Schema({
     type: String,
     required: true
   }
-})
+}, { timestamps: true })
 
 propertySchema.set('toJSON', {
   transform: (document, returnedObject) => {
