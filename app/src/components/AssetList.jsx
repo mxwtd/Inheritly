@@ -53,7 +53,7 @@ const AssetList = () => {
                       <div>
                         <label htmlFor='category' className='block mb-2 text-sm font-medium text-slate-900 dark:text-white'>Category</label>
                         <select id='category' className='bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
-                          <option selected=''><span className='text-slate-500 dark:text-slate-400'>Select Category</span></option>
+                          <option defaultValue=''>Select Category</option>
                           <option value='Stocks' id='Stocks'>Stocks</option>
                           <option value='Bonds' id='Bonds'>Bonds</option>
                           <option value='Funds' id='Funds'>Funds</option>

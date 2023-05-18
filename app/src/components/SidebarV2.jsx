@@ -102,7 +102,7 @@ const SidebarV2 = () => {
                   <button type='button' onClick={toggleMenu} className='flex text-sm bg-slate-800 rounded-full focus:ring-4 focus:ring-slate-300 dark:focus:ring-slate-600' aria-expanded='false' data-dropdown-toggle='dropdown-user'>
                     <span className='sr-only'>Open user menu</span>
                     <div className='w-7 h-7 md:w-8 md:h-8 rounded-full overflow-hidden'>
-                      <img className='w-full h-full object-cover' src='https://flowbite.com/docs/images/people/profile-picture-5.jpg' alt='user photo' />
+                      <img className='w-full h-full object-cover' src='https://res.cloudinary.com/djr22sgp3/image/upload/v1678799098/peeps-avatar_ogmqgh.png' alt='user photo' />
                     </div>
                   </button>
                 </div>
