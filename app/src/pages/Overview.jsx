@@ -33,8 +33,8 @@ const Overview = () => {
               <p className='text-lg lg:text-xl px-4 pt-4 text-slate-400 dark:text-slate-500'>Quarterly Report</p>
             </div>
           </div>
-          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4'>
-            <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-2 col-span-1 sm:col-span-1 sm:row-span-2 dark:bg-slate-800 shadow-lg'>
+          <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4'>
+            <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-2 col-span-1 lg:col-span-1 lg:row-span-2 dark:bg-slate-800 shadow-lg'>
               <div className='items-center'>
                 <p className='text-md lg:text-xl px-4 pt-4 text-slate-400 dark:text-slate-500'>Asset Distribution</p>
               </div>
