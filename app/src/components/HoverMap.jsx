@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import {
   ComposableMap,
   Geographies,
@@ -17,7 +17,8 @@ const mapStyles = {
 const geographyStyle = {
   default: {
     fill: '#D6D6DA',
-    outline: 'none'
+    stroke: '#94a3b8', // Color of the outline
+    strokeWidth: 0.25 // Width of the outline
   },
   hover: {
     fill: '#3B82F6',
@@ -30,23 +31,33 @@ const geographyStyle = {
 }
 
 export default function MapChart () {
-  const [hoveredCountry, setHoveredCountry] = useState(null)
+  const [zoom, setZoom] = useState(5) // Adjusts Default zoom level
+  const [tooltipContent, setTooltipContent] = useState('')
+  const [position, setPosition] = useState({ x: 0, y: 0 })
 
-  const handleMouseEnter = (geo) => {
-    setHoveredCountry(geo.properties.name)
+  const handleZoomIn = () => {
+    setZoom(zoom => Math.min(zoom * 2, 10))
   }
 
-  const handleMouseLeave = () => {
-    setHoveredCountry(null)
+  const handleZoomOut = () => {
+    setZoom(zoom => Math.max(zoom / 2, 1))
+  }
+
+  const onMouseMove = (geo, evt) => {
+    const x = evt.clientX
+    const y = evt.clientY
+    setTooltipContent(geo.properties.name)
+    setPosition({ x, y })
+  }
+
+  const onMouseLeave = () => {
+    setTooltipContent('')
   }
 
   return (
-    <div>
-      <ComposableMap
-        style={mapStyles}
-        projectionConfig={{ scale: 500, center: [10, 40] }} // Adjusts the map default zoom and center point
-      >
-        <ZoomableGroup maxZoom={8}>
+    <div className='relative'>
+      <ComposableMap style={mapStyles}>
+        <ZoomableGroup zoom={zoom} center={[10, 40]} maxZoom={10} >
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
               geographies.map((geo) => (
@@ -54,18 +65,27 @@ export default function MapChart () {
                   key={geo.rsmKey}
                   geography={geo}
                   style={geographyStyle}
-                  onMouseEnter={() => handleMouseEnter(geo)}
-                  onMouseLeave={handleMouseLeave}
+                  onMouseMove={evt => onMouseMove(geo, evt)}
+                  onMouseLeave={onMouseLeave}
                 />
               ))}
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
-      {hoveredCountry && (
-        <div className='tooltip bg-white text-black p-2 rounded absolute top-0 left-0 mt-2 ml-2'>
-          {hoveredCountry}
+      {tooltipContent && (
+        <div
+          className='tooltip bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-white p-2 rounded absolute'
+          style={{ left: `${position.x}px`, top: `${position.y}px`, position: 'fixed'}}
+        >
+          {tooltipContent}
         </div>
       )}
+      <button onClick={handleZoomIn} className='absolute top-2 right-11 w-8 h-8 bg-blue-500 text-xl font-semibold text-white rounded-full focus:outline-none'>
+        <div className='flex justify-center items-center'>+</div>
+      </button>
+      <button onClick={handleZoomOut} className='absolute top-2 right-2 w-8 h-8 bg-blue-500 text-xl font-semibold text-white rounded-full focus:outline-none'>
+        <div className='flex justify-center items-center'>-</div>
+      </button>
     </div>
   )
 }
