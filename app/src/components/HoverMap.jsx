@@ -44,7 +44,7 @@ export default function MapChart () {
     <div>
       <ComposableMap
         style={mapStyles}
-        projectionConfig={{ scale: 500, center: [10, 40] }} // Adjusts the map default zoom and center
+        projectionConfig={{ scale: 500, center: [10, 40] }} // Adjusts the map default zoom and center point
       >
         <ZoomableGroup maxZoom={8}>
           <Geographies geography={geoUrl}>
