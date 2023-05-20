@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose'
+const { Schema } = require('mongoose')
 
 const defaultData = {
   user: { type: Schema.Types.ObjectId, ref: 'User' },
