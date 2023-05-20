@@ -17,8 +17,8 @@ const mapStyles = {
 const geographyStyle = {
   default: {
     fill: '#D6D6DA',
-    stroke: '#94a3b8', // Color of the outline
-    strokeWidth: 0.25 // Width of the outline
+    stroke: '#94a3b8', // Outline Color
+    strokeWidth: 0.25 // Outline Width
   },
   hover: {
     fill: '#3B82F6',
