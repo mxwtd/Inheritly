@@ -31,7 +31,7 @@ const geographyStyle = {
 }
 
 export default function MapChart () {
-  const [zoom, setZoom] = useState(5) // Adjusts Default zoom level
+  const [zoom, setZoom] = useState(5) // Adjusts Default zoom level of map frame
   const [tooltipContent, setTooltipContent] = useState('')
   const [position, setPosition] = useState({ x: 0, y: 0 })
 
