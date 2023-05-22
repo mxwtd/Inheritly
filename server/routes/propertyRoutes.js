@@ -4,7 +4,7 @@ const propertiesController = require('../controllers/properties')
 const userExtractor = require('../middleware/userExtractor')
 
 propertyRouter.route('/api/properties', userExtractor)
-  .get(propertiesController.getAllProperties)
+  .get(propertiesController.getAllUserProperties)
   .post(userExtractor, propertiesController.createProperty)
 
 // propertyRouter.get('/api/properties/:id', propertiesController.getPropertyById)

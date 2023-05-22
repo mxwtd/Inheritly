@@ -2,21 +2,6 @@ const propertyRouter = require('express').Router()
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
 
-const getAllProperties = async (req, res, next) => {
-  // Get all properties that has the user ID in the request
-  const { id } = req.query
-
-  console.log('userId to display properties: ', id)
-
-  try {
-    // const properties = await Property.find({ user: userId })
-    const properties = await Property.find({})
-    res.json(properties)
-  } catch (error) {
-    next(error)
-  }
-}
-
 const createProperty = async (req, res, next) => {
   const {
     name,
@@ -37,14 +22,10 @@ const createProperty = async (req, res, next) => {
   const { userId } = req
   const user = await User.findById(userId)
 
-  console.log('User found: ', user)
-
   const newProperty = new Property({
     ...property,
     user: user._id
   })
-
-  console.log('New Property: ', newProperty)
 
   try {
     const savedProperty = await newProperty.save()
@@ -53,6 +34,21 @@ const createProperty = async (req, res, next) => {
     await user.save()
 
     res.status(201).json(savedProperty)
+  } catch (error) {
+    next(error)
+  }
+}
+
+const getAllUserProperties = async (req, res, next) => {
+  // Get the user ID from the request body
+  const { userId } = req.body
+
+  console.log('User ID to display properties:', userId)
+
+  try {
+    // Find properties that belong to the user with the given ID
+    const properties = await Property.find({ user: userId })
+    res.json(properties)
   } catch (error) {
     next(error)
   }
@@ -96,6 +92,6 @@ propertyRouter.get('/:id', async (request, response, next) => {
 // })
 
 module.exports = {
-  getAllProperties,
-  createProperty
+  createProperty,
+  getAllUserProperties
 }

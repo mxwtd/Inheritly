@@ -51,15 +51,15 @@ const getAllProperties = async () => {
     username: user.username
   }
 
-  console.log('This is the user id:', user._id)
+  console.log('This is the user ID:', user._id)
 
-  // login user
+  // Log in user
   const token = jwt.sign(userForToken, process.env.SECRET_KEY)
 
   const response = await api
     .get('/api/properties')
     .set('Authorization', `bearer ${token}`)
-    .query({ id: user._id })
+    .send({ userId: user._id }) // Pass the user ID in the request body
 
   return {
     body: response.body
