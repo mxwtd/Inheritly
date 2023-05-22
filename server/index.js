@@ -1,4 +1,4 @@
-require('./mongo')
+require('./config/dbConnection')
 
 const cors = require('cors')
 const corsOptions = require('./config/corsOptions')

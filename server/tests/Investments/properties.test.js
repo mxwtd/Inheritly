@@ -59,7 +59,7 @@ describe('Get Properties', () => {
 })
 
 describe('Create Properties', () => {
-  test('a new property', async () => {
+  test.only('a new property', async () => {
     // const user = await User.findOne({ username: 'test' })
 
     // console.log(user)
