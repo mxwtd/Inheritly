@@ -22,24 +22,7 @@ import Error from './pages/Error'
 import { ProtectedRoute } from './components/security/ProtectedRoute'
 import { AuthProvider } from './features/authentication/hooks/authProvider'
 
-// import { setToken } from './services/properties'
-
 const App = () => {
-  // States
-  // const [error, setError] = useState(null)
-
-  // const [user, setUser] = useState(null)
-
-  // Read Local Storage
-  // useEffect(() => {
-  //   const loggedUserJSON = window.localStorage.getItem('loggedReviewAppUser')
-  //   if (loggedUserJSON) {
-  //     const user = JSON.parse(loggedUserJSON)
-  //     setUser(user)
-  //     setToken(user.token)
-  //   }
-  // }, [])
-
   return (
     <>
       {/* <h1>{error}</h1> */}
