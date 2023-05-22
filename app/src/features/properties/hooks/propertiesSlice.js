@@ -1,6 +1,6 @@
 import { createEntityAdapter } from '@reduxjs/toolkit'
 
-const propertiesAdapter = createEntityAdapter({})
+export const propertiesAdapter = createEntityAdapter({})
 
 export const initialState = propertiesAdapter.getInitialState()
 

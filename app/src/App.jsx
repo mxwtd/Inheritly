@@ -16,8 +16,8 @@ import Settings from './pages/Settings'
 import Beneficiaries from './pages/Beneficiaries'
 import Report from './pages/Report'
 import Manage from './pages/Manage'
-import Properties from './pages/investments/Properties'
-// import PropertiesList from './features/properties/components/PropertiesList'
+// import Properties from './pages/investments/Properties'
+import PropertiesList from './features/properties/components/PropertiesList'
 import Error from './pages/Error'
 
 import { ProtectedRoute } from './components/security/ProtectedRoute'
@@ -42,7 +42,7 @@ const App = () => {
                 <Route index element={<Investments />} />
 
                 <Route path='properties'>
-                  <Route index element={<Properties />} />
+                  <Route index element={<PropertiesList />} />
                 </Route>
               </Route>
 

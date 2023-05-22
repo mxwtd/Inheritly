@@ -7,6 +7,10 @@ export const setToken = (newToken) => {
   token = `bearer ${newToken}`
 }
 
+export const getToken = () => {
+  return token
+}
+
 export const getAllProperties = async () => {
   const config = {
     headers: { Authorization: token }

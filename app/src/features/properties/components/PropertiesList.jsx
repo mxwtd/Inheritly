@@ -1,5 +1,5 @@
 import { useGetPropertiesQuery } from '../services/propertiesApiSlice'
-import Property from './Property'
+import Property from './Property.jsx'
 
 const PropertiesList = () => {
   const {
@@ -19,10 +19,8 @@ const PropertiesList = () => {
   }
 
   if (isSuccess) {
-    const { ids } = properties
-
-    const listContent = ids?.length
-      ? ids.map(propertyId => <Property key={propertyId} propertyId={propertyId} />)
+    const listContent = properties?.length
+      ? properties.map(property => <Property key={property.id} property={property} />)
       : null
 
     content = (

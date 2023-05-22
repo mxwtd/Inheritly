@@ -1,26 +1,25 @@
 import { apiSlice } from '../../../services/api/apiSlice'
-import { propertiesAdapter, initialState } from '../hooks/propertiesSlice'
+import { propertiesAdapter } from '../hooks/propertiesSlice.js'
+import { getToken } from '../../../services/properties'
 
 export const propertiesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProperties: builder.query({
-      query: () => '/properties',
+      query: () => ({
+        url: '/properties',
+        headers: {
+          Authorization: getToken()
+        }
+      }),
       validateStatus: (response, result) => {
         return response.status === 200 && !result.isError
       },
       keepUnusedDataFor: 5,
-      transformResponse: (responseData) => {
-        const loadedProperties = responseData.map((property) => {
-          property.id = property._id
-          return property
-        })
-        return propertiesAdapter.setAll(initialState, loadedProperties)
-      },
       providesTags: (result, error, arg) => {
-        if (result?.ids) {
+        if (result) {
           return [
             { type: 'Property', id: 'LIST' },
-            ...result.ids.map((id) => ({ type: 'Property', id }))
+            ...result.map((id) => ({ type: 'Property', id }))
           ]
         } else return [{ type: 'Property', id: 'LIST' }]
       }
@@ -29,3 +28,7 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
 })
 
 export const { useGetPropertiesQuery } = propertiesApiSlice
+
+export const { selectById: selectPropertyById } = propertiesAdapter.getSelectors(
+  (state) => state.properties
+)
