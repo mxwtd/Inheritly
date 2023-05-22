@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
 const { server } = require('../../index')
 const Property = require('../../models/InvestmentTypes/Property')
 const User = require('../../models/User')
@@ -11,8 +12,18 @@ const {
 } = require('./properties_test_helper')
 
 beforeAll(async () => {
+  await User.deleteMany({})
+
   const passwordHash = await bcrypt.hash('password', 10)
-  const user = new User({ username: 'user', name: 'user', email: 'user@gmail.com', passwordHash })
+  const user = new User({
+    username: 'root',
+    name: 'root',
+    email: 'root@gmail.com',
+    passwordHash,
+    question: 'question',
+    answer: 'answer',
+    lastNames: 'lastNames'
+  })
 
   await user.save()
 })
@@ -59,15 +70,17 @@ describe('Get Properties', () => {
 })
 
 describe('Create Properties', () => {
-  test.only('a new property', async () => {
-    // const user = await User.findOne({ username: 'test' })
+  test.only('valid new property', async () => {
+    const user = await User.findOne({ username: 'root' })
 
-    // console.log(user)
+    console.log('User was found: ', user)
 
-    // const userForToken = {
-    //   id: user._id,
-    //   username: user.username
-    // }
+    const userForToken = {
+      id: user._id,
+      username: user.username
+    }
+
+    const token = jwt.sign(userForToken, process.env.SECRET_KEY)
 
     const newProperty = {
       name: 'Property 3',
@@ -85,8 +98,9 @@ describe('Create Properties', () => {
 
     await api
       .post('/api/properties')
+      .set('Authorization', `bearer ${token}`)
       .send(newProperty)
-      .expect(200)
+      .expect(201)
       .expect('Content-Type', /application\/json/)
 
     const { body } = await getAllProperties()

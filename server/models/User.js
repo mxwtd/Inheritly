@@ -39,10 +39,6 @@ const userSchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: 'Property'
-    },
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Vehicle'
     }
   ],
   groups: [

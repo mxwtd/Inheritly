@@ -36,15 +36,19 @@ const createProperty = async (req, res, next) => {
   const { userId } = req
   const user = await User.findById(userId)
 
+  console.log('User found: ', user)
+
   const newProperty = new Property({
     ...property,
     user: user._id
   })
 
+  console.log('New Property: ', newProperty)
+
   try {
     const savedProperty = await newProperty.save()
 
-    user.properties = user.properties.concat(savedProperty._id)
+    user.assets.push(savedProperty._id)
     await user.save()
 
     res.status(201).json(savedProperty)
