@@ -7,10 +7,6 @@ propertyRouter.route('/api/properties', userExtractor)
   .get(propertiesController.getAllProperties)
   .post(userExtractor, propertiesController.createProperty)
 
-// propertyRouter.post('/api/properties', userExtractor, propertiesController.createProperty)
-
-// propertyRouter.get('/api/properties', propertiesController.getAllProperties)
-
 // propertyRouter.get('/api/properties/:id', propertiesController.getPropertyById)
 
 // propertyRouter.put('/api/properties/:id', propertiesController.updateProperty)

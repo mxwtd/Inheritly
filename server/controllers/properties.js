@@ -1,8 +1,6 @@
 const propertyRouter = require('express').Router()
-// const User = require('../models/User')
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
-// const userExtractor = require('../middleware/userExtractor')
 
 const getAllProperties = async (req, res, next) => {
   // Get all properties that has the user ID in the request

@@ -30,11 +30,12 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await Property.deleteMany({})
+  const properties = await initialProperties()
 
   // sequential
-  for (const property of initialProperties) {
-    const propertyObject = new Property(property)
-    await propertyObject.save()
+  for (const property of properties) {
+    const newProperty = new Property(property)
+    await newProperty.save()
   }
 })
 
@@ -73,13 +74,12 @@ describe('Create Properties', () => {
   test.only('valid new property', async () => {
     const user = await User.findOne({ username: 'root' })
 
-    console.log('User was found: ', user)
-
     const userForToken = {
       id: user._id,
       username: user.username
     }
 
+    // login user
     const token = jwt.sign(userForToken, process.env.SECRET_KEY)
 
     const newProperty = {

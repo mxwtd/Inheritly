@@ -1,7 +1,11 @@
 const { Schema } = require('mongoose')
 
 const defaultData = {
-  user: { type: Schema.Types.ObjectId, ref: 'User' },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
   type: { type: String, required: true, enum: ['Property', 'Vehicle'] },
   name: { type: String, required: true },
   currency: String,

@@ -1,33 +1,40 @@
 const { api } = require('../global_test_helper')
+const User = require('../../models/User')
 
-const initialProperties = [
-  {
-    name: 'Property 1',
-    currency: 'USD',
-    date: new Date(),
-    value: 1000,
-    TaxStatus: 'Taxable',
-    type: 'Property',
+const initialProperties = async () => {
+  const user = await User.findOne({ username: 'root' })
 
-    city: 'New York',
-    country: 'USA',
-    address: '123 Main St',
-    zip: '12345'
-  },
-  {
-    name: 'Property 2',
-    currency: 'USD',
-    date: new Date(),
-    value: 1000,
-    TaxStatus: 'Taxable',
-    type: 'Property',
+  return [
+    {
+      user: user._id,
+      name: 'Property 1',
+      currency: 'USD',
+      date: new Date(),
+      value: 1000,
+      TaxStatus: 'Taxable',
+      type: 'Property',
 
-    city: 'Medellin',
-    country: 'Colombia',
-    address: 'diagonal 75c',
-    zip: '12345'
-  }
-]
+      city: 'New York',
+      country: 'USA',
+      address: '123 Main St',
+      zip: '12345'
+    },
+    {
+      user: user._id,
+      name: 'Property 2',
+      currency: 'USD',
+      date: new Date(),
+      value: 1000,
+      TaxStatus: 'Taxable',
+      type: 'Property',
+
+      city: 'Medellin',
+      country: 'Colombia',
+      address: 'diagonal 75c',
+      zip: '12345'
+    }
+  ]
+}
 
 const getIdFromFirstProperty = async () => {
   const response = await api.get('/api/properties')
