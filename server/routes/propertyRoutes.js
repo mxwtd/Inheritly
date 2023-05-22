@@ -3,8 +3,8 @@ const propertyRouter = express.Router()
 const propertiesController = require('../controllers/properties')
 const userExtractor = require('../middleware/userExtractor')
 
-propertyRouter.route('/api/properties', userExtractor)
-  .get(propertiesController.getAllUserProperties)
+propertyRouter.route('/api/properties')
+  .get(userExtractor, propertiesController.getAllUserProperties)
   .post(userExtractor, propertiesController.createProperty)
 
 // propertyRouter.get('/api/properties/:id', propertiesController.getPropertyById)

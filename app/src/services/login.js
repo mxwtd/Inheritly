@@ -1,5 +1,5 @@
 import axios from 'axios'
-const BASE_URL = 'http://localhost:3001/api/login'
+const BASE_URL = 'http://localhost:3001/api/auth/login'
 
 export const loginRequest = async (credentials) => {
   console.log('try to log in with credentials', credentials)

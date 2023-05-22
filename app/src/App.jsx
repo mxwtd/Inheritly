@@ -17,6 +17,7 @@ import Beneficiaries from './pages/Beneficiaries'
 import Report from './pages/Report'
 import Manage from './pages/Manage'
 import Properties from './pages/investments/Properties'
+// import PropertiesList from './features/properties/components/PropertiesList'
 import Error from './pages/Error'
 
 import { ProtectedRoute } from './components/security/ProtectedRoute'
@@ -39,7 +40,10 @@ const App = () => {
 
               <Route path='investments' element={<Outlet />}>
                 <Route index element={<Investments />} />
-                <Route path='properties' element={<Properties />} />
+
+                <Route path='properties'>
+                  <Route index element={<Properties />} />
+                </Route>
               </Route>
 
               <Route path='inbox' element={<Inbox />} />
