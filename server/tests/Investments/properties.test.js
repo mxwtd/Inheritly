@@ -32,10 +32,25 @@ beforeEach(async () => {
   await Property.deleteMany({})
   const properties = await initialProperties()
 
+  const user = await User.findOne({ username: 'root' })
+
+  const userForToken = {
+    id: user._id,
+    username: user.username
+  }
+
+  // login user
+  const token = jwt.sign(userForToken, process.env.SECRET_KEY)
+
   // sequential
   for (const property of properties) {
-    const newProperty = new Property(property)
-    await newProperty.save()
+    const newProperty = property
+    await api
+      .post('/api/properties')
+      .set('Authorization', `bearer ${token}`)
+      .send(newProperty)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
   }
 })
 
@@ -104,7 +119,7 @@ describe('Create Properties', () => {
       .expect('Content-Type', /application\/json/)
 
     const { body } = await getAllProperties()
-    expect(body).toHaveLength(initialProperties.length + 1)
+    expect(body).toHaveLength((await initialProperties()).length + 1)
   })
 
   test('new property without obligatory fields', async () => {

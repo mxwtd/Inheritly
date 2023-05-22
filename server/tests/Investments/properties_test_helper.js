@@ -1,12 +1,10 @@
 const { api } = require('../global_test_helper')
 const User = require('../../models/User')
+const jwt = require('jsonwebtoken')
 
 const initialProperties = async () => {
-  const user = await User.findOne({ username: 'root' })
-
   return [
     {
-      user: user._id,
       name: 'Property 1',
       currency: 'USD',
       date: new Date(),
@@ -20,7 +18,6 @@ const initialProperties = async () => {
       zip: '12345'
     },
     {
-      user: user._id,
       name: 'Property 2',
       currency: 'USD',
       date: new Date(),
@@ -47,7 +44,22 @@ const getIdFromFirstProperty = async () => {
 }
 
 const getAllProperties = async () => {
-  const response = await api.get('/api/properties')
+  const user = await User.findOne({ username: 'root' })
+
+  const userForToken = {
+    id: user._id,
+    username: user.username
+  }
+
+  console.log('This is the user id:', user._id)
+
+  // login user
+  const token = jwt.sign(userForToken, process.env.SECRET_KEY)
+
+  const response = await api
+    .get('/api/properties')
+    .set('Authorization', `bearer ${token}`)
+    .query({ id: user._id })
 
   return {
     body: response.body

@@ -4,10 +4,13 @@ const User = require('../models/User')
 
 const getAllProperties = async (req, res, next) => {
   // Get all properties that has the user ID in the request
-  const { userId } = req
+  const { id } = req.query
+
+  console.log('userId to display properties: ', id)
 
   try {
-    const properties = await Property.find({ user: userId })
+    // const properties = await Property.find({ user: userId })
+    const properties = await Property.find({})
     res.json(properties)
   } catch (error) {
     next(error)
