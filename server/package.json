@@ -21,13 +21,17 @@
     "@sentry/node": "7.50.0",
     "@sentry/tracing": "7.50.0",
     "bcrypt": "5.1.0",
+    "cookie-parser": "1.4.6",
     "cors": "2.8.5",
     "cross-env": "7.0.3",
+    "date-fns": "2.30.0",
     "dotenv": "16.0.3",
     "express": "4.18.2",
+    "express-rate-limit": "6.7.0",
     "jsonwebtoken": "9.0.0",
     "mongoose": "7.0.5",
-    "mongoose-unique-validator": "4.0.0"
+    "mongoose-unique-validator": "4.0.0",
+    "uuid": "9.0.0"
   },
   "jest": {
     "testEnvironment": "node"

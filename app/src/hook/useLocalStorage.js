@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 export const useLocalStorage = (keyName, defaultValue) => {
+  console.log('Is working')
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const value = window.localStorage.getItem(keyName)

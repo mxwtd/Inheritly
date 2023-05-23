@@ -1,8 +1,8 @@
 const { model, Schema } = require('mongoose')
-const defaultProperties = require('./globalProperties')
+const defaultData = require('./globalData')
 
 const propertySchema = new Schema({
-  ...defaultProperties,
+  ...defaultData,
   city: {
     type: String,
     required: true
@@ -19,7 +19,7 @@ const propertySchema = new Schema({
     type: String,
     required: true
   }
-})
+}, { timestamps: true })
 
 propertySchema.set('toJSON', {
   transform: (document, returnedObject) => {

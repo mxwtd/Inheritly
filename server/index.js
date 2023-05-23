@@ -1,24 +1,32 @@
-require('./mongo')
+require('./config/dbConnection')
 
 const cors = require('cors')
+const corsOptions = require('./config/corsOptions')
 const express = require('express')
 const Sentry = require('@sentry/node')
 const Tracing = require('@sentry/tracing')
+const cookieParser = require('cookie-parser')
 
 // import middleware
 const notFound = require('./middleware/notFound')
-const handleErrors = require('./middleware/handleErrors')
+const errorHandler = require('./middleware/errorHandler')
+const { logger } = require('./middleware/logger')
 
 // Import controllers
-const usersRouter = require('./controllers/users')
-const reviewsRouter = require('./controllers/reviews')
-const propertiesRouter = require('./controllers/properties')
-const loginRouter = require('./controllers/login')
+const userRoutes = require('./routes/userRoutes')
+const propertyRoutes = require('./routes/propertyRoutes')
+// const reviewsRouter = require('./controllers/reviews')
+// const propertiesRouter = require('./controllers/properties')
+const authRoutes = require('./routes/authRoutes')
 
 const app = express()
 
-app.use(cors())
+app.use(logger)
+
+app.use(cors(corsOptions))
 app.use(express.json()) // initial Parse JSON bodies
+
+app.use(cookieParser())
 
 app.use(express.static('../app/dist'))
 
@@ -46,19 +54,19 @@ app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
 
-app.use('/api/login', loginRouter)
+// app.use('/api/reviews', reviewsRouter)
 
-app.use('/api/reviews', reviewsRouter)
+app.use(userRoutes)
 
-app.use('/api/properties', propertiesRouter)
+app.use(authRoutes)
 
-app.use('/api/users', usersRouter)
+app.use(propertyRoutes)
 
 app.use(notFound)
 
 app.use(Sentry.Handlers.errorHandler())
 
-app.use(handleErrors)
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 

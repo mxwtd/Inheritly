@@ -57,7 +57,7 @@ export default function MapChart () {
   return (
     <div className='relative'>
       <ComposableMap style={mapStyles}>
-        <ZoomableGroup zoom={zoom} center={[10, 40]} maxZoom={10} >
+        <ZoomableGroup zoom={zoom} center={[10, 40]} maxZoom={10}>
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
               geographies.map((geo) => (
@@ -75,7 +75,7 @@ export default function MapChart () {
       {tooltipContent && (
         <div
           className='tooltip bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-white p-2 rounded absolute'
-          style={{ left: `${position.x}px`, top: `${position.y}px`, position: 'fixed'}}
+          style={{ left: `${position.x}px`, top: `${position.y}px`, position: 'fixed' }}
         >
           {tooltipContent}
         </div>

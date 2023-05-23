@@ -1,8 +1,8 @@
 const { model, Schema } = require('mongoose')
-const defaultProperties = require('./globalProperties')
+const defaultData = require('./globalData')
 
 const vehicleSchema = new Schema({
-  ...defaultProperties,
+  ...defaultData,
   brand: {
     type: String,
     required: true
@@ -14,6 +14,15 @@ const vehicleSchema = new Schema({
   year: {
     type: String,
     required: true
+  }
+}, { timestamps: true })
+
+vehicleSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    // Delete the _id and __v properties
+    delete returnedObject._id
+    delete returnedObject.__v
   }
 })
 

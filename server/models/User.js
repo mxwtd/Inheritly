@@ -1,23 +1,56 @@
 const uniqueValidator = require('mongoose-unique-validator')
 const { Schema, model } = require('mongoose')
 
-// Define a schema
 const userSchema = new Schema({
-  username: {
+  email: {
     type: String,
+    required: true,
     unique: true
   },
-  name: String,
-  passwordHash: String,
-  email: String,
-  profilePic: String, // Profile Picture
-  reviews: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Review'
-  }]
-})
+  username: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  passwordHash: {
+    type: String,
+    required: true
+  },
+  question: {
+    type: String,
+    required: true
+  },
+  answer: {
+    type: String,
+    required: true
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  lastNames: {
+    type: String,
+    required: true
+  },
+  profilePhoto: {
+    type: String
+  },
+  assets: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Property'
+    }
+  ],
+  groups: [
+    {
+      group: {
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
+      }
+    }
+  ]
+}, { timestamps: true })
 
-// Transform the object returned by Mongoose
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
@@ -31,7 +64,6 @@ userSchema.set('toJSON', {
 
 userSchema.plugin(uniqueValidator)
 
-// Define a model to create users
 const User = model('User', userSchema)
 
 module.exports = User
