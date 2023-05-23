@@ -23,11 +23,59 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
           ]
         } else return [{ type: 'Property', id: 'LIST' }]
       }
+    }),
+    addNewUser: builder.mutation({
+      query: propertyData => ({
+        url: '/properties',
+        method: 'POST',
+        headers: {
+          Authorization: getToken()
+        },
+        body: {
+          ...propertyData
+        }
+      }),
+      invalidatesTags: [
+        { type: 'Property', id: 'LIST' }
+      ]
+    }),
+    updateProperty: builder.mutation({
+      query: initialProperty => ({
+        url: '/properties',
+        method: 'PATCH',
+        headers: {
+          Authorization: getToken()
+        },
+        body: {
+          ...initialProperty
+        }
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Property', id: arg.id }
+      ]
+    }),
+    deleteProperty: builder.mutation({
+      query: ({ id }) => ({
+        url: '/properties',
+        method: 'DELETE',
+        headers: {
+          Authorization: getToken()
+        },
+        body: { id }
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Property', id: arg.id }
+      ]
     })
   })
 })
 
-export const { useGetPropertiesQuery } = propertiesApiSlice
+export const {
+  useGetPropertiesQuery,
+  useAddNewUserMutation,
+  useUpdatePropertyMutation,
+  useDeletePropertyMutation
+} = propertiesApiSlice
 
 export const { selectById: selectPropertyById } = propertiesAdapter.getSelectors(
   (state) => state.properties
