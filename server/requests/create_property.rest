@@ -4,17 +4,17 @@
 
 POST http://localhost:3001/api/properties
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NmI2ODI1ZDE2NzQ1Njc5MjQ0ODFkYiIsInVzZXJuYW1lIjoic2FudGlhZ29AaG90bWFpbC5jb20iLCJpYXQiOjE2ODQ3NjQ3NTIsImV4cCI6MTY4NDc2NDgxMn0.yuebLJtrnkaPkVQ66IKOcGk0mPuOb1n9EEmqEzlXlis
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NmI5Mjg5MjYzNDdkYTg5NTA2ZTMzMCIsInVzZXJuYW1lIjoibWF4QGluaGVyaXRseS5jb20iLCJpYXQiOjE2ODQ3NzE0NzcsImV4cCI6MTY4NDc3MTUzN30.9W0GG9QSVwQ0jcVg0_6GjmW3uA8U6I3FhVBxvBIJ8vE
 
 {
-  "name": "My super house 3",
+  "name": "Max house",
   "currency": "USD",
   "date": "2023-01-01",
   "value": 5000,
   "TaxStatus": "Taxable",
   "type": "Property",
 
-  "city": "Manchester",
+  "city": "London",
   "country": "United Kingdom",
   "address": "123 Main St",
   "zip": "05332"

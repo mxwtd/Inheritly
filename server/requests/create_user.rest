@@ -2,11 +2,11 @@ POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-  "username": "sospinai",
-  "name": "Santiago Ospina",
-  "lastNames": "Ospina Idrobo",
+  "username": "max",
+  "name": "Max",
+  "lastNames": "Wth",
   "question": "¿Cuál es el nombre de tu mascota?",
   "answer": "Floki",
   "password": "123456",
-  "email": "santiago@hotmail.com"
+  "email": "max@inheritly.com"
 }
