@@ -3,7 +3,7 @@ const ERROR_HANDLERS = {
   JsonWebTokenError: response => response.status(401).send({ error: 'token is missing or invalid token' }),
   TokenExpiredError: response => response.status(401).send({ error: 'token expired' }),
   InvalidCredentials: response => response.status(401).send({ error: 'invalid username or password' }),
-  ValidationError: (response, error) => response.status(409).send({ error: error.message }),
+  ValidationError: (response, error) => response.status(422).send({ error: error.message }),
   defaultError: response => response.status(500).end()
 }
 

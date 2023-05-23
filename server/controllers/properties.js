@@ -1,4 +1,3 @@
-const propertyRouter = require('express').Router()
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
 
@@ -43,8 +42,6 @@ const getAllUserProperties = async (req, res, next) => {
   // Get the user ID from the request body
   const { userId } = req
 
-  console.log('User ID to display properties:', userId)
-
   try {
     // Find properties that belong to the user with the given ID
     const properties = await Property.find({ user: userId })
@@ -54,44 +51,60 @@ const getAllUserProperties = async (req, res, next) => {
   }
 }
 
-propertyRouter.get('/:id', async (request, response, next) => {
-  const { id } = request.params
+const getPropertyById = async (req, res, next) => {
+  const { id } = req.params
 
   try {
     const property = await Property.findById(id)
-    response.json(property)
+    res.json(property)
   } catch (error) {
-    (isNaN(id)) ? next(error) : response.status(404).end()
+    (isNaN(id)) ? next(error) : res.status(404).end()
   }
-})
+}
 
-// propertyRouter.post('/', async (request, response, next) => {
-//   const {
-//     name,
-//     currency,
-//     date,
-//     value,
-//     taxStatus,
-//     type,
-//     city,
-//     country,
-//     address,
-//     zip
-//   } = request.body
+const updateProperty = async (req, res, next) => {
+  const { id } = req.params
+  const { name, currency, date, value, taxStatus, type, city, country, address, zip } = req.body
 
-//   const property = { name, currency, date, value, taxStatus, type, city, country, address, zip }
+  try {
+    // Confirm note exists to update
+    const property = await Property.findById(id).exec()
 
-//   const newProperty = new Property(property)
+    property.name = name
+    property.currency = currency
+    property.date = date
+    property.value = value
+    property.taxStatus = taxStatus
+    property.type = type
+    property.city = city
+    property.country = country
+    property.address = address
+    property.zip = zip
 
-//   try {
-//     const savedProperty = await newProperty.save()
-//     response.json(savedProperty)
-//   } catch (error) {
-//     (isNaN(newProperty)) ? response.status(422).end() : next(error)
-//   }
-// })
+    const updatedProperty = await property.save()
+
+    res.json(updatedProperty)
+  } catch (error) {
+    (isNaN(id)) ? next(error) : res.status(404).end()
+  }
+}
+
+const deleteProperty = async (req, res, next) => {
+  const { id } = req.params
+
+  try {
+    await Property.findByIdAndDelete(id)
+
+    res.status(204).end()
+  } catch (error) {
+    (isNaN(id)) ? next(error) : res.status(404).end()
+  }
+}
 
 module.exports = {
   createProperty,
-  getAllUserProperties
+  getAllUserProperties,
+  getPropertyById,
+  updateProperty,
+  deleteProperty
 }

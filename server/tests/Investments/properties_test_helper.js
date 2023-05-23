@@ -34,11 +34,10 @@ const initialProperties = async () => {
 }
 
 const getIdFromFirstProperty = async () => {
-  const response = await api.get('/api/properties')
-  const id = response.body.map(r => r.id)[0]
+  const response = await getAllProperties()
+  const id = response.body[0].id
 
   return {
-    response,
     id
   }
 }
@@ -50,8 +49,6 @@ const getAllProperties = async () => {
     id: user._id,
     username: user.username
   }
-
-  console.log('This is the user ID:', user._id)
 
   // Log in user
   const token = jwt.sign(userForToken, process.env.SECRET_KEY)

@@ -7,7 +7,10 @@ propertyRouter.route('/api/properties')
   .get(userExtractor, propertiesController.getAllUserProperties)
   .post(userExtractor, propertiesController.createProperty)
 
-// propertyRouter.get('/api/properties/:id', propertiesController.getPropertyById)
+propertyRouter.route('/api/properties/:id')
+  .get(userExtractor, propertiesController.getPropertyById)
+  .put(userExtractor, propertiesController.updateProperty)
+  .delete(userExtractor, propertiesController.deleteProperty)
 
 // propertyRouter.put('/api/properties/:id', propertiesController.updateProperty)
 
