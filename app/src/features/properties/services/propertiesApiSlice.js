@@ -14,7 +14,7 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
       validateStatus: (response, result) => {
         return response.status === 200 && !result.isError
       },
-      keepUnusedDataFor: 5,
+      // keepUnusedDataFor: 5,
       providesTags: (result, error, arg) => {
         if (result) {
           return [
@@ -24,7 +24,7 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: 'Property', id: 'LIST' }]
       }
     }),
-    addNewUser: builder.mutation({
+    addNewProperty: builder.mutation({
       query: propertyData => ({
         url: '/properties',
         method: 'POST',
@@ -72,7 +72,7 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetPropertiesQuery,
-  useAddNewUserMutation,
+  useAddNewPropertyMutation,
   useUpdatePropertyMutation,
   useDeletePropertyMutation
 } = propertiesApiSlice

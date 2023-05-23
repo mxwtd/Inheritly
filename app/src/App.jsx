@@ -16,8 +16,11 @@ import Settings from './pages/Settings'
 import Beneficiaries from './pages/Beneficiaries'
 import Report from './pages/Report'
 import Manage from './pages/Manage'
-// import Properties from './pages/investments/Properties'
+
 import PropertiesList from './features/properties/components/PropertiesList'
+import NewPropertyForm from './features/properties/components/NewPropertyForm'
+import EditProperty from './features/properties/components/EditProperty'
+
 import Error from './pages/Error'
 import Footer from './components/Footer'
 
@@ -46,6 +49,8 @@ const App = () => {
 
                 <Route path='properties'>
                   <Route index element={<PropertiesList />} />
+                  <Route path='new' element={<NewPropertyForm />} />
+                  <Route path=':id' element={<EditProperty />} />
                 </Route>
               </Route>
 
