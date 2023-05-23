@@ -1,7 +1,28 @@
-import { useEffect } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Link, Outlet } from 'react-router-dom'
+import NotificationsDropdown from './NotificationsDropdown'
 
 const SidebarV2 = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const ref = useRef(null)
+
+  const handleClickOutside = (event) => {
+    if (ref.current && !ref.current.contains(event.target)) {
+      setIsOpen(false)
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen)
+  }
+
   useEffect(() => {
     const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon')
     const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon')
@@ -60,56 +81,54 @@ const SidebarV2 = () => {
                 </svg>
               </button>
               <Link to='/' className='flex ml-2 md:mr-24'>
-                <span className='self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white'>Inheritly</span>
+                <img className='w-10 h-10 md:w-12 md:h-12 mr-2' src='https://res.cloudinary.com/djr22sgp3/image/upload/v1684267350/Inheritly_-_Third_design_qodghx.png' />
+                <span className='self-center text-lg md:text-2xl font-semibold whitespace-nowrap dark:text-white'>Inheritly</span>
               </Link>
             </div>
-            <div className='flex items-center'>
+            <div className='flex items-center' ref={ref}>
               <div className='flex items-center ml-3'>
-                <div className='flex items-center space-x-2'>
-                  <div className='border-r-[1.5px] border-slate-500 dark:border-slate-400 pr-3'>
-                    <button className='hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg mt-0.5 p-2'>
-                      <svg className='w-6 h-6 stroke-slate-700 dark:stroke-slate-400' fill='none' stroke='currentColor' strokeWidth='1.5' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' aria-hidden='true'>
-                        <path strokeLinecap='round' strokeLinejoin='round' d='M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0' />
-                      </svg>
-                    </button>
+                <div className='flex items-center space-x-1 md:space-x-2'>
+                  <div className='border-r-[1.5px] border-slate-500 dark:border-slate-400 pr-1 md:pr-3'>
+                    <div className='mt-2.5 relative'>
+                      <NotificationsDropdown />
+                    </div>
                   </div>
                   <div className='pl-1'>
-                    <button id='theme-toggle' type='button' className='text-slate-800 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-sm p-2'>
-                      <svg id='theme-toggle-dark-icon' className='hidden w-6 h-6' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path d='M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z' /></svg>
-                      <svg id='theme-toggle-light-icon' className='hidden w-6 h-6' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path d='M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z' fillRule='evenodd' clipRule='evenodd' /></svg>
+                    <button id='theme-toggle' type='button' className='text-slate-700 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-sm p-2'>
+                      <svg id='theme-toggle-dark-icon' className='hidden w-5 h-5 md:w-6 md:h-6' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path d='M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z' /></svg>
+                      <svg id='theme-toggle-light-icon' className='hidden w-5 h-5 md:w-6 md:h-6' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path d='M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z' fillRule='evenodd' clipRule='evenodd' /></svg>
                     </button>
                   </div>
-                  <button type='button' className='flex text-sm bg-slate-800 rounded-full focus:ring-4 focus:ring-slate-300 dark:focus:ring-slate-600' aria-expanded='false' data-dropdown-toggle='dropdown-user'>
+                  <button type='button' onClick={toggleMenu} className='flex text-sm bg-slate-800 rounded-full focus:ring-4 focus:ring-slate-300 dark:focus:ring-slate-600' aria-expanded='false' data-dropdown-toggle='dropdown-user'>
                     <span className='sr-only'>Open user menu</span>
-                    <div className='w-8 h-8 rounded-full overflow-hidden'>
-                      <img className='w-full h-full object-cover' src='https://flowbite.com/docs/images/people/profile-picture-5.jpg' alt='user photo' />
+                    <div className='w-7 h-7 md:w-8 md:h-8 rounded-full overflow-hidden'>
+                      <img className='w-full h-full object-cover' src='https://res.cloudinary.com/djr22sgp3/image/upload/v1678799098/peeps-avatar_ogmqgh.png' alt='user photo' />
                     </div>
                   </button>
                 </div>
-                <div className='z-50 hidden my-4 text-base list-none bg-white divide-y divide-slate-100 rounded shadow dark:bg-slate-700 dark:divide-slate-600' id='dropdown-user'>
-                  <div className='px-4 py-3' role='none'>
-                    <p className='text-sm text-slate-900 dark:text-white' role='none'>
-                      Neil Sims
-                    </p>
-                    <p className='text-sm font-medium text-slate-900 truncate dark:text-slate-300' role='none'>
-                      neil.sims@flowbite.com
-                    </p>
+                {isOpen && (
+                  <div className='z-50 fixed right-2 top-20 mt-3 text-base list-none bg-white divide-y divide-slate-100 rounded-lg shadow dark:bg-slate-700 dark:divide-slate-600' id='dropdown-user'>
+                    <div className='px-4 py-3 bg-slate-100 dark:bg-slate-500 rounded-t-lg' role='none'>
+                      <p className='text-sm text-slate-900 dark:text-white' role='none'>
+                        Santi Ospina
+                      </p>
+                      <p className='text-sm font-medium text-slate-600 truncate dark:text-slate-300' role='none'>
+                        santi@MrWorldwide.com
+                      </p>
+                    </div>
+                    <ul className='py-1' role='none'>
+                      <li>
+                        <Link to='/' className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white' role='menuitem'>Dashboard</Link>
+                      </li>
+                      <li>
+                        <Link to='/settings' className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white' role='menuitem'>Settings</Link>
+                      </li>
+                      <li>
+                        <Link to='/signOut' className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white' role='menuitem'>Sign out</Link>
+                      </li>
+                    </ul>
                   </div>
-                  <ul className='py-1' role='none'>
-                    <li>
-                      <Link to='/' className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white' role='menuitem'>Dashboard</Link>
-                    </li>
-                    <li>
-                      <Link to='/settings' className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white' role='menuitem'>Settings</Link>
-                    </li>
-                    <li>
-                      <Link to='/earnings' className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white' role='menuitem'>Earnings</Link>
-                    </li>
-                    <li>
-                      <Link to='/signOut' className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white' role='menuitem'>Sign out</Link>
-                    </li>
-                  </ul>
-                </div>
+                )}
               </div>
             </div>
           </div>
@@ -146,7 +165,7 @@ const SidebarV2 = () => {
               </Link>
             </li>
           </ul>
-          <h2 className='text-slate-900 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700 py-4 mb-3 mt-3'>Account</h2>
+          <h2 className='text-slate-900 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700 py-4 mb-3 mt-3'>My Will</h2>
           <ul className='space-y-2 font-medium'>
             <li>
               <Link to='/manage' className='flex items-center p-2 text-slate-900 rounded-lg dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700'>
@@ -154,6 +173,18 @@ const SidebarV2 = () => {
                 <span className='ml-3 mt-1'>Manage</span>
               </Link>
             </li>
+            <li>
+              <Link to='/generate' className='flex items-center p-2 text-slate-900 rounded-lg dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700'>
+                <svg className='flex-shrink-0 w-5 h-5 ml-1 text-slate-500 transition duration-75 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' fill='none' stroke='currentColor' strokeWidth={1.5} viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' aria-hidden='true'>
+                  <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z' />
+                </svg>
+                <span className='flex-1 ml-3 mt-1 whitespace-nowrap'>Generate</span>
+                <span className='inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-slate-800 bg-slate-200 rounded-full dark:bg-slate-700 dark:text-slate-300'>New</span>
+              </Link>
+            </li>
+          </ul>
+          <h2 className='text-slate-900 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700 py-4 mb-3 mt-3'>Account</h2>
+          <ul className='space-y-2 font-medium'>
             <li>
               <Link to='/settings' className='flex items-center p-2 text-slate-900 rounded-lg dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700'>
                 <svg fill='none' className='flex-shrink-0 w-6 h-6 text-slate-500 transition duration-75 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' stroke='currentColor' strokeWidth='1.5' viewBox='0 0 22 22' xmlns='http://www.w3.org/2000/svg' aria-hidden='true'><path strokeLinecap='round' strokeLinejoin='round' d='M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495' /></svg>
