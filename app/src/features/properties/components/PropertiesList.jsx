@@ -2,6 +2,7 @@
 import { useGetPropertiesQuery } from '../services/propertiesApiSlice'
 import Property from './Property.jsx'
 import Properties from '../index.jsx'
+import CardSkeleton from '../../../components/CardSkeleton'
 
 const PropertiesList = () => {
   const {
@@ -14,7 +15,13 @@ const PropertiesList = () => {
 
   let content
 
-  if (isLoading) content = <Properties><h1 className='text-4xl font-semibold text-gray-800 dark:text-gray-100 my-8'>... Loading</h1></Properties>
+  if (isLoading) {
+    content = (
+      <Properties>
+        <CardSkeleton />
+      </Properties>
+    )
+  }
 
   if (isError) {
     content = (
