@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const User = require('../models/User')
 
-const loginUser = async (req, res, next) => {
+const login = async (req, res, next) => {
   try {
     const { body } = req
     const { email, password } = body
@@ -40,6 +40,14 @@ const loginUser = async (req, res, next) => {
   }
 }
 
+const refresh = async (req, res, next) => {
+}
+
+const logout = async (req, res, next) => {
+}
+
 module.exports = {
-  loginUser
+  login,
+  refresh,
+  logout
 }
