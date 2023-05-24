@@ -7,33 +7,46 @@ const login = async (req, res, next) => {
     const { body } = req
     const { email, password } = body
 
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ email }).exec()
+
     const passwordCorrect = user === null
       ? false
       : await bcrypt.compare(password, user.passwordHash)
 
-    if (!(user && passwordCorrect)) {
-      const error = new Error('invalid username or password')
+    if ((!(user && passwordCorrect))) {
+      const error = new Error('invalid email or password')
       error.name = 'InvalidCredentials'
       return next(error)
     }
 
     const userForToken = {
       id: user._id,
-      username: user.email
+      email: user.email
     }
 
-    const token = jwt.sign(
+    const accessToken = jwt.sign(
       userForToken,
-      process.env.SECRET_KEY,
-      // { expiresIn: 60 * 60 }
-      { expiresIn: 60 * 2 }
+      process.env.ACCESS_TOKEN_KEY,
+      { expiresIn: '2m' }
     )
+
+    const refreshToken = jwt.sign(
+      userForToken,
+      process.env.REFRESH_TOKEN_KEY,
+      { expiresIn: '5m' }
+    )
+
+    res.cookie('jwt', refreshToken, {
+      httpOnly: true, // accessible only by web server
+      secure: true, // https
+      sameSite: 'None', // cross-site cookie
+      maxAge: 7 * 24 * 60 * 60 * 1000 // cookie expiry: set to match rT
+    })
 
     res.status(200).send({
       name: user.name,
       email: user.email,
-      token
+      accessToken
     }).end()
   } catch (error) {
     next(error)
@@ -41,9 +54,64 @@ const login = async (req, res, next) => {
 }
 
 const refresh = async (req, res, next) => {
+  try {
+    const cookie = req.cookies
+
+    if (!cookie?.jwt) {
+      const error = new Error('token is missing')
+      error.name = 'JsonWebTokenError'
+      return next(error)
+    }
+
+    const refreshToken = cookie.jwt
+
+    jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_KEY,
+      async (err, decoded, next) => {
+        if (err) {
+          const error = new Error('Forbidden token')
+          error.name = 'Forbidden'
+          return next(error)
+        }
+
+        const user = await User.findOne({ email: decoded.email }).exec()
+
+        if (!user) {
+          const error = new Error('invalid email or password')
+          error.name = 'InvalidCredentials'
+          return next(error)
+        }
+
+        const accessToken = jwt.sign(
+          {
+            UserInfo: {
+              id: user._id,
+              email: user.email
+            }
+          },
+          process.env.ACCESS_TOKEN_KEY,
+          { expiresIn: '15m' }
+        )
+
+        res.json({ accessToken })
+      })
+  } catch (error) {
+    next(error)
+  }
 }
 
 const logout = async (req, res, next) => {
+  try {
+    const cookies = req.cookies
+    if (!cookies?.jwt) {
+      next(res.status(204))
+    }
+    res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true })
+    res.json({ message: 'Cookie cleared' })
+  } catch (error) {
+    next(error)
+  }
 }
 
 module.exports = {

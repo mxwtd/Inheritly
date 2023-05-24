@@ -1,5 +1,5 @@
 const rateLimit = require('express-rate-limit')
-const { logEvents } = require('@sentry/node/dist/integrations')
+const { logEvents } = require('./logger')
 
 const loginLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute

@@ -51,7 +51,7 @@ const getAllProperties = async () => {
   }
 
   // Log in user
-  const token = jwt.sign(userForToken, process.env.SECRET_KEY)
+  const token = jwt.sign(userForToken, process.env.ACCESS_TOKEN_KEY)
 
   const response = await api
     .get('/api/properties')
