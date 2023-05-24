@@ -4,6 +4,8 @@ import { Route, Routes, Outlet } from 'react-router-dom'
 
 import SidebarV2 from './components/SidebarV2'
 
+import Prefetch from './features/authentication/hooks/Prefetch'
+
 import Login from './pages/user/Login'
 import SignUp from './pages/user/SignUp'
 import ForgotPassword from './pages/user/ForgotPassword'
@@ -40,26 +42,28 @@ const App = () => {
             <Route path='signUp' element={<SignUp />} />
             <Route path='forgotPassword' element={<ForgotPassword />} />
 
-            <Route path='/' element={<ProtectedRoute><SidebarV2 /></ProtectedRoute>}>
-              <Route path='/' element={<Dashboard />} />
-              <Route path='overview' element={<Overview />} />
+            <Route element={<Prefetch />}>
+              <Route path='/' element={<ProtectedRoute><SidebarV2 /></ProtectedRoute>}>
+                <Route path='/' element={<Dashboard />} />
+                <Route path='overview' element={<Overview />} />
 
-              <Route path='investments' element={<Outlet />}>
-                <Route index element={<Investments />} />
+                <Route path='investments' element={<Outlet />}>
+                  <Route index element={<Investments />} />
 
-                <Route path='properties'>
-                  <Route index element={<PropertiesList />} />
-                  <Route path='new' element={<NewPropertyForm />} />
-                  <Route path=':id' element={<EditProperty />} />
+                  <Route path='properties'>
+                    <Route index element={<PropertiesList />} />
+                    <Route path='new' element={<NewPropertyForm />} />
+                    <Route path=':id' element={<EditProperty />} />
+                  </Route>
                 </Route>
-              </Route>
 
-              <Route path='inbox' element={<Inbox />} />
-              <Route path='beneficiaries' element={<Beneficiaries />} />
-              <Route path='manage' element={<Manage />} />
-              <Route path='generate' element={<GenerateWill />} />
-              <Route path='settings' element={<Settings />} />
-              <Route path='report' element={<Report />} />
+                <Route path='inbox' element={<Inbox />} />
+                <Route path='beneficiaries' element={<Beneficiaries />} />
+                <Route path='manage' element={<Manage />} />
+                <Route path='generate' element={<GenerateWill />} />
+                <Route path='settings' element={<Settings />} />
+                <Route path='report' element={<Report />} />
+              </Route>
             </Route>
 
             <Route path='*' element={<Error type='Not Found' />} />

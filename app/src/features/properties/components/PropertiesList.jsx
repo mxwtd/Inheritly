@@ -11,7 +11,11 @@ const PropertiesList = () => {
     isSuccess,
     isError,
     error
-  } = useGetPropertiesQuery()
+  } = useGetPropertiesQuery()(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: false,
+    pollingInterval: 20000
+  })
 
   let content
 
