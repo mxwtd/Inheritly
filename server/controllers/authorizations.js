@@ -27,7 +27,7 @@ const loginUser = async (req, res, next) => {
       userForToken,
       process.env.SECRET_KEY,
       // { expiresIn: 60 * 60 }
-      { expiresIn: 60 }
+      { expiresIn: 60 * 2 }
     )
 
     res.status(200).send({

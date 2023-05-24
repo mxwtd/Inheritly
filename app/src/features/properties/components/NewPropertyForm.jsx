@@ -14,8 +14,6 @@ const NewPropertyForm = () => {
 
   const navigate = useNavigate()
 
-  // Create form with a content variable that will be a form using tailwind where I should get: name, currency, date, value, taxStatus, type, city, country, address, zip code.
-
   const [name, setName] = useState('')
   const [country, setCountry] = useState('')
   const [currency, setCurrency] = useState('')
@@ -26,8 +24,6 @@ const NewPropertyForm = () => {
   const [city, setCity] = useState('')
   const [address, setAddress] = useState('')
   const [zip, setZip] = useState('')
-
-  // const [userId, setUserId] = useState(users[0].id)
 
   useEffect(() => {
     if (isSuccess) {
@@ -42,8 +38,7 @@ const NewPropertyForm = () => {
       setAddress('')
       setZip('')
 
-      // setUserId('')
-      navigate('/properties')
+      navigate('/investments/properties')
     }
   }, [isSuccess, navigate])
 
@@ -62,161 +57,22 @@ const NewPropertyForm = () => {
 
   const onSavePropertyClicked = async (e) => {
     e.preventDefault()
+
+    console.log('create button clicked')
+
     if (canSave) {
+      console.log('Call the add new property API')
       await addNewProperty({ name, country, currency, date, value, taxStatus, type, city, address, zip })
     }
   }
 
   const errClass = isError ? 'error msg' : 'offscreen'
-  const validNameClass = !name ? 'form__input--incomplete' : ''
-  const validCountryClass = !country ? 'form__input--incomplete' : ''
+  // const validNameClass = !name ? 'form__input--incomplete' : ''
+  // const validCountryClass = !country ? 'form__input--incomplete' : ''
 
   const content = (
     <Properties title='Create new Property'>
       <p className={errClass}>{error?.data?.message}</p>
-
-      {/* <form className='form' onSubmit={onSavePropertyClicked}>
-        <div className='form__name-row'>
-          <h2>New Property</h2>
-          <div className='form__action-buttons'>
-            <button
-              name='Save'
-              disabled={!canSave}
-            />
-          </div>
-
-        </div>
-        <label className='form__label' htmlFor='name'>
-          Name:
-        </label>
-        <input
-          className={`form__input ${validNameClass}`}
-          id='name'
-          name='name'
-          type='text'
-          autoComplete='off'
-          value={name}
-          onChange={onNameChanged}
-        />
-
-        <label className='form__label' htmlFor='country'>
-          Country:
-        </label>
-        <input
-          className={`form__input ${validCountryClass}`}
-          id='country'
-          name='country'
-          type='text'
-          autoComplete='off'
-          value={country}
-          onChange={onCountryChanged}
-        />
-
-        <label className='form__label' htmlFor='currency'>
-          Currency:
-        </label>
-        <input
-          className={`form__input ${validCountryClass}`}
-          id='currency'
-          name='currency'
-          type='text'
-          autoComplete='off'
-          value={currency}
-          onChange={onCurrencyChanged}
-        />
-
-        <label className='form__label' htmlFor='date'>
-          Date:
-        </label>
-
-        <input
-          className={`form__input ${validCountryClass}`}
-          id='date'
-          name='date'
-          type='date'
-          autoComplete='off'
-          value={date}
-          onChange={onDateChanged}
-        />
-
-        <label className='form__label' htmlFor='value'>
-          Value:
-        </label>
-        <input
-          className={`form__input ${validCountryClass}`}
-          id='value'
-          name='value'
-          type='number'
-          autoComplete='off'
-          value={value}
-          onChange={onValueChanged}
-        />
-
-        <label className='form__label' htmlFor='taxStatus'>
-          Tax Status:
-        </label>
-        <input
-          className={`form__input ${validCountryClass}`}
-          id='taxStatus'
-          name='taxStatus'
-          type='text'
-          autoComplete='off'
-          value={taxStatus}
-          onChange={onTaxStatusChanged}
-        />
-
-        <label className='form__label' htmlFor='type'>
-          Type:
-        </label>
-        <input
-          className={`form__input ${validCountryClass}`}
-          id='type'
-          name='type'
-          type='text'
-          autoComplete='off'
-          value={type}
-          onChange={onTypeChanged}
-        />
-
-        <label className='form__label' htmlFor='city'>
-          City:
-        </label>
-        <input
-          className={`form__input ${validCountryClass}`}
-          id='city'
-          name='city'
-          type='text'
-          autoComplete='off'
-          value={city}
-          onChange={onCityChanged}
-        />
-
-        <label className='form__label' htmlFor='address'>
-          Address:
-        </label>
-        <input
-          className={`form__input ${validCountryClass}`}
-          id='address'
-          name='address'
-          type='text'
-          autoComplete='off'
-          value={address}
-          onChange={onAddressChanged}
-        />
-
-        <label className='form__label' htmlFor='zip'>
-          Zip:
-        </label>
-        <input
-          className={`form__input ${validCountryClass}`}
-          id='zip'
-          name='zip'
-          type='text'
-          autoComplete='off'
-          value={zip}
-          onChange={onZipChanged}
-        />
-      </form> */}
       <form onSubmit={onSavePropertyClicked} className='space-y-4 md:space-y-6' action='#'>
         <div>
           <label htmlFor='name' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Your name</label>
@@ -245,6 +101,66 @@ const NewPropertyForm = () => {
           />
         </div>
         <div>
+          <label htmlFor='date' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Date</label>
+          <input
+            type='date'
+            value={date}
+            name='date'
+            id='date'
+            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+            onChange={onDateChanged}
+            required=''
+          />
+        </div>
+        <div>
+          <label htmlFor='value' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Value</label>
+          <input
+            type='value'
+            value={value}
+            name='value'
+            id='value'
+            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+            onChange={onValueChanged}
+            required=''
+          />
+        </div>
+        <div>
+          <label htmlFor='taxStatus' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Tax Status</label>
+          <input
+            type='taxStatus'
+            value={taxStatus}
+            name='taxStatus'
+            id='taxStatus'
+            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+            onChange={onTaxStatusChanged}
+            required=''
+          />
+        </div>
+        <div>
+          <label htmlFor='type' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Type</label>
+          <input
+            type='type'
+            value={type}
+            name='type'
+            id='type'
+            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+            onChange={onTypeChanged}
+            required=''
+          />
+        </div>
+        <div>
+          <label htmlFor='city' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>City</label>
+          <input
+            type='city'
+            value={city}
+            name='city'
+            id='city'
+            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+            onChange={onCityChanged}
+            required=''
+          />
+        </div>
+        <div>
           <label htmlFor='country' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Country</label>
           <input
             type='text'
@@ -254,6 +170,30 @@ const NewPropertyForm = () => {
             placeholder='Country Name'
             className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             onChange={onCountryChanged}
+            required=''
+          />
+        </div>
+        <div>
+          <label htmlFor='address' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Address</label>
+          <input
+            type='address'
+            value={address}
+            name='address'
+            id='address'
+            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+            onChange={onAddressChanged}
+            required=''
+          />
+        </div>
+        <div>
+          <label htmlFor='zip' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Zip</label>
+          <input
+            type='zip'
+            value={zip}
+            name='zip'
+            id='zip'
+            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+            onChange={onZipChanged}
             required=''
           />
         </div>
