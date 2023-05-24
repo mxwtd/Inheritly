@@ -19,7 +19,7 @@ const verifyJWT = (req, res, next) => {
       decodedToken = jwt.verify(
         token,
         process.env.ACCESS_TOKEN_KEY,
-        (err, decoded, next) => {
+        (err, decoded) => {
           if (err) {
             const error = new Error('Forbidden token')
             error.name = 'Forbidden'
