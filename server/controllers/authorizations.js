@@ -27,7 +27,7 @@ const login = async (req, res, next) => {
     const accessToken = jwt.sign(
       userForToken,
       process.env.ACCESS_TOKEN_KEY,
-      { expiresIn: '2m' }
+      { expiresIn: '15m' }
     )
 
     const refreshToken = jwt.sign(
@@ -68,7 +68,7 @@ const refresh = async (req, res, next) => {
     jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_KEY,
-      async (err, decoded, next) => {
+      async (err, decoded) => {
         if (err) {
           const error = new Error('Forbidden token')
           error.name = 'Forbidden'

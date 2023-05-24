@@ -7,8 +7,10 @@ const verifyJWT = (req, res, next) => {
     let token = null
 
     try {
-      if (!authHeader?.toLowerCase().startsWith('bearer')) {
-        token = authHeader.split(' ')[1]
+      if (authHeader !== undefined) {
+        if (authHeader || authHeader.toLowerCase().startsWith('bearer')) {
+          token = authHeader.split(' ')[1]
+        }
       }
     } catch (error) {
       next(error)
@@ -16,17 +18,8 @@ const verifyJWT = (req, res, next) => {
 
     let decodedToken = null
     try {
-      decodedToken = jwt.verify(
-        token,
-        process.env.ACCESS_TOKEN_KEY,
-        (err, decoded) => {
-          if (err) {
-            const error = new Error('Forbidden token')
-            error.name = 'Forbidden'
-            return next(error)
-          }
-        }
-      )
+      decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_KEY)
+      console.log('decodedToken: ', decodedToken)
     } catch (error) {
       next(error)
     }
@@ -35,8 +28,8 @@ const verifyJWT = (req, res, next) => {
       return res.status(401).json({ error: 'token missing or invalid' })
     }
 
-    const { id: userId } = decodedToken.UserInfo
-    const { email: userEmail } = decodedToken.UserInfo
+    const { id: userId } = decodedToken
+    const { email: userEmail } = decodedToken
     req.userId = userId
     req.userEmail = userEmail
 
