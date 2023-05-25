@@ -1,70 +1,77 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useRef, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Template from '../../components/form/user/template'
-import { loginRequest } from '../../services/login'
-import { useAuth } from '../../features/authentication/hooks/useAuth'
+// import { loginRequest } from '../../services/login'
+// import { useAuth } from '../../features/authentication/hooks/useAuth'
+
+import { useDispatch } from 'react-redux'
+import { setCredentials } from '../../features/authentication/hooks/authSlice'
+import { useLoginMutation } from '../../features/authentication/services/authApiSlice'
 
 const Login = () => {
+  const userRef = useRef()
+  const errRef = useRef()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [errMsg, setErrMsg] = useState('')
 
-  const auth = useAuth()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const handleLoginSubmit = async (event) => {
-    event.preventDefault()
+  const [login, { isLoading }] = useLoginMutation()
 
-    console.log('handleLoginSubmit')
-    console.log('email', email)
-    console.log('password', password)
+  const errClass = errMsg ? 'errMsg' : 'offscreen'
 
-    const user = await loginRequest({ email, password })
+  useEffect(() => {
+    userRef.current.focus()
+  }, [])
 
-    window.localStorage.setItem(
-      'loggedReviewAppUser', JSON.stringify(user)
-    )
-    // setToken(user.token)
-    auth.login(user)
+  useEffect(() => {
+    setErrMsg('')
+  }, [email, password])
 
-    // setUser(user)
-    setEmail('')
-    setPassword('')
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault()
 
-    // try {
-    //   const user = await loginRequest({ email, password })
-
-    //   window.localStorage.setItem(
-    //     'loggedReviewAppUser', JSON.stringify(user)
-    //   )
-    //   // setToken(user.token)
-    //   auth.login(user)
-
-    //   // setUser(user)
-    //   setEmail('')
-    //   setPassword('')
-    // } catch (error) {
-    //   // setError('Wrong credentials')
-    //   // setTimeout(() => {
-    //   //   setError(null)
-    //   // }
-    //   // , 5000)
-    //   console.log('login error')
-    // }
+    try {
+      const accessToken = await login({ email, password }).unwrap()
+      dispatch(setCredentials({ accessToken }))
+      setEmail('')
+      setPassword('')
+      navigate('/')
+    } catch (err) {
+      if (!err.status) {
+        setErrMsg('No server response. Try again later.')
+      } else {
+        setErrMsg(err.data?.message)
+      }
+      errRef.current.focus()
+    }
   }
 
-  return (
+  const handleEmailInput = (e) => setEmail(e.target.value)
+  const handlePasswordInput = (e) => setPassword(e.target.value)
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  const content = (
     <>
       <Template formTitle='Sign in to your account'>
+        <p ref={errRef} className={errClass} aria-live='assertive'>{errMsg}</p>
         <form onSubmit={handleLoginSubmit} className='space-y-4 md:space-y-6' action='#'>
           <div>
             <label htmlFor='email' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Your email</label>
             <input
               type='email'
+              id='email'
+              ref={userRef}
               value={email}
               name='email'
-              id='email'
               className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               placeholder='name@company.com'
-              onChange={({ target }) => setEmail(target.value)}
+              onChange={handleEmailInput}
               required=''
             />
           </div>
@@ -77,7 +84,7 @@ const Login = () => {
               id='password'
               placeholder='••••••••'
               className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-              onChange={({ target }) => setPassword(target.value)}
+              onChange={handlePasswordInput}
               required=''
             />
           </div>
@@ -100,6 +107,30 @@ const Login = () => {
       </Template>
     </>
   )
+
+  // const auth = useAuth()
+
+  // const handleLoginSubmit = async (event) => {
+  //   event.preventDefault()
+
+  //   console.log('handleLoginSubmit')
+  //   console.log('email', email)
+  //   console.log('password', password)
+
+  //   const user = await loginRequest({ email, password })
+
+  //   window.localStorage.setItem(
+  //     'loggedReviewAppUser', JSON.stringify(user)
+  //   )
+  //   // setToken(user.token)
+  //   auth.login(user)
+
+  //   // setUser(user)
+  //   setEmail('')
+  //   setPassword('')
+  // }
+
+  return content
 }
 
 export default Login
