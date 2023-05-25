@@ -27,13 +27,13 @@ const login = async (req, res, next) => {
     const accessToken = jwt.sign(
       userForToken,
       process.env.ACCESS_TOKEN_KEY,
-      { expiresIn: '15m' }
+      { expiresIn: '15s' }
     )
 
     const refreshToken = jwt.sign(
       userForToken,
       process.env.REFRESH_TOKEN_KEY,
-      { expiresIn: '5m' }
+      { expiresIn: '20s' }
     )
 
     res.cookie('jwt', refreshToken, {
@@ -91,7 +91,7 @@ const refresh = async (req, res, next) => {
             }
           },
           process.env.ACCESS_TOKEN_KEY,
-          { expiresIn: '15m' }
+          { expiresIn: '15s' }
         )
 
         res.json({ accessToken })
