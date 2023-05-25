@@ -2,7 +2,11 @@ const jwt = require('jsonwebtoken')
 
 const verifyJWT = (req, res, next) => {
   try {
+    console.log('req.headers: ', req.headers.authorization)
+
     const authHeader = req.headers.authorization || req.headers.Authorization
+
+    console.log('authHeader: ', authHeader)
 
     let token = null
 
@@ -16,6 +20,8 @@ const verifyJWT = (req, res, next) => {
       next(error)
     }
 
+    console.log('token: ', token)
+
     let decodedToken = null
     try {
       decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_KEY)
@@ -23,6 +29,8 @@ const verifyJWT = (req, res, next) => {
     } catch (error) {
       next(error)
     }
+
+    console.log('decoded token: ', decodedToken)
 
     if (!token || !decodedToken.id) {
       return res.status(401).json({ error: 'token missing or invalid' })

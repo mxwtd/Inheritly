@@ -40,6 +40,8 @@ const createProperty = async (req, res, next) => {
 
 const getAllUserProperties = async (req, res, next) => {
   // Get the user ID from the request body
+  console.log('req', req)
+
   const { userId } = req
 
   try {

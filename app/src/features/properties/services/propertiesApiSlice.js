@@ -6,10 +6,7 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProperties: builder.query({
       query: () => ({
-        url: '/properties',
-        headers: {
-          Authorization: getToken()
-        }
+        url: '/properties'
       }),
       validateStatus: (response, result) => {
         return response.status === 200 && !result.isError

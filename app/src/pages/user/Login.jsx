@@ -8,12 +8,15 @@ import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../features/authentication/hooks/authSlice'
 import { useLoginMutation } from '../../features/authentication/services/authApiSlice'
 
+import usePersist from '../../hook/usePersist'
+
 const Login = () => {
   const userRef = useRef()
   const errRef = useRef()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errMsg, setErrMsg] = useState('')
+  const [persist, setPersist] = usePersist()
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -54,6 +57,7 @@ const Login = () => {
 
   const handleEmailInput = (e) => setEmail(e.target.value)
   const handlePasswordInput = (e) => setPassword(e.target.value)
+  const handleToggle = () => setPersist(prev => !prev)
 
   if (isLoading) {
     return <div>Loading...</div>
@@ -94,7 +98,14 @@ const Login = () => {
           <div className='flex items-center justify-between'>
             <div className='flex items-start'>
               <div className='flex items-center h-5'>
-                <input id='remember' aria-describedby='remember' type='checkbox' className='w-4 h-4 border border-slate-300 rounded bg-slate-50 focus:ring-3 focus:ring-blue-300 dark:bg-slate-700 dark:border-slate-600 dark:focus:ring-slate-600 dark:ring-offset-slate-800' required='' />
+                <input
+                  id='remember'
+                  aria-describedby='remember'
+                  type='checkbox'
+                  onChange={handleToggle}
+                  checked={persist}
+                  className='w-4 h-4 border border-slate-300 rounded bg-slate-50 focus:ring-3 focus:ring-blue-300 dark:bg-slate-700 dark:border-slate-600 dark:focus:ring-slate-600 dark:ring-offset-slate-800'
+                />
               </div>
               <div className='ml-3 text-sm'>
                 <label htmlFor='remember' className='text-slate-600 dark:text-slate-300'>Remember me</label>

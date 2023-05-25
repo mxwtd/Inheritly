@@ -26,7 +26,7 @@ import EditProperty from './features/properties/components/EditProperty'
 import Error from './pages/Error'
 import Footer from './components/Footer'
 
-import { ProtectedRoute } from './components/security/ProtectedRoute'
+// import { ProtectedRoute } from './components/security/ProtectedRoute'
 
 import { AuthProvider } from './features/authentication/hooks/authProvider'
 import GenerateWill from './pages/GenerateWill'
@@ -43,7 +43,8 @@ const App = () => {
             <Route path='forgotPassword' element={<ForgotPassword />} />
 
             <Route element={<Prefetch />}>
-              <Route path='/' element={<ProtectedRoute><SidebarV2 /></ProtectedRoute>}>
+              {/* <Route path='/' element={<ProtectedRoute><SidebarV2 /></ProtectedRoute>}> */}
+              <Route path='/' element={<SidebarV2 />}>
                 <Route path='/' element={<Dashboard />} />
                 <Route path='overview' element={<Overview />} />
 

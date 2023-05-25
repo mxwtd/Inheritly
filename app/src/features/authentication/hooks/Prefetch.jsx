@@ -8,6 +8,8 @@ const Prefetch = () => {
     console.log('subscribing')
     const properties = store.dispatch(propertiesApiSlice.endpoints.getProperties.initiate())
 
+    console.log('properties', properties)
+
     return () => {
       console.log('unsubscribing')
       properties.unsubscribe()
