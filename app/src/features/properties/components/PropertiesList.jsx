@@ -1,8 +1,10 @@
 
 import { useGetPropertiesQuery } from '../services/propertiesApiSlice'
+import { Link } from 'react-router-dom'
 import Property from './Property.jsx'
 import Properties from '../index.jsx'
 import CardSkeleton from '../../../components/CardSkeleton'
+import ModalAddButton from '../../../components/ModalAddButton'
 
 const PropertiesList = () => {
   const {
@@ -25,8 +27,16 @@ const PropertiesList = () => {
 
   if (isError) {
     content = (
-      <Properties title='Properties'>
+      <Properties>
         <h1 className='text-4xl font-semibold text-gray-800 dark:text-gray-100 my-8'>{error?.data?.message}</h1>
+        <div className='flex justify-between'>
+          <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Properties</h1>
+          <div className='flex justify-end items-center'>
+            <Link to="/investments/properties/new">
+              <ModalAddButton />
+            </Link>
+          </div>
+        </div>
       </Properties>
     )
   }
