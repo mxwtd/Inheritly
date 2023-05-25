@@ -20,7 +20,7 @@ import Report from './pages/Report'
 import Manage from './pages/Manage'
 
 import PropertiesList from './features/properties/components/PropertiesList'
-import NewPropertyForm from './features/properties/components/NewPropertyForm'
+import NewProperty from './features/properties/components/NewProperty'
 import EditProperty from './features/properties/components/EditProperty'
 
 import Error from './pages/Error'
@@ -52,7 +52,7 @@ const App = () => {
 
                   <Route path='properties'>
                     <Route index element={<PropertiesList />} />
-                    <Route path='new' element={<NewPropertyForm />} />
+                    <Route path='new' element={<NewProperty />} />
                     <Route path=':id' element={<EditProperty />} />
                   </Route>
                 </Route>

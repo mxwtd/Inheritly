@@ -35,6 +35,9 @@ const Login = () => {
 
     try {
       const accessToken = await login({ email, password }).unwrap()
+
+      console.log('accessToken', accessToken)
+
       dispatch(setCredentials({ accessToken }))
       setEmail('')
       setPassword('')
@@ -107,28 +110,6 @@ const Login = () => {
       </Template>
     </>
   )
-
-  // const auth = useAuth()
-
-  // const handleLoginSubmit = async (event) => {
-  //   event.preventDefault()
-
-  //   console.log('handleLoginSubmit')
-  //   console.log('email', email)
-  //   console.log('password', password)
-
-  //   const user = await loginRequest({ email, password })
-
-  //   window.localStorage.setItem(
-  //     'loggedReviewAppUser', JSON.stringify(user)
-  //   )
-  //   // setToken(user.token)
-  //   auth.login(user)
-
-  //   // setUser(user)
-  //   setEmail('')
-  //   setPassword('')
-  // }
 
   return content
 }
