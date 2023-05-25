@@ -8,27 +8,27 @@ export const authApiSlice = apiSlice.injectEndpoints({
         url: 'auth/login',
         method: 'POST',
         body: { ...credentials }
+      })
+    }),
+    sendLogout: builder.mutation({
+      query: () => ({
+        url: 'auth/logout',
+        method: 'POST'
       }),
-      sendLogout: builder.mutation({
-        query: () => ({
-          url: 'auth/logout',
-          method: 'POST'
-        }),
-        async onQueryStarted (arg, { dispatch, queryFulfilled }) {
-          try {
-            await queryFulfilled
-            dispatch(logOut())
-            dispatch(apiSlice.util.resetApiState())
-          } catch (err) {
-            console.error('Error logging out', err)
-          }
+      async onQueryStarted (arg, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(logOut())
+          dispatch(apiSlice.util.resetApiState())
+        } catch (err) {
+          console.error('Error logging out', err)
         }
-      }),
-      refresh: builder.mutation({
-        query: () => ({
-          url: 'auth/refresh',
-          method: 'GET'
-        })
+      }
+    }),
+    refresh: builder.mutation({
+      query: () => ({
+        url: 'auth/refresh',
+        method: 'GET'
       })
     })
   })
