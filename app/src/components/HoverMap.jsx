@@ -6,6 +6,7 @@ import {
   ZoomableGroup
 } from 'react-simple-maps'
 
+// Map SVG >
 const geoUrl =
   'https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json'
 
@@ -56,7 +57,27 @@ export default function MapChart () {
 
   return (
     <div className='relative'>
-      <ComposableMap style={mapStyles}>
+      {/* Below Code allows for rounded borders on the SVG */}
+      <svg style={{ height: '0' }}>
+        <defs>
+          <filter id='rounded-corners' x='0' y='0' width='100%' height='100%'>
+            <feGaussianBlur in='SourceGraphic' stdDeviation='5' result='blur' />
+            <feColorMatrix
+              in='blur'
+              mode='matrix'
+              values='1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -6'
+              result='rounded-corners'
+            />
+            <feComposite
+              in='SourceGraphic'
+              in2='rounded-corners'
+              operator='atop'
+            />
+          </filter>
+        </defs>
+      </svg>
+      {/* MAP ELEMENT */}
+      <ComposableMap style={{ ...mapStyles, filter: 'url(#rounded-corners)' }}>
         <ZoomableGroup zoom={zoom} center={[10, 40]} maxZoom={10}>
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
@@ -72,14 +93,16 @@ export default function MapChart () {
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
+      {/* Below Code allows for Tooltip Customization */}
       {tooltipContent && (
         <div
-          className='tooltip bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-white p-2 rounded absolute'
+          className='tooltip bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-white p-2 rounded-lg absolute'
           style={{ left: `${position.x}px`, top: `${position.y}px`, position: 'fixed' }}
         >
           {tooltipContent}
         </div>
       )}
+      {/* Zoom Buttons */}
       <button onClick={handleZoomIn} className='absolute top-2 right-11 w-8 h-8 bg-blue-500 text-xl font-semibold text-white rounded-full focus:outline-none'>
         <div className='flex justify-center items-center'>+</div>
       </button>
