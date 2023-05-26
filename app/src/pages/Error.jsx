@@ -1,9 +1,20 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const Error = ({ type }) => {
+  useEffect(() => {
+    // Disables scrolling on mount
+    document.body.style.overflow = 'hidden'
+
+    // Re-enables the scrolling when component unmounts
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [])
+
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-[url('https://res.cloudinary.com/djr22sgp3/image/upload/v1683277801/Light_ekxcia.svg')] dark:bg-[url('https://res.cloudinary.com/djr22sgp3/image/upload/v1683278025/Dark_b0r36s.svg')] bg-cover bg-center bg-no-repeat overflow-y-hidden relative">
+      <div className="min-h-screen flex items-center justify-center bg-[url('https://res.cloudinary.com/djr22sgp3/image/upload/v1683277801/Light_ekxcia.svg')] dark:bg-[url('https://res.cloudinary.com/djr22sgp3/image/upload/v1683278025/Dark_b0r36s.svg')] bg-cover bg-center bg-no-repeat relative">
         <div className='absolute top-0 left-0 m-8'>
           <Link to='/' className='text-lg font-semibold text-slate-800 dark:text-slate-100'>❮ Go back</Link>
         </div>

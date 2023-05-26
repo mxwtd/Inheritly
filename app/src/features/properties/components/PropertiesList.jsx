@@ -32,7 +32,7 @@ const PropertiesList = () => {
         <div className='flex justify-between'>
           <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Properties</h1>
           <div className='flex justify-end items-center'>
-            <Link to="/investments/properties/new">
+            <Link to='/investments/properties/new'>
               <ModalAddButton />
             </Link>
           </div>
