@@ -57,27 +57,10 @@ export default function MapChart () {
 
   return (
     <div className='relative'>
-      {/* Below Code allows for rounded borders on the SVG */}
-      <svg style={{ height: '0' }}>
-        <defs>
-          <filter id='rounded-corners' x='0' y='0' width='100%' height='100%'>
-            <feGaussianBlur in='SourceGraphic' stdDeviation='5' result='blur' />
-            <feColorMatrix
-              in='blur'
-              mode='matrix'
-              values='1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -6'
-              result='rounded-corners'
-            />
-            <feComposite
-              in='SourceGraphic'
-              in2='rounded-corners'
-              operator='atop'
-            />
-          </filter>
-        </defs>
-      </svg>
       {/* MAP ELEMENT */}
-      <ComposableMap style={{ ...mapStyles, filter: 'url(#rounded-corners)' }}>
+      <ComposableMap
+        style={ mapStyles }
+      >
         <ZoomableGroup zoom={zoom} center={[10, 40]} maxZoom={10}>
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
