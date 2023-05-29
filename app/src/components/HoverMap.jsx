@@ -57,9 +57,9 @@ export default function MapChart () {
 
   return (
     <div className='relative'>
-      {/* MAP ELEMENT */}
+      {/* Map Frame */}
       <ComposableMap
-        style={ mapStyles }
+        style={mapStyles}
       >
         <ZoomableGroup zoom={zoom} center={[10, 40]} maxZoom={10}>
           <Geographies geography={geoUrl}>
