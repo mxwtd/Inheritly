@@ -4,6 +4,7 @@ import { useRefreshMutation } from '../services/authApiSlice'
 import usePersist from '../../../hook/usePersist'
 import { useSelector } from 'react-redux'
 import { selectCurrentToken } from './authSlice'
+import LoginAgain from '../components/LoginAgain'
 
 const PersistLogin = () => {
   const [persist] = usePersist()
@@ -53,10 +54,7 @@ const PersistLogin = () => {
   } else if (isError) { // persist: yes, token: no
     console.log('error')
     content = (
-      <h1>
-        {error.data?.message}
-        <Link to='/login'>Please login again</Link>.
-      </h1>
+      <LoginAgain errorMsg={error.data?.message} />
     )
   } else if (isSuccess && trueSuccess) { // persist: yes, token: yes
     console.log('success')
