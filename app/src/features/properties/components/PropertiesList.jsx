@@ -1,6 +1,6 @@
 
 import { useGetPropertiesQuery } from '../services/propertiesApiSlice'
-import Property from './Property.jsx'
+import PropertyCard from './PropertyCard.jsx'
 import Properties from '../index.jsx'
 import { Link } from 'react-router-dom'
 
@@ -37,7 +37,7 @@ const PropertiesList = () => {
 
   if (isSuccess) {
     const listContent = properties?.length
-      ? properties.map(property => <Property key={property.id} property={property} />)
+      ? properties.map(property => <PropertyCard key={property.id} property={property} />)
       : null
 
     content = (

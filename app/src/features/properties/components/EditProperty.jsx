@@ -1,6 +1,10 @@
+import Properties from '../index'
+
 const EditProperty = () => {
   return (
-    <div>EditProperty</div>
+    <Properties>
+      <div>EditProperty</div>
+    </Properties>
   )
 }
 

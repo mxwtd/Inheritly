@@ -21,6 +21,7 @@ import Report from './pages/Report'
 import Manage from './pages/Manage'
 
 import PropertiesList from './features/properties/components/PropertiesList'
+import Property from './features/properties/components/Property'
 import NewProperty from './features/properties/components/NewProperty'
 import EditProperty from './features/properties/components/EditProperty'
 
@@ -56,7 +57,8 @@ const App = () => {
                     <Route path='properties'>
                       <Route index element={<PropertiesList />} />
                       <Route path='new' element={<NewProperty />} />
-                      <Route path=':id' element={<EditProperty />} />
+                      <Route path=':id' element={<Property />} />
+                      <Route path=':id/edit' element={<EditProperty />} />
                     </Route>
                   </Route>
 

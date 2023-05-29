@@ -55,9 +55,6 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
       query: ({ id }) => ({
         url: '/properties',
         method: 'DELETE',
-        headers: {
-          Authorization: getToken()
-        },
         body: { id }
       }),
       invalidatesTags: (result, error, arg) => [
