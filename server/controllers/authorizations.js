@@ -27,13 +27,13 @@ const login = async (req, res, next) => {
     const accessToken = jwt.sign(
       userForToken,
       process.env.ACCESS_TOKEN_KEY,
-      { expiresIn: '15s' }
+      { expiresIn: '15m' }
     )
 
     const refreshToken = jwt.sign(
       userForToken,
       process.env.REFRESH_TOKEN_KEY,
-      { expiresIn: '20s' }
+      { expiresIn: '1d' }
     )
 
     res.cookie('jwt', refreshToken, {
@@ -43,11 +43,10 @@ const login = async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000 // cookie expiry: set to match rT
     })
 
-    res.status(200).send({
-      name: user.name,
-      email: user.email,
-      accessToken
-    }).end()
+    // res.status(200).json({
+    //   accessToken
+    // })
+    res.json({ accessToken })
   } catch (error) {
     next(error)
   }
@@ -91,7 +90,7 @@ const refresh = async (req, res, next) => {
             }
           },
           process.env.ACCESS_TOKEN_KEY,
-          { expiresIn: '15s' }
+          { expiresIn: '15m' }
         )
 
         res.json({ accessToken })

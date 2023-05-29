@@ -57,7 +57,10 @@ const Login = () => {
 
   const handleEmailInput = (e) => setEmail(e.target.value)
   const handlePasswordInput = (e) => setPassword(e.target.value)
-  const handleToggle = () => setPersist(prev => !prev)
+  const handleToggle = () => {
+    setPersist(prev => !prev)
+    console.log('handleToggle', persist)
+  }
 
   if (isLoading) {
     return <div>Loading...</div>
@@ -108,7 +111,7 @@ const Login = () => {
                 />
               </div>
               <div className='ml-3 text-sm'>
-                <label htmlFor='remember' className='text-slate-600 dark:text-slate-300'>Remember me</label>
+                <label htmlFor='remember' className='text-slate-600 dark:text-slate-300'>Trust This Device</label>
               </div>
             </div>
             <Link to='/forgotPassword' className='text-sm font-medium text-slate-600 hover:underline dark:text-slate-400'>Forgot password?</Link>

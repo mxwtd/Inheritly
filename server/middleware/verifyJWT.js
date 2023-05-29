@@ -1,50 +1,26 @@
 const jwt = require('jsonwebtoken')
 
 const verifyJWT = (req, res, next) => {
-  try {
-    console.log('req.headers: ', req.headers.authorization)
+  const authHeader = req.headers.authorization || req.headers.Authorization
 
-    const authHeader = req.headers.authorization || req.headers.Authorization
-
-    console.log('authHeader: ', authHeader)
-
-    let token = null
-
-    try {
-      if (authHeader !== undefined) {
-        if (authHeader || authHeader.toLowerCase().startsWith('bearer')) {
-          token = authHeader.split(' ')[1]
-        }
-      }
-    } catch (error) {
-      next(error)
-    }
-
-    console.log('token: ', token)
-
-    let decodedToken = null
-    try {
-      decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_KEY)
-      console.log('decodedToken: ', decodedToken)
-    } catch (error) {
-      next(error)
-    }
-
-    console.log('decoded token: ', decodedToken)
-
-    if (!token || !decodedToken.id) {
-      return res.status(401).json({ error: 'token missing or invalid' })
-    }
-
-    const { id: userId } = decodedToken
-    const { email: userEmail } = decodedToken
-    req.userId = userId
-    req.userEmail = userEmail
-
-    next()
-  } catch (error) {
-    next(error)
+  if (!authHeader?.startsWith('Bearer ')) {
+    return res.status(401).json({ message: 'Unauthorized' })
   }
+
+  const token = authHeader.split(' ')[1]
+
+  console.log('token from verify JWT: ', token)
+
+  jwt.verify(
+    token,
+    process.env.ACCESS_TOKEN_KEY,
+    (err, decoded) => {
+      if (err) return res.status(403).json({ message: 'Forbidden' })
+      req.user = decoded.UserInfo.email
+      req.userId = decoded.UserInfo.id
+      next()
+    }
+  )
 }
 
 module.exports = verifyJWT

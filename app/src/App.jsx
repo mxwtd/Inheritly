@@ -5,6 +5,7 @@ import { Route, Routes, Outlet } from 'react-router-dom'
 import SidebarV2 from './components/SidebarV2'
 
 import Prefetch from './features/authentication/hooks/Prefetch'
+import PersistLogin from './features/authentication/hooks/PersistLogin'
 
 import Login from './pages/user/Login'
 import SignUp from './pages/user/SignUp'
@@ -42,28 +43,30 @@ const App = () => {
             <Route path='signUp' element={<SignUp />} />
             <Route path='forgotPassword' element={<ForgotPassword />} />
 
-            <Route element={<Prefetch />}>
-              {/* <Route path='/' element={<ProtectedRoute><SidebarV2 /></ProtectedRoute>}> */}
-              <Route path='/' element={<SidebarV2 />}>
-                <Route path='/' element={<Dashboard />} />
-                <Route path='overview' element={<Overview />} />
+            <Route element={<PersistLogin />}>
+              <Route element={<Prefetch />}>
+                {/* <Route path='/' element={<ProtectedRoute><SidebarV2 /></ProtectedRoute>}> */}
+                <Route path='/' element={<SidebarV2 />}>
+                  <Route path='/' element={<Dashboard />} />
+                  <Route path='overview' element={<Overview />} />
 
-                <Route path='investments' element={<Outlet />}>
-                  <Route index element={<Investments />} />
+                  <Route path='investments' element={<Outlet />}>
+                    <Route index element={<Investments />} />
 
-                  <Route path='properties'>
-                    <Route index element={<PropertiesList />} />
-                    <Route path='new' element={<NewProperty />} />
-                    <Route path=':id' element={<EditProperty />} />
+                    <Route path='properties'>
+                      <Route index element={<PropertiesList />} />
+                      <Route path='new' element={<NewProperty />} />
+                      <Route path=':id' element={<EditProperty />} />
+                    </Route>
                   </Route>
-                </Route>
 
-                <Route path='inbox' element={<Inbox />} />
-                <Route path='beneficiaries' element={<Beneficiaries />} />
-                <Route path='manage' element={<Manage />} />
-                <Route path='generate' element={<GenerateWill />} />
-                <Route path='settings' element={<Settings />} />
-                <Route path='report' element={<Report />} />
+                  <Route path='inbox' element={<Inbox />} />
+                  <Route path='beneficiaries' element={<Beneficiaries />} />
+                  <Route path='manage' element={<Manage />} />
+                  <Route path='generate' element={<GenerateWill />} />
+                  <Route path='settings' element={<Settings />} />
+                  <Route path='report' element={<Report />} />
+                </Route>
               </Route>
             </Route>
 
