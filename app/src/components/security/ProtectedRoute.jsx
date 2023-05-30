@@ -4,7 +4,7 @@ import { useAuth } from '../../features/authentication/hooks/useAuth'
 export const ProtectedRoute = ({ children }) => {
   const auth = useAuth()
 
-  console.log('auth', auth)
+  console.log('auth here', auth)
 
   if (!auth.value.user) {
     console.log('user is not authenticated')

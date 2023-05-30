@@ -4,6 +4,7 @@ const ERROR_HANDLERS = {
   TokenExpiredError: response => response.status(401).send({ error: 'token expired' }),
   InvalidCredentials: response => response.status(401).send({ error: 'invalid username or password' }),
   ValidationError: (response, error) => response.status(422).send({ error: error.message }),
+  Forbidden: (response, error) => response.status(403).send({ error: 'Forbidden token' }),
   defaultError: response => response.status(500).end()
 }
 

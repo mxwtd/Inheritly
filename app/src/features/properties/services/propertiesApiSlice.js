@@ -1,15 +1,12 @@
 import { apiSlice } from '../../../services/api/apiSlice'
 import { propertiesAdapter } from '../hooks/propertiesSlice.js'
-import { getToken } from '../../../services/properties'
+// import { getToken } from '../../../services/properties'
 
 export const propertiesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProperties: builder.query({
       query: () => ({
-        url: '/properties',
-        headers: {
-          Authorization: getToken()
-        }
+        url: '/properties'
       }),
       validateStatus: (response, result) => {
         return response.status === 200 && !result.isError
@@ -28,9 +25,6 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
       query: propertyData => ({
         url: '/properties',
         method: 'POST',
-        headers: {
-          Authorization: getToken()
-        },
         body: {
           ...propertyData
         }
@@ -40,15 +34,10 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
       ]
     }),
     updateProperty: builder.mutation({
-      query: initialProperty => ({
-        url: '/properties',
+      query: ({ id, propertyData }) => ({
+        url: `/properties/${id}`,
         method: 'PATCH',
-        headers: {
-          Authorization: getToken()
-        },
-        body: {
-          ...initialProperty
-        }
+        body: propertyData
       }),
       invalidatesTags: (result, error, arg) => [
         { type: 'Property', id: arg.id }
@@ -56,12 +45,8 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
     }),
     deleteProperty: builder.mutation({
       query: ({ id }) => ({
-        url: '/properties',
-        method: 'DELETE',
-        headers: {
-          Authorization: getToken()
-        },
-        body: { id }
+        url: `/properties/${id}`,
+        method: 'DELETE'
       }),
       invalidatesTags: (result, error, arg) => [
         { type: 'Property', id: arg.id }
