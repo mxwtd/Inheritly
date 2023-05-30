@@ -45,9 +45,8 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
     }),
     deleteProperty: builder.mutation({
       query: ({ id }) => ({
-        url: '/properties',
-        method: 'DELETE',
-        body: { id }
+        url: `/properties/${id}`,
+        method: 'DELETE'
       }),
       invalidatesTags: (result, error, arg) => [
         { type: 'Property', id: arg.id }

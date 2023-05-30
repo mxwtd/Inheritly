@@ -1,12 +1,15 @@
 import Properties from '../index.jsx'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useGetPropertiesQuery } from '../services/propertiesApiSlice'
+import { useGetPropertiesQuery, useDeletePropertyMutation } from '../services/propertiesApiSlice'
+// import { useState } from 'react'
 
 const Property = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
   let content
+
+  // const [confirmWindow, setConfirmWindow] = useState(false)
 
   const {
     data: properties,
@@ -19,6 +22,22 @@ const Property = () => {
     refetchOnFocus: false,
     pollingInterval: 20000
   })
+
+  const [deleteProperty, {
+    isSuccess: isDeleteSuccess
+  }] = useDeletePropertyMutation()
+
+  const handleConfirm = () => {
+    deleteProperty({ id })
+  }
+
+  // const handleBack = () => {
+  //   setConfirmWindow(false)
+  // }
+
+  if (isDeleteSuccess) {
+    navigate('/investments/properties')
+  }
 
   if (isLoading) {
     content = (
@@ -42,9 +61,20 @@ const Property = () => {
     if (property) {
       const handleEdit = () => navigate('./edit')
 
+      // const handleDelete = () => {
+      //   content = (
+      //     <Properties title={property.name}>
+      //       <h1>Are you sure?</h1>
+      //       <button className='my-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={handleConfirm}>Yes</button>
+      //       <button className='my-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={handleBack}>No</button>
+      //     </Properties>
+      //   )
+      // }
+
       content = (
         <Properties title={property.name}>
           <button className='my-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={handleEdit}>Edit Property</button>
+          <button className='my-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={handleConfirm}>Delete Property</button>
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4'>
             <div className='bg-white dark:bg-slate-800 shadow-lg rounded-xl'>
               <div className='z-5 relative flex flex-col rounded-xl bg-white dark:bg-slate-800 bg-clip-border shadow-3xl shadow-shadow-500 w-full p-4'>

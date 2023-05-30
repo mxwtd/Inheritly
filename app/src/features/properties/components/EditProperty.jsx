@@ -16,7 +16,6 @@ const EditProperty = () => {
   })
 
   const [updateProperty, {
-    isLoading,
     isSuccess,
     isError,
     error
@@ -28,9 +27,9 @@ const EditProperty = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate('/investments/properties')
+      navigate(`/investments/properties/${id}`)
     }
-  }, [isSuccess, navigate])
+  }, [id, isSuccess, navigate])
 
   const property = properties.find(property => property.id === id)
 
