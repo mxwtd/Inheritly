@@ -22,7 +22,7 @@ const SignUp = ({ toggleSignUp }) => {
   const [repeatPassword, setRepeatPassword] = useState('')
 
   const [errMsg, setErrMsg] = useState('')
-  const [persist, setPersist] = usePersist()
+  const [, setPersist] = usePersist()
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
