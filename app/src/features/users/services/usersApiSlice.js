@@ -31,12 +31,21 @@ export const usersApiSlice = apiSlice.injectEndpoints({
           ]
         } else return [{ type: 'User', id: 'LIST' }]
       }
+    }),
+    createUser: builder.mutation({
+      query: credentials => ({
+        url: '/users',
+        method: 'POST',
+        body: { ...credentials }
+      }),
+      invalidatesTags: [{ type: 'User', id: 'LIST' }]
     })
   })
 })
 
 export const {
-  useGetUsersQuery
+  useGetUsersQuery,
+  useCreateUserMutation
 } = usersApiSlice
 
 // returns the query result object
