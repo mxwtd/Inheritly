@@ -1,6 +1,6 @@
 import { apiSlice } from '../../../services/api/apiSlice'
 import { propertiesAdapter } from '../hooks/propertiesSlice.js'
-import { getToken } from '../../../services/properties'
+// import { getToken } from '../../../services/properties'
 
 export const propertiesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -25,9 +25,6 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
       query: propertyData => ({
         url: '/properties',
         method: 'POST',
-        headers: {
-          Authorization: getToken()
-        },
         body: {
           ...propertyData
         }
@@ -37,15 +34,10 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
       ]
     }),
     updateProperty: builder.mutation({
-      query: initialProperty => ({
-        url: '/properties',
+      query: ({ id, propertyData }) => ({
+        url: `/properties/${id}`,
         method: 'PATCH',
-        headers: {
-          Authorization: getToken()
-        },
-        body: {
-          ...initialProperty
-        }
+        body: propertyData
       }),
       invalidatesTags: (result, error, arg) => [
         { type: 'Property', id: arg.id }

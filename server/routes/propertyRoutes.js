@@ -9,10 +9,11 @@ propertyRouter.use(verifyJWT)
 propertyRouter.route('/api/properties')
   .get(propertiesController.getAllUserProperties)
   .post(propertiesController.createProperty)
+  .delete(propertiesController.deleteProperty)
 
 propertyRouter.route('/api/properties/:id')
   .get(propertiesController.getPropertyById)
-  .put(propertiesController.updateProperty)
+  .patch(propertiesController.updateProperty)
   .delete(propertiesController.deleteProperty)
 
 module.exports = propertyRouter

@@ -4,6 +4,7 @@ import { useGetPropertiesQuery } from '../services/propertiesApiSlice'
 
 const Property = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
 
   let content
 
@@ -38,8 +39,6 @@ const Property = () => {
   if (isSuccess) {
     const property = properties?.find(property => property.id === id)
 
-    const navigate = useNavigate()
-
     if (property) {
       const handleEdit = () => navigate('./edit')
 
@@ -60,13 +59,13 @@ const Property = () => {
                   </div>
                   <div className='mb-3 flex flex-col items-start justify-between px-1 md:items-start'>
                     <div className='mb-2 w-full'>
-                      <p className='text-lg font-bold text-slate-800 dark:text-slate-300 break-words overflow-hidden'>Property Name</p>
-                      <p className='mt-1 text-sm font-medium text-slate-600 dark:text-slate-400 md:mt-2'>Country, City</p>
+                      <p className='text-lg font-bold text-slate-800 dark:text-slate-300 break-words overflow-hidden'>{property.name}</p>
+                      <p className='mt-1 text-sm font-medium text-slate-600 dark:text-slate-400 md:mt-2'>{property.country}, {property.city}</p>
                     </div>
                   </div>
                   <div className='flex items-center justify-between md:items-center lg:justify-between '>
                     <div className='flex'>
-                      <p className='mb-0 pl-1 text-sm font-bold text-slate-600 dark:text-slate-400'>$100,000</p>
+                      <p className='mb-0 pl-1 text-sm font-bold text-slate-600 dark:text-slate-400'>${property.value}</p>
                     </div>
                   </div>
                 </div>
