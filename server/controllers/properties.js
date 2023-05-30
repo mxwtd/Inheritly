@@ -108,14 +108,6 @@ const deleteProperty = async (req, res, next) => {
   } catch (error) {
     (isNaN(id)) ? next(error) : res.status(404).end()
   }
-
-  // try {
-  //   await Property.findByIdAndDelete(id)
-
-  //   res.status(204).end()
-  // } catch (error) {
-  //   (isNaN(id)) ? next(error) : res.status(404).end()
-  // }
 }
 
 module.exports = {
