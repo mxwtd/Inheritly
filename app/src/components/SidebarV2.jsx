@@ -131,10 +131,12 @@ const SidebarV2 = () => {
                   <div className='z-50 fixed right-2 top-20 mt-3 text-base list-none bg-white divide-y divide-slate-100 rounded-lg shadow dark:bg-slate-700 dark:divide-slate-600' id='dropdown-user'>
                     <div className='px-4 py-3 bg-slate-100 dark:bg-slate-500 rounded-t-lg' role='none'>
                       <p className='text-sm text-slate-900 dark:text-white' role='none'>
-                        Santi Ospina
+                        {/* {user.name} */}
+                        Max Wth
                       </p>
                       <p className='text-sm font-medium text-slate-600 truncate dark:text-slate-300' role='none'>
-                        santi@MrWorldwide.com
+                        {/* {user.email} */}
+                        Max@inheritly.com
                       </p>
                     </div>
                     <ul className='py-1' role='none'>

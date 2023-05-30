@@ -6,6 +6,7 @@ import {
   ZoomableGroup
 } from 'react-simple-maps'
 
+// Map SVG >
 const geoUrl =
   'https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json'
 
@@ -31,7 +32,7 @@ const geographyStyle = {
 }
 
 export default function MapChart () {
-  const [zoom, setZoom] = useState(5) // Adjusts Default zoom level of map frame
+  const [zoom, setZoom] = useState(5) // Adjusts Default zoom level of map
   const [tooltipContent, setTooltipContent] = useState('')
   const [position, setPosition] = useState({ x: 0, y: 0 })
 
@@ -56,7 +57,10 @@ export default function MapChart () {
 
   return (
     <div className='relative'>
-      <ComposableMap style={mapStyles}>
+      {/* MAP ELEMENT */}
+      <ComposableMap
+        style={ mapStyles }
+      >
         <ZoomableGroup zoom={zoom} center={[10, 40]} maxZoom={10}>
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
@@ -72,14 +76,16 @@ export default function MapChart () {
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
+      {/* Below Code allows for Tooltip Customization */}
       {tooltipContent && (
         <div
-          className='tooltip bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-white p-2 rounded absolute'
+          className='tooltip bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-white p-2 rounded-lg absolute'
           style={{ left: `${position.x}px`, top: `${position.y}px`, position: 'fixed' }}
         >
           {tooltipContent}
         </div>
       )}
+      {/* Zoom Buttons */}
       <button onClick={handleZoomIn} className='absolute top-2 right-11 w-8 h-8 bg-blue-500 text-xl font-semibold text-white rounded-full focus:outline-none'>
         <div className='flex justify-center items-center'>+</div>
       </button>
