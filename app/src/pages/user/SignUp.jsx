@@ -12,17 +12,28 @@ import usePersist from '../../hook/usePersist'
 const SignUp = ({ toggleSignUp }) => {
   const userRef = useRef()
   const errRef = useRef()
-  const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
-  const [lastNames, setLastNames] = useState('')
-  const [username, setUsername] = useState('')
-  const [question, setQuestion] = useState('')
-  const [answer, setAnswer] = useState('')
-  const [password, setPassword] = useState('')
-  const [repeatPassword, setRepeatPassword] = useState('')
+  // const [email, setEmail] = useState('')
+  // const [name, setName] = useState('')
+  // const [lastNames, setLastNames] = useState('')
+  // const [username, setUsername] = useState('')
+  // const [question, setQuestion] = useState('')
+  // const [answer, setAnswer] = useState('')
+  // const [password, setPassword] = useState('')
+  // const [repeatPassword, setRepeatPassword] = useState('')
+
+  const [userData, setUserData] = useState({
+    email: '',
+    name: '',
+    lastNames: '',
+    username: '',
+    question: '',
+    answer: '',
+    password: '',
+    repeatPassword: ''
+  })
 
   const [errMsg, setErrMsg] = useState('')
-  const [persist, setPersist] = usePersist()
+  const [, setPersist] = usePersist()
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -38,16 +49,18 @@ const SignUp = ({ toggleSignUp }) => {
 
   useEffect(() => {
     setErrMsg('')
-  }, [email, password])
+  }, [userData])
 
   const handleSignUpSubmit = async (e) => {
     e.preventDefault()
 
     try {
+      const { email, name, username, question, answer, password, lastNames, repeatPassword } = userData
       if (password !== repeatPassword) {
         setErrMsg('Passwords do not match.')
         return
       }
+
       const userCreated = await createUser({ email, name, username, question, answer, password, lastNames }).unwrap()
 
       console.log('userCreated', userCreated)
@@ -55,14 +68,25 @@ const SignUp = ({ toggleSignUp }) => {
       setPersist(true)
       const accessToken = await login({ email, password }).unwrap()
       dispatch(setCredentials({ accessToken }))
-      setEmail('')
-      setName('')
-      setLastNames('')
-      setUsername('')
-      setQuestion('')
-      setAnswer('')
-      setPassword('')
-      setRepeatPassword('')
+      // setEmail('')
+      // setName('')
+      // setLastNames('')
+      // setUsername('')
+      // setQuestion('')
+      // setAnswer('')
+      // setPassword('')
+      // setRepeatPassword('')
+      setUserData({
+        email: '',
+        name: '',
+        lastNames: '',
+        username: '',
+        question: '',
+        answer: '',
+        password: '',
+        repeatPassword: ''
+      })
+
       navigate('/')
     } catch (err) {
       if (!err.status) {
@@ -74,14 +98,22 @@ const SignUp = ({ toggleSignUp }) => {
     }
   }
 
-  const handleEmailInput = (e) => setEmail(e.target.value)
-  const handleNameInput = (e) => setName(e.target.value)
-  const handleLastNamesInput = (e) => setLastNames(e.target.value)
-  const handleUsernameInput = (e) => setUsername(e.target.value)
-  const handleQuestionInput = (e) => setQuestion(e.target.value)
-  const handleAnswerInput = (e) => setAnswer(e.target.value)
-  const handlePasswordInput = (e) => setPassword(e.target.value)
-  const handleRepeatPasswordInput = (e) => setRepeatPassword(e.target.value)
+  // const handleEmailInput = (e) => setEmail(e.target.value)
+  // const handleNameInput = (e) => setName(e.target.value)
+  // const handleLastNamesInput = (e) => setLastNames(e.target.value)
+  // const handleUsernameInput = (e) => setUsername(e.target.value)
+  // const handleQuestionInput = (e) => setQuestion(e.target.value)
+  // const handleAnswerInput = (e) => setAnswer(e.target.value)
+  // const handlePasswordInput = (e) => setPassword(e.target.value)
+  // const handleRepeatPasswordInput = (e) => setRepeatPassword(e.target.value)
+  const handleEmailInput = (e) => setUserData({ ...userData, email: e.target.value })
+  const handleNameInput = (e) => setUserData({ ...userData, name: e.target.value })
+  const handleLastNamesInput = (e) => setUserData({ ...userData, lastNames: e.target.value })
+  const handleUsernameInput = (e) => setUserData({ ...userData, username: e.target.value })
+  const handleQuestionInput = (e) => setUserData({ ...userData, question: e.target.value })
+  const handleAnswerInput = (e) => setUserData({ ...userData, answer: e.target.value })
+  const handlePasswordInput = (e) => setUserData({ ...userData, password: e.target.value })
+  const handleRepeatPasswordInput = (e) => setUserData({ ...userData, repeatPassword: e.target.value })
 
   let content
 
@@ -99,7 +131,7 @@ const SignUp = ({ toggleSignUp }) => {
             type='email'
             name='email'
             ref={userRef}
-            value={email}
+            value={userData.email}
             onChange={handleEmailInput}
             id='email'
             className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
@@ -113,7 +145,7 @@ const SignUp = ({ toggleSignUp }) => {
             type='text'
             name='name'
             id='name'
-            value={name}
+            value={userData.name}
             onChange={handleNameInput}
             className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             placeholder='Your name'
@@ -126,7 +158,7 @@ const SignUp = ({ toggleSignUp }) => {
             type='text'
             name='lastNames'
             id='lastNames'
-            value={lastNames}
+            value={userData.lastNames}
             onChange={handleLastNamesInput}
             className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             placeholder='Your Last Names'
@@ -139,7 +171,7 @@ const SignUp = ({ toggleSignUp }) => {
             type='text'
             name='username'
             id='username'
-            value={username}
+            value={userData.username}
             onChange={handleUsernameInput}
             className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             placeholder='Username'
@@ -152,7 +184,7 @@ const SignUp = ({ toggleSignUp }) => {
             type='text'
             name='question'
             id='question'
-            value={question}
+            value={userData.question}
             onChange={handleQuestionInput}
             className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             placeholder='What is the name of my first dog?'
@@ -165,7 +197,7 @@ const SignUp = ({ toggleSignUp }) => {
             type='text'
             name='answer'
             id='answer'
-            value={answer}
+            value={userData.answer}
             onChange={handleAnswerInput}
             className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             placeholder='Venus'
@@ -178,7 +210,7 @@ const SignUp = ({ toggleSignUp }) => {
             type='password'
             name='password'
             id='password'
-            value={password}
+            value={userData.password}
             onChange={handlePasswordInput}
             placeholder='••••••••'
             className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
@@ -191,7 +223,7 @@ const SignUp = ({ toggleSignUp }) => {
             type='password'
             name='repeatPassword'
             id='repeatPassword'
-            value={repeatPassword}
+            value={userData.repeatPassword}
             onChange={handleRepeatPasswordInput}
             placeholder='••••••••'
             className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
