@@ -97,10 +97,25 @@ const deleteProperty = async (req, res, next) => {
   try {
     await Property.findByIdAndDelete(id)
 
+    const { userId } = req
+    const user = await User.findById(userId)
+
+    const updatedAssets = user.assets.filter(asset => asset.toString() !== id)
+    user.assets = updatedAssets
+    await user.save()
+
     res.status(204).end()
   } catch (error) {
     (isNaN(id)) ? next(error) : res.status(404).end()
   }
+
+  // try {
+  //   await Property.findByIdAndDelete(id)
+
+  //   res.status(204).end()
+  // } catch (error) {
+  //   (isNaN(id)) ? next(error) : res.status(404).end()
+  // }
 }
 
 module.exports = {
