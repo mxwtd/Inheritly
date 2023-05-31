@@ -19,24 +19,50 @@ const login = async (req, res, next) => {
       return next(error)
     }
 
-    const userForToken = {
-      id: user._id,
-      email: user.email
-    }
+    // const userForToken = {
+    //   id: user._id,
+    //   email: user.email
+    // }
+
+    // const accessToken = jwt.sign(
+    //   userForToken,
+    //   process.env.ACCESS_TOKEN_KEY,
+    //   { expiresIn: '1m' }
+    // )
+
+    const { email: userEmail, _id: userId, name, username } = user
 
     const accessToken = jwt.sign(
-      userForToken,
+      {
+        UserInfo: {
+          id: user._id,
+          email: user.email
+        }
+      },
       process.env.ACCESS_TOKEN_KEY,
       { expiresIn: '1m' }
     )
 
+    // const refreshToken = jwt.sign(
+    //   userForToken,
+    //   process.env.REFRESH_TOKEN_KEY,
+    //   { expiresIn: '2m' }
+    // )
+
     const refreshToken = jwt.sign(
-      userForToken,
+      { email: user.email },
       process.env.REFRESH_TOKEN_KEY,
       { expiresIn: '2m' }
     )
 
-    res.cookie('jwt', refreshToken, {
+    const cookieUserData = {
+      refreshToken,
+      userEmail,
+      name,
+      username
+    }
+
+    res.cookie('jwt', cookieUserData, {
       httpOnly: true, // accessible only by web server
       secure: true, // https
       sameSite: 'None', // cross-site cookie
@@ -46,7 +72,13 @@ const login = async (req, res, next) => {
     // res.status(200).json({
     //   accessToken
     // })
-    res.json({ accessToken })
+    res.json({
+      accessToken,
+      userEmail,
+      userId,
+      name,
+      username
+    })
   } catch (error) {
     next(error)
   }
@@ -82,6 +114,8 @@ const refresh = async (req, res, next) => {
           return next(error)
         }
 
+        const { email: userEmail, _id: userId, name, username } = user
+
         const accessToken = jwt.sign(
           {
             UserInfo: {
@@ -93,7 +127,13 @@ const refresh = async (req, res, next) => {
           { expiresIn: '1m' }
         )
 
-        res.json({ accessToken })
+        res.json({
+          accessToken,
+          userEmail,
+          userId,
+          name,
+          username
+        })
       })
   } catch (error) {
     next(error)
