@@ -1,70 +1,87 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useRef, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Template from '../../components/form/user/template'
-import { loginRequest } from '../../services/login'
-import { useAuth } from '../../features/authentication/hooks/useAuth'
+// import { loginRequest } from '../../services/login'
+// import { useAuth } from '../../features/authentication/hooks/useAuth'
+
+import { useDispatch } from 'react-redux'
+import { setCredentials } from '../../features/authentication/hooks/authSlice'
+import { useLoginMutation } from '../../features/authentication/services/authApiSlice'
+
+import usePersist from '../../hook/usePersist'
 
 const Login = () => {
+  const userRef = useRef()
+  const errRef = useRef()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [errMsg, setErrMsg] = useState('')
+  const [persist, setPersist] = usePersist()
 
-  const auth = useAuth()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const handleLoginSubmit = async (event) => {
-    event.preventDefault()
+  const [login, { isLoading }] = useLoginMutation()
 
-    console.log('handleLoginSubmit')
-    console.log('email', email)
-    console.log('password', password)
+  const errClass = errMsg ? 'errMsg' : 'offscreen'
 
-    const user = await loginRequest({ email, password })
+  useEffect(() => {
+    userRef.current.focus()
+  }, [])
 
-    window.localStorage.setItem(
-      'loggedReviewAppUser', JSON.stringify(user)
-    )
-    // setToken(user.token)
-    auth.login(user)
+  useEffect(() => {
+    setErrMsg('')
+  }, [email, password])
 
-    // setUser(user)
-    setEmail('')
-    setPassword('')
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault()
 
-    // try {
-    //   const user = await loginRequest({ email, password })
+    try {
+      const accessToken = await login({ email, password }).unwrap()
 
-    //   window.localStorage.setItem(
-    //     'loggedReviewAppUser', JSON.stringify(user)
-    //   )
-    //   // setToken(user.token)
-    //   auth.login(user)
+      console.log('accessToken', accessToken)
 
-    //   // setUser(user)
-    //   setEmail('')
-    //   setPassword('')
-    // } catch (error) {
-    //   // setError('Wrong credentials')
-    //   // setTimeout(() => {
-    //   //   setError(null)
-    //   // }
-    //   // , 5000)
-    //   console.log('login error')
-    // }
+      dispatch(setCredentials({ accessToken }))
+      setEmail('')
+      setPassword('')
+      navigate('/')
+    } catch (err) {
+      if (!err.status) {
+        setErrMsg('No server response. Try again later.')
+      } else {
+        setErrMsg(err.data?.message)
+      }
+      errRef.current.focus()
+    }
   }
 
-  return (
+  const handleEmailInput = (e) => setEmail(e.target.value)
+  const handlePasswordInput = (e) => setPassword(e.target.value)
+  const handleToggle = () => {
+    setPersist(prev => !prev)
+    console.log('handleToggle', persist)
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  const content = (
     <>
       <Template formTitle='Sign in to your account'>
+        <p ref={errRef} className={errClass} aria-live='assertive'>{errMsg}</p>
         <form onSubmit={handleLoginSubmit} className='space-y-4 md:space-y-6' action='#'>
           <div>
             <label htmlFor='email' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Your email</label>
             <input
               type='email'
+              id='email'
+              ref={userRef}
               value={email}
               name='email'
-              id='email'
               className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               placeholder='name@company.com'
-              onChange={({ target }) => setEmail(target.value)}
+              onChange={handleEmailInput}
               required=''
             />
           </div>
@@ -77,17 +94,24 @@ const Login = () => {
               id='password'
               placeholder='••••••••'
               className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-              onChange={({ target }) => setPassword(target.value)}
+              onChange={handlePasswordInput}
               required=''
             />
           </div>
           <div className='flex items-center justify-between'>
             <div className='flex items-start'>
               <div className='flex items-center h-5'>
-                <input id='remember' aria-describedby='remember' type='checkbox' className='w-4 h-4 border border-slate-300 rounded bg-slate-50 focus:ring-3 focus:ring-blue-300 dark:bg-slate-700 dark:border-slate-600 dark:focus:ring-slate-600 dark:ring-offset-slate-800' required='' />
+                <input
+                  id='remember'
+                  aria-describedby='remember'
+                  type='checkbox'
+                  onChange={handleToggle}
+                  checked={persist}
+                  className='w-4 h-4 border border-slate-300 rounded bg-slate-50 focus:ring-3 focus:ring-blue-300 dark:bg-slate-700 dark:border-slate-600 dark:focus:ring-slate-600 dark:ring-offset-slate-800'
+                />
               </div>
               <div className='ml-3 text-sm'>
-                <label htmlFor='remember' className='text-slate-600 dark:text-slate-300'>Remember me</label>
+                <label htmlFor='remember' className='text-slate-600 dark:text-slate-300'>Trust This Device</label>
               </div>
             </div>
             <Link to='/forgotPassword' className='text-sm font-medium text-slate-600 hover:underline dark:text-slate-400'>Forgot password?</Link>
@@ -100,6 +124,8 @@ const Login = () => {
       </Template>
     </>
   )
+
+  return content
 }
 
 export default Login

@@ -1,10 +1,10 @@
 
 import { useGetPropertiesQuery } from '../services/propertiesApiSlice'
-import { Link } from 'react-router-dom'
-import Property from './Property.jsx'
+import PropertyCard from './PropertyCard.jsx'
 import Properties from '../index.jsx'
-import CardSkeleton from '../../../components/CardSkeleton'
-import ModalAddButton from '../../../components/ModalAddButton'
+import { Link } from 'react-router-dom'
+import ModalAddButton from '../../../components/ModalAddButton.jsx'
+import CardSkeleton from '../../../components/CardSkeleton.jsx'
 
 const PropertiesList = () => {
   const {
@@ -13,7 +13,11 @@ const PropertiesList = () => {
     isSuccess,
     isError,
     error
-  } = useGetPropertiesQuery()
+  } = useGetPropertiesQuery('propertiesList', {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: false,
+    pollingInterval: 20000
+  })
 
   let content
 
@@ -43,12 +47,13 @@ const PropertiesList = () => {
 
   if (isSuccess) {
     const listContent = properties?.length
-      ? properties.map(property => <Property key={property.id} property={property} />)
+      ? properties.map(property => <PropertyCard key={property.id} property={property} />)
       : null
 
     content = (
-      <Properties>
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4'>
+      <Properties title='Properties'>
+        <Link to='./new'><ModalAddButton /></Link>
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 my-4 '>
           {listContent}
         </div>
       </Properties>

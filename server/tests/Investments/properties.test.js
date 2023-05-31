@@ -20,7 +20,7 @@ const generateToken = async () => {
   }
 
   // login user
-  const token = jwt.sign(userForToken, process.env.SECRET_KEY)
+  const token = jwt.sign(userForToken, process.env.ACCESS_TOKEN_KEY)
 
   return { token }
 }

@@ -40,6 +40,8 @@ const createProperty = async (req, res, next) => {
 
 const getAllUserProperties = async (req, res, next) => {
   // Get the user ID from the request body
+  console.log('req', req)
+
   const { userId } = req
 
   try {
@@ -94,6 +96,13 @@ const deleteProperty = async (req, res, next) => {
 
   try {
     await Property.findByIdAndDelete(id)
+
+    const { userId } = req
+    const user = await User.findById(userId)
+
+    const updatedAssets = user.assets.filter(asset => asset.toString() !== id)
+    user.assets = updatedAssets
+    await user.save()
 
     res.status(204).end()
   } catch (error) {

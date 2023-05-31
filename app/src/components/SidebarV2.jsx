@@ -1,27 +1,21 @@
 import { useEffect, useState, useRef } from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 import NotificationsDropdown from './NotificationsDropdown'
+
+import { useSendLogoutMutation } from '../features/authentication/services/authApiSlice'
 
 const SidebarV2 = () => {
   const [isOpen, setIsOpen] = useState(false)
   const ref = useRef(null)
 
-  const handleClickOutside = (event) => {
-    if (ref.current && !ref.current.contains(event.target)) {
-      setIsOpen(false)
-    }
-  }
+  const navigate = useNavigate()
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen)
-  }
+  const [sendLogout, {
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  }] = useSendLogoutMutation()
 
   useEffect(() => {
     const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon')
@@ -68,7 +62,34 @@ const SidebarV2 = () => {
     }
   }, [])
 
-  return (
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isSuccess) navigate('/login')
+  }, [isSuccess, navigate])
+
+  const onLogoutClicked = () => sendLogout()
+
+  if (isLoading) return <div>Loading...</div>
+
+  if (isError) return <div>{error.data?.message}</div>
+
+  const handleClickOutside = (event) => {
+    if (ref.current && !ref.current.contains(event.target)) {
+      setIsOpen(false)
+    }
+  }
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen)
+  }
+
+  const content = (
     <>
       <nav className='fixed top-0 z-50 w-full bg-white border-b border-slate-200 dark:bg-slate-800 dark:border-slate-700'>
         <div className='px-3 py-4 lg:px-5 lg:pl-3'>
@@ -110,10 +131,12 @@ const SidebarV2 = () => {
                   <div className='z-50 fixed right-2 top-20 mt-3 text-base list-none bg-white divide-y divide-slate-100 rounded-lg shadow dark:bg-slate-700 dark:divide-slate-600' id='dropdown-user'>
                     <div className='px-4 py-3 bg-slate-100 dark:bg-slate-500 rounded-t-lg' role='none'>
                       <p className='text-sm text-slate-900 dark:text-white' role='none'>
-                        {user.name}
+                        {/* {user.name} */}
+                        Max Wth
                       </p>
                       <p className='text-sm font-medium text-slate-600 truncate dark:text-slate-300' role='none'>
-                        {user.email}
+                        {/* {user.email} */}
+                        Max@inheritly.com
                       </p>
                     </div>
                     <ul className='py-1' role='none'>
@@ -124,7 +147,13 @@ const SidebarV2 = () => {
                         <Link to='/settings' className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white' role='menuitem'>Settings</Link>
                       </li>
                       <li>
-                        <Link to='/signOut' className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white' role='menuitem'>Sign out</Link>
+                        <Link
+                          className='block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white'
+                          role='menuitem'
+                          onClick={onLogoutClicked}
+                        >
+                          Sign out
+                        </Link>
                       </li>
                     </ul>
                   </div>
@@ -205,6 +234,8 @@ const SidebarV2 = () => {
       <Outlet />
     </>
   )
+
+  return content
 }
 
 export default SidebarV2

@@ -4,6 +4,9 @@ import { Route, Routes, Outlet } from 'react-router-dom'
 
 import SidebarV2 from './components/SidebarV2'
 
+import Prefetch from './features/authentication/hooks/Prefetch'
+import PersistLogin from './features/authentication/hooks/PersistLogin'
+
 import Login from './pages/user/Login'
 import SignUp from './pages/user/SignUp'
 import ForgotPassword from './pages/user/ForgotPassword'
@@ -18,13 +21,14 @@ import Report from './pages/Report'
 import Manage from './pages/Manage'
 
 import PropertiesList from './features/properties/components/PropertiesList'
-import NewPropertyForm from './features/properties/components/NewPropertyForm'
+import Property from './features/properties/components/Property'
+import NewProperty from './features/properties/components/NewProperty'
 import EditProperty from './features/properties/components/EditProperty'
 
 import Error from './pages/Error'
 import Footer from './components/Footer'
 
-import { ProtectedRoute } from './components/security/ProtectedRoute'
+// import { ProtectedRoute } from './components/security/ProtectedRoute'
 
 import { AuthProvider } from './features/authentication/hooks/authProvider'
 import GenerateWill from './pages/GenerateWill'
@@ -40,26 +44,32 @@ const App = () => {
             <Route path='signUp' element={<SignUp />} />
             <Route path='forgotPassword' element={<ForgotPassword />} />
 
-            <Route path='/' element={<ProtectedRoute><SidebarV2 /></ProtectedRoute>}>
-              <Route path='/' element={<Dashboard />} />
-              <Route path='overview' element={<Overview />} />
+            <Route element={<PersistLogin />}>
+              <Route element={<Prefetch />}>
+                {/* <Route path='/' element={<ProtectedRoute><SidebarV2 /></ProtectedRoute>}> */}
+                <Route path='/' element={<SidebarV2 />}>
+                  <Route path='/' element={<Dashboard />} />
+                  <Route path='overview' element={<Overview />} />
 
-              <Route path='investments' element={<Outlet />}>
-                <Route index element={<Investments />} />
+                  <Route path='investments' element={<Outlet />}>
+                    <Route index element={<Investments />} />
 
-                <Route path='properties'>
-                  <Route index element={<PropertiesList />} />
-                  <Route path='new' element={<NewPropertyForm />} />
-                  <Route path=':id' element={<EditProperty />} />
+                    <Route path='properties'>
+                      <Route index element={<PropertiesList />} />
+                      <Route path='new' element={<NewProperty />} />
+                      <Route path=':id' element={<Property />} />
+                      <Route path=':id/edit' element={<EditProperty />} />
+                    </Route>
+                  </Route>
+
+                  <Route path='inbox' element={<Inbox />} />
+                  <Route path='beneficiaries' element={<Beneficiaries />} />
+                  <Route path='manage' element={<Manage />} />
+                  <Route path='generate' element={<GenerateWill />} />
+                  <Route path='settings' element={<Settings />} />
+                  <Route path='report' element={<Report />} />
                 </Route>
               </Route>
-
-              <Route path='inbox' element={<Inbox />} />
-              <Route path='beneficiaries' element={<Beneficiaries />} />
-              <Route path='manage' element={<Manage />} />
-              <Route path='generate' element={<GenerateWill />} />
-              <Route path='settings' element={<Settings />} />
-              <Route path='report' element={<Report />} />
             </Route>
 
             <Route path='*' element={<Error type='Not Found' />} />
