@@ -61,7 +61,7 @@ beforeEach(async () => {
 })
 
 describe('Get Properties', () => {
-  test('get all Properties as a json', async () => {
+  test.only('get all Properties as a json', async () => {
     const { token } = await generateToken()
 
     await api

@@ -25,9 +25,7 @@ const PersistLogin = () => {
     if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
       const verifyRefreshToken = async () => {
         try {
-          // const response =
           await refresh()
-          // const { accessToken } = response.data
           setTrueSuccess(true)
         } catch (err) {
           console.error(err)
