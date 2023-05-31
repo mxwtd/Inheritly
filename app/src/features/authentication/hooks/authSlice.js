@@ -9,8 +9,11 @@ const authSlice = createSlice({
 
       const { accessToken } = action.payload
       console.log('accessToken here', accessToken.accessToken)
-      console.log('email', accessToken.userEmail)
+      console.log('last names: ', accessToken.lastNames)
       state.token = accessToken.accessToken
+      state.email = accessToken.userEmail
+      state.name = accessToken.name
+      state.lastNames = accessToken.lastNames
     },
     logOut: (state) => {
       // state.email = null

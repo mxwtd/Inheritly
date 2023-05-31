@@ -19,18 +19,7 @@ const login = async (req, res, next) => {
       return next(error)
     }
 
-    // const userForToken = {
-    //   id: user._id,
-    //   email: user.email
-    // }
-
-    // const accessToken = jwt.sign(
-    //   userForToken,
-    //   process.env.ACCESS_TOKEN_KEY,
-    //   { expiresIn: '1m' }
-    // )
-
-    const { email: userEmail, _id: userId, name, username } = user
+    const { email: userEmail, _id: userId, name, username, lastNames } = user
 
     const accessToken = jwt.sign(
       {
@@ -59,6 +48,7 @@ const login = async (req, res, next) => {
       refreshToken,
       userEmail,
       name,
+      lastNames,
       username
     }
 
@@ -77,6 +67,7 @@ const login = async (req, res, next) => {
       userEmail,
       userId,
       name,
+      lastNames,
       username
     })
   } catch (error) {
@@ -114,7 +105,7 @@ const refresh = async (req, res, next) => {
           return next(error)
         }
 
-        const { email: userEmail, _id: userId, name, username } = user
+        const { email: userEmail, _id: userId, name, username, lastNames } = user
 
         const accessToken = jwt.sign(
           {
@@ -132,6 +123,7 @@ const refresh = async (req, res, next) => {
           userEmail,
           userId,
           name,
+          lastNames,
           username
         })
       })
