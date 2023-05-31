@@ -5,19 +5,18 @@ const authSlice = createSlice({
   initialState: { email: null, token: null },
   reducers: {
     setCredentials: (state, action) => {
-      console.log('action.payload', action.payload)
-
       const { accessToken } = action.payload
-      console.log('accessToken here', accessToken.accessToken)
-      console.log('last names: ', accessToken.lastNames)
       state.token = accessToken.accessToken
-      state.email = accessToken.userEmail
-      state.name = accessToken.name
-      state.lastNames = accessToken.lastNames
+
+      state.userInformation = {
+        email: accessToken.userEmail,
+        name: accessToken.name,
+        lastNames: accessToken.lastNames
+      }
     },
     logOut: (state) => {
-      // state.email = null
       state.token = null
+      state.userInformation = {}
     }
   }
 })

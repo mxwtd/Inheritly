@@ -32,12 +32,6 @@ const login = async (req, res, next) => {
       { expiresIn: '1m' }
     )
 
-    // const refreshToken = jwt.sign(
-    //   userForToken,
-    //   process.env.REFRESH_TOKEN_KEY,
-    //   { expiresIn: '2m' }
-    // )
-
     const refreshToken = jwt.sign(
       { email: user.email },
       process.env.REFRESH_TOKEN_KEY,
@@ -59,9 +53,6 @@ const login = async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000 // cookie expiry: set to match rT
     })
 
-    // res.status(200).json({
-    //   accessToken
-    // })
     res.json({
       accessToken,
       userEmail,

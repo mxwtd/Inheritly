@@ -18,9 +18,7 @@ const SidebarV2 = () => {
     error
   }] = useSendLogoutMutation()
 
-  const name = useSelector((state) => state.auth.name)
-  const lastNames = useSelector((state) => state.auth.lastNames)
-  const email = useSelector((state) => state.auth.email)
+  const user = useSelector((state) => state.auth.userInformation)
 
   useEffect(() => {
     const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon')
@@ -136,10 +134,10 @@ const SidebarV2 = () => {
                   <div className='z-50 fixed right-2 top-20 mt-3 text-base list-none bg-white divide-y divide-slate-100 rounded-lg shadow dark:bg-slate-700 dark:divide-slate-600' id='dropdown-user'>
                     <div className='px-4 py-3 bg-slate-100 dark:bg-slate-500 rounded-t-lg' role='none'>
                       <p className='text-sm text-slate-900 dark:text-white' role='none'>
-                        {`${name} ${lastNames}`}
+                        {`${user.name} ${user.lastNames}`}
                       </p>
                       <p className='text-sm font-medium text-slate-600 truncate dark:text-slate-300' role='none'>
-                        {email}
+                        {user.email}
                       </p>
                     </div>
                     <ul className='py-1' role='none'>
