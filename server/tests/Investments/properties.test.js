@@ -4,7 +4,6 @@ const { server } = require('../../index')
 const Property = require('../../models/InvestmentTypes/Property')
 const User = require('../../models/User')
 const { api } = require('../global_test_helper')
-
 const {
   initialProperties,
   getIdFromFirstProperty,
@@ -12,7 +11,7 @@ const {
 } = require('./properties_test_helper')
 const { createUser } = require('../Investments/investments_test_helper')
 
-let counter = 0
+let token
 
 const generateToken = async () => {
   const user = await User.findOne({ username: 'root' })
@@ -22,45 +21,37 @@ const generateToken = async () => {
     email: user.email
   }
 
-  // login user
-  const token = jwt.sign({
-    UserInfo: userForToken
-  }, process.env.ACCESS_TOKEN_KEY)
-
-  return { token }
+  return jwt.sign({ UserInfo: userForToken }, process.env.ACCESS_TOKEN_KEY)
 }
 
 beforeAll(async () => {
   await User.deleteMany({})
-
   await createUser()
+  token = await generateToken()
 })
 
 beforeEach(async () => {
-  counter += 1
-  console.log(`Test ${counter}`)
-
   await Property.deleteMany({})
   const properties = await initialProperties()
 
-  const { token } = await generateToken()
-
-  // sequential
-  for (const property of properties) {
-    const newProperty = property
-    await api
+  // Create properties
+  const propertyPromises = properties.map((property) =>
+    api
       .post('/api/properties')
       .set('Authorization', `bearer ${token}`)
-      .send(newProperty)
-      .expect(201)
-      .expect('Content-Type', /application\/json/)
-  }
+      .send(property)
+  )
+  await Promise.all(propertyPromises)
+})
+
+afterAll(async () => {
+  await mongoose.connection.close()
+  server.close()
 })
 
 describe('Get Properties', () => {
   test('get all Properties as a json', async () => {
     expect.assertions(0)
-    const { token } = await generateToken()
 
     await api
       .get('/api/properties')
@@ -71,7 +62,6 @@ describe('Get Properties', () => {
 
   test('valid the specific first property name with the id', async () => {
     const { id } = await getIdFromFirstProperty()
-    const { token } = await generateToken()
 
     const response = await api
       .get(`/api/properties/${id}`)
@@ -91,8 +81,6 @@ describe('Get Properties', () => {
   })
 
   test('not found id', async () => {
-    const { token } = await generateToken()
-
     await api
       .get('/api/properties/123456789')
       .set('Authorization', `bearer ${token}`)
@@ -103,7 +91,6 @@ describe('Get Properties', () => {
 describe('Create Properties', () => {
   test('valid new property', async () => {
     expect.assertions(1)
-    const { token } = await generateToken()
 
     const newProperty = {
       name: 'Property 3',
@@ -132,7 +119,6 @@ describe('Create Properties', () => {
 
   test('new property without obligatory fields', async () => {
     expect.assertions(1)
-    const { token } = await generateToken()
 
     const newProperty = {
       name: 'Property 3',
@@ -155,7 +141,6 @@ describe('Create Properties', () => {
 describe('Update Properties', () => {
   test('valid update property', async () => {
     expect.assertions(1)
-    const { token } = await generateToken()
 
     const { id } = await getIdFromFirstProperty()
 
@@ -185,7 +170,6 @@ describe('Update Properties', () => {
 
   test('update property without obligatory fields', async () => {
     expect.assertions(0)
-    const { token } = await generateToken()
 
     const { id } = await getIdFromFirstProperty()
 
@@ -229,7 +213,6 @@ describe('Update Properties', () => {
 
   test('update property not found id', async () => {
     expect.assertions(0)
-    const { token } = await generateToken()
 
     const newProperty = {
       name: 'Property 1 change',
@@ -256,7 +239,6 @@ describe('Update Properties', () => {
 describe('Delete Properties', () => {
   test('valid delete property', async () => {
     expect.assertions(1)
-    const { token } = await generateToken()
 
     const { id } = await getIdFromFirstProperty()
 
@@ -280,16 +262,10 @@ describe('Delete Properties', () => {
 
   test('delete property not found id', async () => {
     expect.assertions(0)
-    const { token } = await generateToken()
 
     await api
       .delete('/api/properties/12345')
       .set('Authorization', `bearer ${token}`)
       .expect(404)
   })
-})
-
-afterAll(() => {
-  mongoose.connection.close()
-  server.close()
 })
