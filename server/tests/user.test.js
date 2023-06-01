@@ -65,7 +65,7 @@ describe('Create a new User', () => {
     const result = await api
       .post('/api/users')
       .send(newUser)
-      .expect(409)
+      .expect(422)
       .expect('Content-Type', /application\/json/)
 
     expect(result.body.error).toContain('`email` to be unique')
@@ -88,7 +88,7 @@ describe('Login a User', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    expect(result.body.token).toBeDefined()
+    expect(result.body.accessToken).toBeDefined()
   })
 
   test('fails with invalid credentials', async () => {

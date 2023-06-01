@@ -45,13 +45,14 @@ const getIdFromFirstProperty = async () => {
 const getAllProperties = async () => {
   const user = await User.findOne({ username: 'root' })
 
-  const userForToken = {
-    id: user._id,
-    username: user.username
-  }
-
   // Log in user
-  const token = jwt.sign(userForToken, process.env.ACCESS_TOKEN_KEY)
+  const token = jwt.sign(
+    {
+      UserInfo: {
+        id: user._id,
+        email: user.email
+      }
+    }, process.env.ACCESS_TOKEN_KEY)
 
   const response = await api
     .get('/api/properties')

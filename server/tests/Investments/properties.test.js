@@ -4,23 +4,28 @@ const { server } = require('../../index')
 const Property = require('../../models/InvestmentTypes/Property')
 const User = require('../../models/User')
 const { api } = require('../global_test_helper')
-const bcrypt = require('bcrypt')
+
 const {
   initialProperties,
   getIdFromFirstProperty,
   getAllProperties
 } = require('./properties_test_helper')
+const { createUser } = require('../Investments/investments_test_helper')
+
+let counter = 0
 
 const generateToken = async () => {
   const user = await User.findOne({ username: 'root' })
 
   const userForToken = {
     id: user._id,
-    username: user.username
+    email: user.email
   }
 
   // login user
-  const token = jwt.sign(userForToken, process.env.ACCESS_TOKEN_KEY)
+  const token = jwt.sign({
+    UserInfo: userForToken
+  }, process.env.ACCESS_TOKEN_KEY)
 
   return { token }
 }
@@ -28,21 +33,13 @@ const generateToken = async () => {
 beforeAll(async () => {
   await User.deleteMany({})
 
-  const passwordHash = await bcrypt.hash('password', 10)
-  const user = new User({
-    username: 'root',
-    name: 'root',
-    email: 'root@gmail.com',
-    passwordHash,
-    question: 'question',
-    answer: 'answer',
-    lastNames: 'lastNames'
-  })
-
-  await user.save()
+  await createUser()
 })
 
 beforeEach(async () => {
+  counter += 1
+  console.log(`Test ${counter}`)
+
   await Property.deleteMany({})
   const properties = await initialProperties()
 
@@ -61,7 +58,8 @@ beforeEach(async () => {
 })
 
 describe('Get Properties', () => {
-  test.only('get all Properties as a json', async () => {
+  test('get all Properties as a json', async () => {
+    expect.assertions(0)
     const { token } = await generateToken()
 
     await api
@@ -104,6 +102,7 @@ describe('Get Properties', () => {
 
 describe('Create Properties', () => {
   test('valid new property', async () => {
+    expect.assertions(1)
     const { token } = await generateToken()
 
     const newProperty = {
@@ -132,6 +131,7 @@ describe('Create Properties', () => {
   })
 
   test('new property without obligatory fields', async () => {
+    expect.assertions(1)
     const { token } = await generateToken()
 
     const newProperty = {
@@ -154,6 +154,7 @@ describe('Create Properties', () => {
 
 describe('Update Properties', () => {
   test('valid update property', async () => {
+    expect.assertions(1)
     const { token } = await generateToken()
 
     const { id } = await getIdFromFirstProperty()
@@ -173,7 +174,7 @@ describe('Update Properties', () => {
     }
 
     const response = await api
-      .put(`/api/properties/${id}`)
+      .patch(`/api/properties/${id}`)
       .set('Authorization', `bearer ${token}`)
       .send(newProperty)
       .expect(200)
@@ -183,6 +184,7 @@ describe('Update Properties', () => {
   })
 
   test('update property without obligatory fields', async () => {
+    expect.assertions(0)
     const { token } = await generateToken()
 
     const { id } = await getIdFromFirstProperty()
@@ -195,13 +197,14 @@ describe('Update Properties', () => {
     }
 
     await api
-      .put(`/api/properties/${id}`)
+      .patch(`/api/properties/${id}`)
       .set('Authorization', `bearer ${token}`)
       .send(newProperty)
       .expect(422)
   })
 
   test('update property without authorization', async () => {
+    expect.assertions(0)
     const { id } = await getIdFromFirstProperty()
 
     const newProperty = {
@@ -225,6 +228,7 @@ describe('Update Properties', () => {
   })
 
   test('update property not found id', async () => {
+    expect.assertions(0)
     const { token } = await generateToken()
 
     const newProperty = {
@@ -251,6 +255,7 @@ describe('Update Properties', () => {
 
 describe('Delete Properties', () => {
   test('valid delete property', async () => {
+    expect.assertions(1)
     const { token } = await generateToken()
 
     const { id } = await getIdFromFirstProperty()
@@ -265,6 +270,7 @@ describe('Delete Properties', () => {
   })
 
   test('delete property without authorization', async () => {
+    expect.assertions(0)
     const { id } = await getIdFromFirstProperty()
 
     await api
@@ -273,6 +279,7 @@ describe('Delete Properties', () => {
   })
 
   test('delete property not found id', async () => {
+    expect.assertions(0)
     const { token } = await generateToken()
 
     await api
