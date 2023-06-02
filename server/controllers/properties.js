@@ -67,6 +67,13 @@ const updateProperty = async (req, res, next) => {
   const { id } = req.params
   const updates = req.body
 
+  // Check for empty values in updates
+  const hasEmptyValues = Object.values(updates).some((value) => value === '')
+
+  if (hasEmptyValues) {
+    return res.status(400).json({ error: 'Empty values are not allowed' })
+  }
+
   try {
     // Confirm note exists to update
     const updatedProperty = await Property.findByIdAndUpdate(

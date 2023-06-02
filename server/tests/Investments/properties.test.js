@@ -159,7 +159,7 @@ describe('Update Properties', () => {
     expect(response.body.currency).toContain('USD')
   })
 
-  test.only('update property with 4 field', async () => {
+  test('update property with 4 field', async () => {
     expect.assertions(3)
 
     const { id } = await getIdFromFirstProperty()
@@ -182,28 +182,24 @@ describe('Update Properties', () => {
     expect(response.body.value).toContain('2000')
   })
 
-  // test.only('update property with empty obligatory data', async () => {
-  //   expect.assertions(3)
+  test.only('update property with empty obligatory data', async () => {
+    expect.assertions(0)
 
-  //   const { id } = await getIdFromFirstProperty()
+    const { id } = await getIdFromFirstProperty()
 
-  //   const newProperty = {
-  //     name: 'Property 1 change',
-  //     currency: 'USD',
-  //     date: new Date(),
-  //     value: 2000
-  //   }
+    const newProperty = {
+      name: 'Property 1 change',
+      currency: 'USD',
+      date: new Date(),
+      value: ''
+    }
 
-  //   const response = await api
-  //     .patch(`/api/properties/${id}`)
-  //     .set('Authorization', `bearer ${token}`)
-  //     .send(newProperty)
-  //     .expect(200)
-
-  //   expect(response.body.name).toContain('Property 1 change')
-  //   expect(response.body.currency).toContain('USD')
-  //   expect(response.body.value).toContain(2000)
-  // })
+    await api
+      .patch(`/api/properties/${id}`)
+      .set('Authorization', `bearer ${token}`)
+      .send(newProperty)
+      .expect(400)
+  })
 
   test('update property without authorization', async () => {
     expect.assertions(0)
