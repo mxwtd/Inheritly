@@ -1,5 +1,5 @@
-const { api } = require('../global_test_helper')
-const User = require('../../models/User')
+const { api } = require('../../global_test_helper')
+const User = require('../../../models/User')
 const jwt = require('jsonwebtoken')
 
 const initialProperties = async () => {

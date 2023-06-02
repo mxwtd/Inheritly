@@ -1,15 +1,15 @@
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
-const { server } = require('../../index')
-const Property = require('../../models/InvestmentTypes/Property')
-const User = require('../../models/User')
-const { api } = require('../global_test_helper')
+const { server } = require('../../../index')
+const Property = require('../../../models/InvestmentTypes/Property')
+const User = require('../../../models/User')
+const { api } = require('../../global_test_helper')
 const {
   initialProperties,
   getIdFromFirstProperty,
   getAllProperties
 } = require('./properties_test_helper')
-const { createUser } = require('../Investments/investments_test_helper')
+const { createUser } = require('../../Investments/investments_test_helper')
 
 let token
 
