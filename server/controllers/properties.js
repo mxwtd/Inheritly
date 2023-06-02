@@ -65,24 +65,17 @@ const getPropertyById = async (req, res, next) => {
 
 const updateProperty = async (req, res, next) => {
   const { id } = req.params
-  const { name, currency, date, value, taxStatus, type, city, country, address, zip } = req.body
+  const updates = req.body
 
   try {
     // Confirm note exists to update
-    const property = await Property.findById(id).exec()
+    const updatedProperty = await Property.findByIdAndUpdate(
+      id,
+      updates,
+      { new: true }
+    ).exec()
 
-    property.name = name
-    property.currency = currency
-    property.date = date
-    property.value = value
-    property.taxStatus = taxStatus
-    property.type = type
-    property.city = city
-    property.country = country
-    property.address = address
-    property.zip = zip
-
-    const updatedProperty = await property.save()
+    // const updatedProperty = await property.save()
 
     res.json(updatedProperty)
   } catch (error) {
