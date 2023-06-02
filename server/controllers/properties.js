@@ -68,7 +68,12 @@ const updateProperty = async (req, res, next) => {
   const updates = req.body
 
   // Check for empty values in updates
-  const hasEmptyValues = Object.values(updates).some((value) => value === '')
+  const hasEmptyValues = Object.values(updates).some((value) => {
+    if (typeof value === 'string') {
+      return value.trim() === ''
+    }
+    return false
+  })
 
   if (hasEmptyValues) {
     return res.status(400).json({ error: 'Empty values are not allowed' })

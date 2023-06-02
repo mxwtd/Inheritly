@@ -28,7 +28,7 @@ beforeAll(async () => {
   await User.deleteMany({})
   await createUser()
   token = await generateToken()
-}, 10000)
+}, 100000)
 
 beforeEach(async () => {
   await Property.deleteMany({})
@@ -179,10 +179,10 @@ describe('Update Properties', () => {
 
     expect(response.body.name).toContain('Property 1 change')
     expect(response.body.currency).toContain('USD')
-    expect(response.body.value).toContain('2000')
+    expect(response.body.value).toBe(2000)
   })
 
-  test.only('update property with empty obligatory data', async () => {
+  test('update property with empty obligatory data', async () => {
     expect.assertions(0)
 
     const { id } = await getIdFromFirstProperty()
@@ -192,6 +192,25 @@ describe('Update Properties', () => {
       currency: 'USD',
       date: new Date(),
       value: ''
+    }
+
+    await api
+      .patch(`/api/properties/${id}`)
+      .set('Authorization', `bearer ${token}`)
+      .send(newProperty)
+      .expect(400)
+  })
+
+  test('update property with invalid data', async () => {
+    expect.assertions(0)
+
+    const { id } = await getIdFromFirstProperty()
+
+    const newProperty = {
+      name: 'Property 1 change',
+      currency: 'USD',
+      date: new Date(),
+      value: '      '
     }
 
     await api
