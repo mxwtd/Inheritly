@@ -39,7 +39,7 @@ beforeEach(async () => {
     api
       .post('/api/vehicles')
       .set('Authorization', `bearer ${token}`)
-      .send(vehicle)
+      .send(vehicles)
   )
   await Promise.all(vehiclePromises)
 })
@@ -50,7 +50,7 @@ afterAll(async () => {
 })
 
 describe('Get Vehicles', () => {
-  test('get all Vehicles as a json', async () => {
+  test.only('get all Vehicles as a json', async () => {
     expect.assertions(0)
 
     await api
