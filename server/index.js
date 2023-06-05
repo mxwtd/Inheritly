@@ -15,8 +15,7 @@ const { logger } = require('./middleware/logger')
 // Import controllers
 const userRoutes = require('./routes/userRoutes')
 const propertyRoutes = require('./routes/propertyRoutes')
-// const reviewsRouter = require('./controllers/reviews')
-// const propertiesRouter = require('./controllers/properties')
+const vehicleRoutes = require('./routes/vehicleRoutes')
 const authRoutes = require('./routes/authRoutes')
 
 const app = express()
@@ -59,6 +58,8 @@ app.use(userRoutes)
 app.use(authRoutes)
 
 app.use(propertyRoutes)
+
+app.use(vehicleRoutes)
 
 app.use(notFound)
 

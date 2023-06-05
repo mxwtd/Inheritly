@@ -65,7 +65,7 @@ describe('Create a new User', () => {
     const result = await api
       .post('/api/users')
       .send(newUser)
-      .expect(409)
+      .expect(422)
       .expect('Content-Type', /application\/json/)
 
     expect(result.body.error).toContain('`email` to be unique')
@@ -88,7 +88,7 @@ describe('Login a User', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    expect(result.body.token).toBeDefined()
+    expect(result.body.accessToken).toBeDefined()
   })
 
   test('fails with invalid credentials', async () => {
@@ -106,38 +106,6 @@ describe('Login a User', () => {
     expect(result.body.error).toContain('invalid username or password')
   })
 })
-
-// describe('Login a User', () => {
-//   test('succeeds with valid credentials', async () => {
-//     const credentials = {
-//       email: 'root@gmail.com',
-//       password: 'password'
-//     }
-
-//     const result = await api
-//       .post('/api/login')
-//       .send(credentials)
-//       .expect(200)
-//       .expect('Content-Type', /application\/json/)
-
-//     expect(result.body.token).toBeDefined()
-//   })
-
-//   test('fails with invalid credentials', async () => {
-//     const credentials = {
-//       email: 'root@gmail.com',
-//       password: 'invalid'
-//     }
-
-//     const result = await api
-//       .post('/api/login')
-//       .send(credentials)
-//       .expect(401)
-//       .expect('Content-Type', /application\/json/)
-
-//     expect(result.body.error).toContain('invalid username or password')
-//   })
-// })
 
 afterAll(() => {
   mongoose.connection.close()

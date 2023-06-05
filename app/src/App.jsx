@@ -1,5 +1,3 @@
-// import { useState, useEffect } from 'react'
-
 import { Route, Routes, Outlet } from 'react-router-dom'
 
 import SidebarV2 from './components/SidebarV2'
@@ -28,15 +26,12 @@ import EditProperty from './features/properties/components/EditProperty'
 import Error from './pages/Error'
 import Footer from './components/Footer'
 
-// import { ProtectedRoute } from './components/security/ProtectedRoute'
-
 import { AuthProvider } from './features/authentication/hooks/authProvider'
 import GenerateWill from './pages/GenerateWill'
 
 const App = () => {
   return (
     <>
-      {/* <h1>{error}</h1> */}
       <div className='w-full min-h-screen bg-slate-200 dark:bg-slate-700'>
         <AuthProvider>
           <Routes>
@@ -46,7 +41,6 @@ const App = () => {
 
             <Route element={<PersistLogin />}>
               <Route element={<Prefetch />}>
-                {/* <Route path='/' element={<ProtectedRoute><SidebarV2 /></ProtectedRoute>}> */}
                 <Route path='/' element={<SidebarV2 />}>
                   <Route path='/' element={<Dashboard />} />
                   <Route path='overview' element={<Overview />} />

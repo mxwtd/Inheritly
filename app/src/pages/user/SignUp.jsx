@@ -12,14 +12,6 @@ import usePersist from '../../hook/usePersist'
 const SignUp = ({ toggleSignUp }) => {
   const userRef = useRef()
   const errRef = useRef()
-  // const [email, setEmail] = useState('')
-  // const [name, setName] = useState('')
-  // const [lastNames, setLastNames] = useState('')
-  // const [username, setUsername] = useState('')
-  // const [question, setQuestion] = useState('')
-  // const [answer, setAnswer] = useState('')
-  // const [password, setPassword] = useState('')
-  // const [repeatPassword, setRepeatPassword] = useState('')
 
   const [userData, setUserData] = useState({
     email: '',
@@ -68,14 +60,7 @@ const SignUp = ({ toggleSignUp }) => {
       setPersist(true)
       const accessToken = await login({ email, password }).unwrap()
       dispatch(setCredentials({ accessToken }))
-      // setEmail('')
-      // setName('')
-      // setLastNames('')
-      // setUsername('')
-      // setQuestion('')
-      // setAnswer('')
-      // setPassword('')
-      // setRepeatPassword('')
+
       setUserData({
         email: '',
         name: '',
@@ -98,14 +83,6 @@ const SignUp = ({ toggleSignUp }) => {
     }
   }
 
-  // const handleEmailInput = (e) => setEmail(e.target.value)
-  // const handleNameInput = (e) => setName(e.target.value)
-  // const handleLastNamesInput = (e) => setLastNames(e.target.value)
-  // const handleUsernameInput = (e) => setUsername(e.target.value)
-  // const handleQuestionInput = (e) => setQuestion(e.target.value)
-  // const handleAnswerInput = (e) => setAnswer(e.target.value)
-  // const handlePasswordInput = (e) => setPassword(e.target.value)
-  // const handleRepeatPasswordInput = (e) => setRepeatPassword(e.target.value)
   const handleEmailInput = (e) => setUserData({ ...userData, email: e.target.value })
   const handleNameInput = (e) => setUserData({ ...userData, name: e.target.value })
   const handleLastNamesInput = (e) => setUserData({ ...userData, lastNames: e.target.value })

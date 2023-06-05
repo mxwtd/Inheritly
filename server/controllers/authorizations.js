@@ -19,34 +19,48 @@ const login = async (req, res, next) => {
       return next(error)
     }
 
-    const userForToken = {
-      id: user._id,
-      email: user.email
-    }
+    const { email: userEmail, _id: userId, name, username, lastNames } = user
 
     const accessToken = jwt.sign(
-      userForToken,
+      {
+        UserInfo: {
+          id: user._id,
+          email: user.email
+        }
+      },
       process.env.ACCESS_TOKEN_KEY,
       { expiresIn: '1m' }
     )
 
     const refreshToken = jwt.sign(
-      userForToken,
+      { email: user.email },
       process.env.REFRESH_TOKEN_KEY,
       { expiresIn: '2m' }
     )
 
-    res.cookie('jwt', refreshToken, {
+    const cookieUserData = {
+      refreshToken,
+      userEmail,
+      name,
+      lastNames,
+      username
+    }
+
+    res.cookie('jwt', cookieUserData, {
       httpOnly: true, // accessible only by web server
       secure: true, // https
       sameSite: 'None', // cross-site cookie
       maxAge: 7 * 24 * 60 * 60 * 1000 // cookie expiry: set to match rT
     })
 
-    // res.status(200).json({
-    //   accessToken
-    // })
-    res.json({ accessToken })
+    res.json({
+      accessToken,
+      userEmail,
+      userId,
+      name,
+      lastNames,
+      username
+    })
   } catch (error) {
     next(error)
   }
@@ -82,6 +96,8 @@ const refresh = async (req, res, next) => {
           return next(error)
         }
 
+        const { email: userEmail, _id: userId, name, username, lastNames } = user
+
         const accessToken = jwt.sign(
           {
             UserInfo: {
@@ -93,7 +109,14 @@ const refresh = async (req, res, next) => {
           { expiresIn: '1m' }
         )
 
-        res.json({ accessToken })
+        res.json({
+          accessToken,
+          userEmail,
+          userId,
+          name,
+          lastNames,
+          username
+        })
       })
   } catch (error) {
     next(error)
