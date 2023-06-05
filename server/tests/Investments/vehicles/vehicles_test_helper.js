@@ -1,6 +1,5 @@
 const { api } = require('../../global_test_helper')
 const User = require('../../../models/User')
-const jwt = require('jsonwebtoken')
 
 const initialVehicles = async () => {
   return [
@@ -14,11 +13,11 @@ const initialVehicles = async () => {
 
       brand: 'Toyota',
       model: 'Corolla',
-      year: 2010
+      year: '2010'
     },
     {
       name: 'Vehicle 2',
-      currency: 'USD',
+      currency: 'GBP',
       date: new Date(),
       value: 1000,
       TaxStatus: 'Taxable',
@@ -26,13 +25,14 @@ const initialVehicles = async () => {
 
       brand: 'Mercedes',
       model: 'Benz',
-      year: 2020
+      year: '2020'
     }
   ]
 }
 
-const getIdFromFirstVehicle = async () => {
-  const response = await getAllVehicles()
+const getIdFromFirstVehicle = async (token) => {
+  const response = await getAllVehicles(token)
+
   const id = response.body[0].id
 
   return {
@@ -40,17 +40,8 @@ const getIdFromFirstVehicle = async () => {
   }
 }
 
-const getAllVehicles = async () => {
+const getAllVehicles = async (token) => {
   const user = await User.findOne({ username: 'root' })
-
-  // Log in user
-  const token = jwt.sign(
-    {
-      UserInfo: {
-        id: user._id,
-        email: user.email
-      }
-    }, process.env.ACCESS_TOKEN_KEY)
 
   const response = await api
     .get('/api/vehicles')

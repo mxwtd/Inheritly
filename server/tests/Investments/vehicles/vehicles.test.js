@@ -1,15 +1,15 @@
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
-const { server } = require('../../index')
-const Vehicle = require('../../models/InvestmentTypes/Vehicle')
-const User = require('../../models/User')
-const { api } = require('../global_test_helper')
+const { server } = require('../../../index')
+const Vehicle = require('../../../models/InvestmentTypes/Vehicle')
+const User = require('../../../models/User')
+const { api } = require('../../global_test_helper')
 const {
   initialVehicles,
   getIdFromFirstVehicle,
   getAllVehicles
 } = require('./vehicles_test_helper')
-const { createUser } = require('../Investments/investments_test_helper')
+const { createUser } = require('../../Investments/investments_test_helper')
 
 let token
 
@@ -39,7 +39,7 @@ beforeEach(async () => {
     api
       .post('/api/vehicles')
       .set('Authorization', `bearer ${token}`)
-      .send(vehicles)
+      .send(vehicle)
   )
   await Promise.all(vehiclePromises)
 })
@@ -50,7 +50,7 @@ afterAll(async () => {
 })
 
 describe('Get Vehicles', () => {
-  test.only('get all Vehicles as a json', async () => {
+  test('get all Vehicles as a json', async () => {
     expect.assertions(0)
 
     await api
@@ -61,7 +61,9 @@ describe('Get Vehicles', () => {
   })
 
   test('valid the specific first vehicle name with the id', async () => {
-    const { id } = await getIdFromFirstVehicle()
+    const { id } = await getIdFromFirstVehicle(token)
+
+    console.log('Vehicle ID: ', id)
 
     const response = await api
       .get(`/api/vehicles/${id}`)
@@ -73,7 +75,7 @@ describe('Get Vehicles', () => {
   })
 
   test('invalid without authorization', async () => {
-    const { id } = await getIdFromFirstVehicle()
+    const { id } = await getIdFromFirstVehicle(token)
 
     await api
       .get(`/api/vehicles/${id}`)
@@ -100,10 +102,9 @@ describe('Create Vehicles', () => {
       TaxStatus: 'Taxable',
       type: 'Vehicle',
 
-      city: 'city',
-      country: 'Kenya',
-      address: '123 St',
-      zip: '1567'
+      brand: 'Renault',
+      model: 'Clio',
+      year: '2020'
     }
 
     await api
@@ -113,7 +114,7 @@ describe('Create Vehicles', () => {
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
-    const { body } = await getAllVehicles()
+    const { body } = await getAllVehicles(token)
     expect(body).toHaveLength((await initialVehicles()).length + 1)
   })
 
@@ -133,7 +134,7 @@ describe('Create Vehicles', () => {
       .send(newVehicle)
       .expect(422)
 
-    const { body } = await getAllVehicles()
+    const { body } = await getAllVehicles(token)
     expect(body).toHaveLength((await initialVehicles()).length)
   })
 })
@@ -142,7 +143,7 @@ describe('Update Vehicles', () => {
   test('valid update vehicle but just the name', async () => {
     expect.assertions(2)
 
-    const { id } = await getIdFromFirstVehicle()
+    const { id } = await getIdFromFirstVehicle(token)
 
     const updates = {
       name: 'Vehicle 1 change'
@@ -162,7 +163,7 @@ describe('Update Vehicles', () => {
   test('update vehicle with 4 field', async () => {
     expect.assertions(3)
 
-    const { id } = await getIdFromFirstVehicle()
+    const { id } = await getIdFromFirstVehicle(token)
 
     const newVehicle = {
       name: 'Vehicle 1 change',
@@ -185,7 +186,7 @@ describe('Update Vehicles', () => {
   test('update vehicle with empty obligatory data', async () => {
     expect.assertions(0)
 
-    const { id } = await getIdFromFirstVehicle()
+    const { id } = await getIdFromFirstVehicle(token)
 
     const newVehicle = {
       name: 'Vehicle 1 change',
@@ -204,7 +205,7 @@ describe('Update Vehicles', () => {
   test('update vehicle with invalid data', async () => {
     expect.assertions(0)
 
-    const { id } = await getIdFromFirstVehicle()
+    const { id } = await getIdFromFirstVehicle(token)
 
     const newVehicle = {
       name: 'Vehicle 1 change',
@@ -222,7 +223,7 @@ describe('Update Vehicles', () => {
 
   test('update vehicle without authorization', async () => {
     expect.assertions(0)
-    const { id } = await getIdFromFirstVehicle()
+    const { id } = await getIdFromFirstVehicle(token)
 
     const newVehicle = {
       name: 'Vehicle 1 change',
@@ -273,20 +274,20 @@ describe('Delete Vehicles', () => {
   test('valid delete vehicle', async () => {
     expect.assertions(1)
 
-    const { id } = await getIdFromFirstVehicle()
+    const { id } = await getIdFromFirstVehicle(token)
 
     await api
       .delete(`/api/vehicles/${id}`)
       .set('Authorization', `bearer ${token}`)
       .expect(204)
 
-    const { body } = await getAllVehicles()
+    const { body } = await getAllVehicles(token)
     expect(body).toHaveLength((await initialVehicles()).length - 1)
   })
 
   test('delete vehicle without authorization', async () => {
     expect.assertions(0)
-    const { id } = await getIdFromFirstVehicle()
+    const { id } = await getIdFromFirstVehicle(token)
 
     await api
       .delete(`/api/vehicles/${id}`)
