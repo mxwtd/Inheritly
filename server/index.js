@@ -1,6 +1,7 @@
 require('./config/dbConnection')
 
 const cors = require('cors')
+const { Storage } = require('@google-cloud/storage')
 const corsOptions = require('./config/corsOptions')
 const express = require('express')
 const Sentry = require('@sentry/node')
@@ -26,6 +27,31 @@ app.use(cors(corsOptions))
 app.use(express.json()) // initial Parse JSON bodies
 
 app.use(cookieParser())
+
+// Initialize storage
+const storage = new Storage({
+  keyFilename: './config/inheritlytest-55b611cf095a.json'
+})
+const bucketName = process.env.BUCKET_NAME
+
+console.log('bucketName', bucketName)
+
+const bucket = storage.bucket(bucketName)
+
+// Sending the upload request
+bucket.upload(
+  './profile.png',
+  {
+    destination: 'someFolderInBucket/profile.png'
+  },
+  function (err, file) {
+    if (err) {
+      console.error(`Error uploading image image_to_upload.jpeg: ${err}`)
+    } else {
+      console.log(`Image image_to_upload.jpeg uploaded to ${bucketName}.`)
+    }
+  }
+)
 
 app.use(express.static('../app/dist'))
 
