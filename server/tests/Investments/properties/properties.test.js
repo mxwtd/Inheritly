@@ -1,68 +1,57 @@
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
-const { server } = require('../../index')
-const Property = require('../../models/InvestmentTypes/Property')
-const User = require('../../models/User')
-const { api } = require('../global_test_helper')
-const bcrypt = require('bcrypt')
+const { server } = require('../../../index')
+const Property = require('../../../models/InvestmentTypes/Property')
+const User = require('../../../models/User')
+const { api } = require('../../global_test_helper')
 const {
   initialProperties,
   getIdFromFirstProperty,
   getAllProperties
 } = require('./properties_test_helper')
+const { createUser } = require('../../Investments/investments_test_helper')
+
+let token
 
 const generateToken = async () => {
   const user = await User.findOne({ username: 'root' })
 
   const userForToken = {
     id: user._id,
-    username: user.username
+    email: user.email
   }
 
-  // login user
-  const token = jwt.sign(userForToken, process.env.ACCESS_TOKEN_KEY)
-
-  return { token }
+  return jwt.sign({ UserInfo: userForToken }, process.env.ACCESS_TOKEN_KEY)
 }
 
 beforeAll(async () => {
   await User.deleteMany({})
-
-  const passwordHash = await bcrypt.hash('password', 10)
-  const user = new User({
-    username: 'root',
-    name: 'root',
-    email: 'root@gmail.com',
-    passwordHash,
-    question: 'question',
-    answer: 'answer',
-    lastNames: 'lastNames'
-  })
-
-  await user.save()
-})
+  await createUser()
+  token = await generateToken()
+}, 100000)
 
 beforeEach(async () => {
   await Property.deleteMany({})
   const properties = await initialProperties()
 
-  const { token } = await generateToken()
-
-  // sequential
-  for (const property of properties) {
-    const newProperty = property
-    await api
+  // Create properties
+  const propertyPromises = properties.map((property) =>
+    api
       .post('/api/properties')
       .set('Authorization', `bearer ${token}`)
-      .send(newProperty)
-      .expect(201)
-      .expect('Content-Type', /application\/json/)
-  }
+      .send(property)
+  )
+  await Promise.all(propertyPromises)
+})
+
+afterAll(async () => {
+  await mongoose.connection.close()
+  server.close()
 })
 
 describe('Get Properties', () => {
   test('get all Properties as a json', async () => {
-    const { token } = await generateToken()
+    expect.assertions(0)
 
     await api
       .get('/api/properties')
@@ -73,7 +62,6 @@ describe('Get Properties', () => {
 
   test('valid the specific first property name with the id', async () => {
     const { id } = await getIdFromFirstProperty()
-    const { token } = await generateToken()
 
     const response = await api
       .get(`/api/properties/${id}`)
@@ -93,8 +81,6 @@ describe('Get Properties', () => {
   })
 
   test('not found id', async () => {
-    const { token } = await generateToken()
-
     await api
       .get('/api/properties/123456789')
       .set('Authorization', `bearer ${token}`)
@@ -104,7 +90,7 @@ describe('Get Properties', () => {
 
 describe('Create Properties', () => {
   test('valid new property', async () => {
-    const { token } = await generateToken()
+    expect.assertions(1)
 
     const newProperty = {
       name: 'Property 3',
@@ -132,7 +118,7 @@ describe('Create Properties', () => {
   })
 
   test('new property without obligatory fields', async () => {
-    const { token } = await generateToken()
+    expect.assertions(1)
 
     const newProperty = {
       name: 'Property 3',
@@ -153,37 +139,28 @@ describe('Create Properties', () => {
 })
 
 describe('Update Properties', () => {
-  test('valid update property', async () => {
-    const { token } = await generateToken()
+  test('valid update property but just the name', async () => {
+    expect.assertions(2)
 
     const { id } = await getIdFromFirstProperty()
 
-    const newProperty = {
-      name: 'Property 1 change',
-      currency: 'USD',
-      date: new Date(),
-      value: 1000,
-      TaxStatus: 'Taxable',
-      type: 'Property',
-
-      city: 'city',
-      country: 'Kenya',
-      address: '123 St',
-      zip: '1567'
+    const updates = {
+      name: 'Property 1 change'
     }
 
     const response = await api
-      .put(`/api/properties/${id}`)
+      .patch(`/api/properties/${id}`)
       .set('Authorization', `bearer ${token}`)
-      .send(newProperty)
+      .send(updates)
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
     expect(response.body.name).toContain('Property 1 change')
+    expect(response.body.currency).toContain('USD')
   })
 
-  test('update property without obligatory fields', async () => {
-    const { token } = await generateToken()
+  test('update property with 4 field', async () => {
+    expect.assertions(3)
 
     const { id } = await getIdFromFirstProperty()
 
@@ -191,17 +168,60 @@ describe('Update Properties', () => {
       name: 'Property 1 change',
       currency: 'USD',
       date: new Date(),
-      value: 1000
+      value: 2000
+    }
+
+    const response = await api
+      .patch(`/api/properties/${id}`)
+      .set('Authorization', `bearer ${token}`)
+      .send(newProperty)
+      .expect(200)
+
+    expect(response.body.name).toContain('Property 1 change')
+    expect(response.body.currency).toContain('USD')
+    expect(response.body.value).toBe(2000)
+  })
+
+  test('update property with empty obligatory data', async () => {
+    expect.assertions(0)
+
+    const { id } = await getIdFromFirstProperty()
+
+    const newProperty = {
+      name: 'Property 1 change',
+      currency: 'USD',
+      date: new Date(),
+      value: ''
     }
 
     await api
-      .put(`/api/properties/${id}`)
+      .patch(`/api/properties/${id}`)
       .set('Authorization', `bearer ${token}`)
       .send(newProperty)
-      .expect(422)
+      .expect(400)
+  })
+
+  test('update property with invalid data', async () => {
+    expect.assertions(0)
+
+    const { id } = await getIdFromFirstProperty()
+
+    const newProperty = {
+      name: 'Property 1 change',
+      currency: 'USD',
+      date: new Date(),
+      value: '      '
+    }
+
+    await api
+      .patch(`/api/properties/${id}`)
+      .set('Authorization', `bearer ${token}`)
+      .send(newProperty)
+      .expect(400)
   })
 
   test('update property without authorization', async () => {
+    expect.assertions(0)
     const { id } = await getIdFromFirstProperty()
 
     const newProperty = {
@@ -225,7 +245,7 @@ describe('Update Properties', () => {
   })
 
   test('update property not found id', async () => {
-    const { token } = await generateToken()
+    expect.assertions(0)
 
     const newProperty = {
       name: 'Property 1 change',
@@ -251,7 +271,7 @@ describe('Update Properties', () => {
 
 describe('Delete Properties', () => {
   test('valid delete property', async () => {
-    const { token } = await generateToken()
+    expect.assertions(1)
 
     const { id } = await getIdFromFirstProperty()
 
@@ -265,6 +285,7 @@ describe('Delete Properties', () => {
   })
 
   test('delete property without authorization', async () => {
+    expect.assertions(0)
     const { id } = await getIdFromFirstProperty()
 
     await api
@@ -273,16 +294,11 @@ describe('Delete Properties', () => {
   })
 
   test('delete property not found id', async () => {
-    const { token } = await generateToken()
+    expect.assertions(0)
 
     await api
       .delete('/api/properties/12345')
       .set('Authorization', `bearer ${token}`)
       .expect(404)
   })
-})
-
-afterAll(() => {
-  mongoose.connection.close()
-  server.close()
 })

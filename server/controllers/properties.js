@@ -40,7 +40,6 @@ const createProperty = async (req, res, next) => {
 
 const getAllUserProperties = async (req, res, next) => {
   // Get the user ID from the request body
-  console.log('req', req)
 
   const { userId } = req
 
@@ -66,24 +65,29 @@ const getPropertyById = async (req, res, next) => {
 
 const updateProperty = async (req, res, next) => {
   const { id } = req.params
-  const { name, currency, date, value, taxStatus, type, city, country, address, zip } = req.body
+  const updates = req.body
+
+  // Check for empty values in updates
+  const hasEmptyValues = Object.values(updates).some((value) => {
+    if (typeof value === 'string') {
+      return value.trim() === ''
+    }
+    return false
+  })
+
+  if (hasEmptyValues) {
+    return res.status(400).json({ error: 'Empty values are not allowed' })
+  }
 
   try {
     // Confirm note exists to update
-    const property = await Property.findById(id).exec()
+    const updatedProperty = await Property.findByIdAndUpdate(
+      id,
+      updates,
+      { new: true }
+    ).exec()
 
-    property.name = name
-    property.currency = currency
-    property.date = date
-    property.value = value
-    property.taxStatus = taxStatus
-    property.type = type
-    property.city = city
-    property.country = country
-    property.address = address
-    property.zip = zip
-
-    const updatedProperty = await property.save()
+    // const updatedProperty = await property.save()
 
     res.json(updatedProperty)
   } catch (error) {

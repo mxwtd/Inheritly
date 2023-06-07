@@ -19,8 +19,6 @@ usersRouter.get('/:id', (request, response, next) => {
       response.status(404).end()
     }
   }).catch(error => {
-    // response.status(400).send({ error: 'bad formatted id' }).end()
-    // response.status(400).end()
     next(error)
   })
 })

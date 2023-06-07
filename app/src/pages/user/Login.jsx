@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Template from '../../components/form/user/template'
-// import { loginRequest } from '../../services/login'
-// import { useAuth } from '../../features/authentication/hooks/useAuth'
 
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../features/authentication/hooks/authSlice'
