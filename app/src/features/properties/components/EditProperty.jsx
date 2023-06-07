@@ -71,7 +71,7 @@ const EditProperty = () => {
   const errClass = isError ? 'errorMsg text-red-500' : 'offscreen'
 
   const content = (
-    <Properties title='Edit Property'>
+    <Properties title='Edit Property' backTo={`/investments/properties/${id}`}>
       <p className={errClass}>{error?.data?.message}</p>
       {
         (error?.data?.error === 'Forbidden token')

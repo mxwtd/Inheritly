@@ -79,7 +79,7 @@ const Property = () => {
       // }
 
       content = (
-        <Properties title={property.name}>
+        <Properties title={property.name} backTo='/investments/properties'>
           <button className='my-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={handleEdit}>Edit Property</button>
           <button className='my-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={handleConfirm}>Delete Property</button>
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4'>

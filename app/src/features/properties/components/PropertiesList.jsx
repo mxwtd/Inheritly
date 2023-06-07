@@ -60,7 +60,7 @@ const PropertiesList = () => {
       : null
 
     content = (
-      <Properties title='Properties'>
+      <Properties title='Properties' backTo='/investments'>
         <Link to='./new'><ModalAddButton /></Link>
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 my-4 '>
           {listContent}

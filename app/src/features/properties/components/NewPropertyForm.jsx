@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Properties from '../index.jsx'
 
 import { useAddNewPropertyMutation } from '../services/propertiesApiSlice'
@@ -71,11 +71,8 @@ const NewPropertyForm = () => {
   // const validCountryClass = !country ? 'form__input--incomplete' : ''
 
   const content = (
-    <Properties>
+    <Properties backTo='/investments/properties'>
       <p className={errClass}>{error?.data?.message}</p>
-      <div className='my-10'>
-        <Link to='/investments/properties' className='text-slate-800 dark:text-white'>❮ Go back</Link>
-      </div>
       <div className='bg-white dark:bg-slate-800 shadow-lg p-10 rounded-lg mx-4'>
         <div className='mb-10'>
           <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Add a Property</h1>
