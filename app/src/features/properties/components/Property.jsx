@@ -50,7 +50,14 @@ const Property = () => {
   if (isError) {
     content = (
       <Properties title='Properties'>
-        <h1 className='text-4xl font-semibold text-gray-800 dark:text-gray-100 my-8'>{error?.data?.message}</h1>
+        <h1 className='text-4xl font-semibold text-red-500 dark:text-red-500 my-8'>{error?.data?.message}</h1>
+        {
+          (error.data.error === 'Forbidden token')
+            ? (
+              <button className='my-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={() => navigate('/login')}>Login Again</button>
+              )
+            : null
+        }
       </Properties>
     )
   }
@@ -72,7 +79,7 @@ const Property = () => {
       // }
 
       content = (
-        <Properties title={property.name}>
+        <Properties title={property.name} backTo='/investments/properties'>
           <button className='my-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={handleEdit}>Edit Property</button>
           <button className='my-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={handleConfirm}>Delete Property</button>
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4'>

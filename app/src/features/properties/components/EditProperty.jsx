@@ -68,11 +68,18 @@ const EditProperty = () => {
     // }
   }
 
-  const errClass = isError ? 'error msg' : 'offscreen'
+  const errClass = isError ? 'errorMsg text-red-500' : 'offscreen'
 
   const content = (
-    <Properties title='Edit Property'>
+    <Properties title='Edit Property' backTo={`/investments/properties/${id}`}>
       <p className={errClass}>{error?.data?.message}</p>
+      {
+        (error?.data?.error === 'Forbidden token')
+          ? (
+            <button className='my-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={() => navigate('/login')}>Login Again</button>
+            )
+          : null
+      }
       <form onSubmit={onSavePropertyClicked} className='space-y-4 md:space-y-6' action='#'>
         <div>
           <label htmlFor='name' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Your name</label>
@@ -197,6 +204,7 @@ const EditProperty = () => {
             required=''
           />
         </div>
+        <p className={errClass}>{error?.data?.message}</p>
         <button className='w-full text-slate-600 hover:text-slate-300 bg-slate-400/[.3] hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-500 dark:hover:bg-slate-700 dark:focus:ring-slate-800 dark:text-slate-300 dark:hover:text-slate-100'>Save</button>
       </form>
     </Properties>

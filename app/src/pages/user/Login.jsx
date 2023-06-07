@@ -9,48 +9,38 @@ import { useLoginMutation } from '../../features/authentication/services/authApi
 import usePersist from '../../hook/usePersist'
 
 const Login = () => {
+  const [login, {
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  }] = useLoginMutation()
+
   const userRef = useRef()
-  const errRef = useRef()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [errMsg, setErrMsg] = useState('')
   const [persist, setPersist] = usePersist()
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [login, { isLoading }] = useLoginMutation()
+  useEffect(() => {
+    if (isSuccess) {
+      setEmail('')
+      setPassword('')
 
-  const errClass = errMsg ? 'errMsg' : 'offscreen'
+      navigate('/')
+    }
+  }, [isSuccess, navigate])
 
   useEffect(() => {
     userRef.current.focus()
   }, [])
 
-  useEffect(() => {
-    setErrMsg('')
-  }, [email, password])
-
   const handleLoginSubmit = async (e) => {
     e.preventDefault()
-
-    try {
-      const accessToken = await login({ email, password }).unwrap()
-
-      console.log('accessToken', accessToken)
-
-      dispatch(setCredentials({ accessToken }))
-      setEmail('')
-      setPassword('')
-      navigate('/')
-    } catch (err) {
-      if (!err.status) {
-        setErrMsg('No server response. Try again later.')
-      } else {
-        setErrMsg(err.data?.message)
-      }
-      errRef.current.focus()
-    }
+    const accessToken = await login({ email, password }).unwrap()
+    dispatch(setCredentials({ accessToken }))
   }
 
   const handleEmailInput = (e) => setEmail(e.target.value)
@@ -64,10 +54,16 @@ const Login = () => {
     return <div>Loading...</div>
   }
 
+  const errClass = isError ? 'errorMsg text-red-500' : 'offscreen'
+
   const content = (
     <>
-      <Template formTitle='Sign in to your account'>
-        <p ref={errRef} className={errClass} aria-live='assertive'>{errMsg}</p>
+      <Template formTitle='Sign in to your accou nt'>
+        <p className={errClass}>
+          {
+            (error?.data?.message) ? error?.data?.message : error?.data?.error
+          }
+        </p>
         <form onSubmit={handleLoginSubmit} className='space-y-4 md:space-y-6' action='#'>
           <div>
             <label htmlFor='email' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Your email</label>
