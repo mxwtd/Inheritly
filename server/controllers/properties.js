@@ -12,14 +12,43 @@ const createProperty = async (req, res, next) => {
     city,
     country,
     address,
-    zip
+    zip,
+    photo
   } = req.body
-
-  const property = { name, currency, date, value, taxStatus, type, city, country, address, zip }
 
   // Get user ID from token
   const { userId } = req
   const user = await User.findById(userId)
+
+  // Check if photo is empty
+  if (photo) {
+    // Initialize storage
+    const storage = new Storage({
+      keyFilename: '../config/inheritlytest-55b611cf095a.json'
+    })
+    const bucketName = process.env.BUCKET_NAME
+    console.log('bucketName', bucketName)
+
+    const bucket = storage.bucket(bucketName)
+
+    // Sending the upload request
+    bucket.upload(
+      photo,
+      {
+        destination: `${user._id}/${name}.png`
+      },
+      function (err, file) {
+        if (err) {
+          next(err)
+          console.error(`Error uploading image image_to_upload.jpeg: ${err}`)
+        } else {
+          console.log(`Image image_to_upload.jpeg uploaded to ${bucketName}.`)
+        }
+      }
+    )
+  }
+
+  const property = { name, currency, date, value, taxStatus, type, city, country, address, zip }
 
   const newProperty = new Property({
     ...property,
