@@ -33,7 +33,7 @@ const SignUp = ({ toggleSignUp }) => {
   const [createUser, { createUserIsLoading }] = useCreateUserMutation()
   const [login, { loginIsLoading }] = useLoginMutation()
 
-  const errClass = errMsg ? 'errMsg' : 'offscreen'
+  const errClass = errMsg ? 'errMsg text-red-500' : 'offscreen'
 
   useEffect(() => {
     userRef.current.focus()
