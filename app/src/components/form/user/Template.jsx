@@ -6,7 +6,7 @@ const Template = ({ children, formTitle }) => {
           <a href='#' className='flex items-center mb-12 text-4xl font-semibold text-slate-700 dark:text-white'>
             Inheritly
           </a>
-          <div className='w-full bg-white/[.09] backdrop-blur-md rounded-xl shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-slate-800/[.3] dark:border-slate-700'>
+          <div className='w-full bg-white/[.09] backdrop-blur-md rounded-3xl shadow-xl dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-slate-800/[.3] dark:border-slate-700'>
             <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
               <h1 className='text-xl font-bold leading-tight tracking-tight text-slate-700 md:text-2xl dark:text-white'>
                 {formTitle}
