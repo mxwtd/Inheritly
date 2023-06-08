@@ -46,6 +46,7 @@
   "homepage": "https://github.com/mxwtd/Inheritly#readme",
   "dependencies": {
     "@google-cloud/storage": "6.11.0",
+    "@hcaptcha/react-hcaptcha": "^1.8.1",
     "react-simple-maps": "1.0.0"
   }
 }

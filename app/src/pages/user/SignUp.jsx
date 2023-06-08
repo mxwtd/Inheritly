@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../features/authentication/hooks/authSlice'
 import { useCreateUserMutation } from '../../features/users/services/usersApiSlice'
 import { useLoginMutation } from '../../features/authentication/services/authApiSlice'
+import HCaptcha from '@hcaptcha/react-hcaptcha'
 import usePersist from '../../hook/usePersist'
 
 const SignUp = ({ toggleSignUp }) => {
@@ -33,6 +34,11 @@ const SignUp = ({ toggleSignUp }) => {
   const [login, { isLoading: loginIsLoading }] = useLoginMutation()
 
   const errClass = errMsg ? 'errMsg' : 'offscreen'
+  const [hCaptchaToken, setHCaptchaToken] = useState(null)
+
+  const handleVerificationSuccess = (token, ekey) => {
+    setHCaptchaToken(token)
+  }
 
   useEffect(() => {
     userRef.current.focus()
@@ -56,6 +62,11 @@ const SignUp = ({ toggleSignUp }) => {
     }
 
     if (step === 2) {
+      if (!hCaptchaToken) {
+        setErrMsg('Please verify the captcha before proceeding.')
+        return
+      }
+
       try {
         const userCreated = await createUser({ email, name, username, question, answer, password, lastNames }).unwrap()
         console.log('userCreated', userCreated)
@@ -141,7 +152,12 @@ const SignUp = ({ toggleSignUp }) => {
 
                 <label htmlFor='repeatPassword' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Confirm Password</label>
                 <input type='password' name='repeatPassword' placeholder='●●●●●●●●' value={userData.repeatPassword} onChange={handleInputChange} required className='mb-8 bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
-
+                <div className='pb-4 flex justify-center items-center'>
+                  <HCaptcha
+                    sitekey='a87d5853-50f2-4898-ba9d-59606f02363'
+                    onVerify={(token, ekey) => handleVerificationSuccess(token, ekey)}
+                  />
+                </div>
                 <button type='submit' className='min-w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>Submit</button>
               </div>
             </>
