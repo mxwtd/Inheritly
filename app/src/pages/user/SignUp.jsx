@@ -154,7 +154,7 @@ const SignUp = ({ toggleSignUp }) => {
                 <input type='password' name='repeatPassword' placeholder='●●●●●●●●' value={userData.repeatPassword} onChange={handleInputChange} required className='mb-8 bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
                 <div className='pb-4 flex justify-center items-center'>
                   <HCaptcha
-                    sitekey='a87d5853-50f2-4898-ba9d-59606f02363'
+                    sitekey=''
                     onVerify={(token, ekey) => handleVerificationSuccess(token, ekey)}
                   />
                 </div>
