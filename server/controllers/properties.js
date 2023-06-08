@@ -2,40 +2,72 @@ const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
 
 const createProperty = async (req, res, next) => {
-  const {
-    name,
-    currency,
-    date,
-    value,
-    taxStatus,
-    type,
-    city,
-    country,
-    address,
-    zip
-  } = req.body
+  console.log('req.body', req.body)
 
-  const property = { name, currency, date, value, taxStatus, type, city, country, address, zip }
+  res.status(201).json({ message: 'Property created' })
+  // const {
+  //   name,
+  //   currency,
+  //   date,
+  //   value,
+  //   taxStatus,
+  //   type,
+  //   city,
+  //   country,
+  //   address,
+  //   zip,
+  //   photo
+  // } = req.body
 
-  // Get user ID from token
-  const { userId } = req
-  const user = await User.findById(userId)
+  // // Get user ID from token
+  // const { userId } = req
+  // const user = await User.findById(userId)
 
-  const newProperty = new Property({
-    ...property,
-    user: user._id
-  })
+  // // Check if photo is empty
+  // if (photo) {
+  //   // Initialize storage
+  //   const storage = new Storage({
+  //     keyFilename: '../config/inheritlytest-55b611cf095a.json'
+  //   })
+  //   const bucketName = process.env.BUCKET_NAME
+  //   console.log('bucketName', bucketName)
 
-  try {
-    const savedProperty = await newProperty.save()
+  //   const bucket = storage.bucket(bucketName)
 
-    user.assets.push(savedProperty._id)
-    await user.save()
+  //   // Sending the upload request
+  //   bucket.upload(
+  //     photo,
+  //     {
+  //       destination: `${user._id}/${name}.png`
+  //     },
+  //     function (err, file) {
+  //       if (err) {
+  //         next(err)
+  //         console.error(`Error uploading image image_to_upload.jpeg: ${err}`)
+  //       } else {
+  //         console.log(`Image image_to_upload.jpeg uploaded to ${bucketName}.`)
+  //       }
+  //     }
+  //   )
+  // }
 
-    res.status(201).json(savedProperty)
-  } catch (error) {
-    next(error)
-  }
+  // const property = { name, currency, date, value, taxStatus, type, city, country, address, zip }
+
+  // const newProperty = new Property({
+  //   ...property,
+  //   user: user._id
+  // })
+
+  // try {
+  //   const savedProperty = await newProperty.save()
+
+  //   user.assets.push(savedProperty._id)
+  //   await user.save()
+
+  //   res.status(201).json(savedProperty)
+  // } catch (error) {
+  //   next(error)
+  // }
 }
 
 const getAllUserProperties = async (req, res, next) => {

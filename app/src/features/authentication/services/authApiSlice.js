@@ -8,7 +8,17 @@ export const authApiSlice = apiSlice.injectEndpoints({
         url: 'auth/login',
         method: 'POST',
         body: { ...credentials }
-      })
+      }),
+      async onQueryStarted (arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled
+          console.log('data', data)
+
+          dispatch(setCredentials(data))
+        } catch (err) {
+          console.log(err)
+        }
+      }
     }),
     sendLogout: builder.mutation({
       query: () => ({
@@ -36,11 +46,9 @@ export const authApiSlice = apiSlice.injectEndpoints({
       async onQueryStarted (arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled
-          console.log(data)
-          const { accessToken } = data
+          console.log('data', data)
 
-          console.log('set access token:', accessToken)
-          dispatch(setCredentials({ accessToken }))
+          dispatch(setCredentials(data))
         } catch (err) {
           console.log(err)
         }
