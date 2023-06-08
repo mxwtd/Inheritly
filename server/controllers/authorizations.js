@@ -79,7 +79,7 @@ const refresh = async (req, res, next) => {
     const refreshToken = cookie.jwt
 
     jwt.verify(
-      refreshToken,
+      refreshToken.refreshToken,
       process.env.REFRESH_TOKEN_KEY,
       async (err, decoded) => {
         if (err) {
