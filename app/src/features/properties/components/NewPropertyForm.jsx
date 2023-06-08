@@ -24,6 +24,8 @@ const NewPropertyForm = () => {
   const [city, setCity] = useState('')
   const [address, setAddress] = useState('')
   const [zip, setZip] = useState('')
+  const [photo, setPhoto] = useState('')
+  const [files, setFiles] = useState('')
 
   useEffect(() => {
     if (isSuccess) {
@@ -37,6 +39,7 @@ const NewPropertyForm = () => {
       setCity('')
       setAddress('')
       setZip('')
+      setPhoto('')
 
       navigate('/investments/properties')
     }
@@ -52,6 +55,8 @@ const NewPropertyForm = () => {
   const onCityChanged = e => setCity(e.target.value)
   const onAddressChanged = e => setAddress(e.target.value)
   const onZipChanged = e => setZip(e.target.value)
+  const onPhotoChanged = e => setPhoto(e.target.files[0])
+  const onFilesChanged = e => setFiles(e.target.files)
 
   const canSave = [name, country, currency, date, value, taxStatus, type, city, address, zip].every(Boolean) && !isLoading
 
@@ -61,8 +66,29 @@ const NewPropertyForm = () => {
     console.log('create button clicked')
 
     if (canSave) {
+      const formData = new FormData()
+
+      formData.append('name', name)
+      formData.append('country', country)
+      formData.append('currency', currency)
+      formData.append('date', date)
+      formData.append('value', value)
+      formData.append('taxStatus', taxStatus)
+      formData.append('type', type)
+      formData.append('city', city)
+      formData.append('address', address)
+      formData.append('zip', zip)
+      formData.append('photo', photo)
+
+      if (files) {
+        for (let i = 0; i < files.length; i++) {
+          formData.append('files', files[i])
+        }
+      }
+
+      console.log('formData name', formData.get('name'))
       console.log('Call the add new property API')
-      await addNewProperty({ name, country, currency, date, value, taxStatus, type, city, address, zip })
+      await addNewProperty(formData)
     }
   }
 
@@ -199,6 +225,29 @@ const NewPropertyForm = () => {
               className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               onChange={onZipChanged}
               required=''
+            />
+          </div>
+          <div>
+            <label htmlFor='photo' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Photo</label>
+            <input
+              type='file'
+              name='photo'
+              accept='image/*'
+              id='photo'
+              className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-4 focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 text-center dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-4 dark:focus:border-blue-500'
+              onChange={onPhotoChanged}
+              required=''
+            />
+          </div>
+          <div>
+            <label htmlFor='files' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Add files</label>
+            <input
+              type='file'
+              name='files'
+              accept='*.pdf'
+              id='files'
+              onChange={onFilesChanged}
+              className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-4 focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 text-center dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-4 dark:focus:border-blue-500'
             />
           </div>
           <button className='w-full text-slate-600 hover:text-slate-300 bg-slate-400/[.3] hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-500 dark:hover:bg-slate-700 dark:focus:ring-slate-800 dark:text-slate-300 dark:hover:text-slate-100'>Create</button>

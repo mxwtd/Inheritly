@@ -2,69 +2,72 @@ const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
 
 const createProperty = async (req, res, next) => {
-  const {
-    name,
-    currency,
-    date,
-    value,
-    taxStatus,
-    type,
-    city,
-    country,
-    address,
-    zip,
-    photo
-  } = req.body
+  console.log('req.body', req.body)
 
-  // Get user ID from token
-  const { userId } = req
-  const user = await User.findById(userId)
+  res.status(201).json({ message: 'Property created' })
+  // const {
+  //   name,
+  //   currency,
+  //   date,
+  //   value,
+  //   taxStatus,
+  //   type,
+  //   city,
+  //   country,
+  //   address,
+  //   zip,
+  //   photo
+  // } = req.body
 
-  // Check if photo is empty
-  if (photo) {
-    // Initialize storage
-    const storage = new Storage({
-      keyFilename: '../config/inheritlytest-55b611cf095a.json'
-    })
-    const bucketName = process.env.BUCKET_NAME
-    console.log('bucketName', bucketName)
+  // // Get user ID from token
+  // const { userId } = req
+  // const user = await User.findById(userId)
 
-    const bucket = storage.bucket(bucketName)
+  // // Check if photo is empty
+  // if (photo) {
+  //   // Initialize storage
+  //   const storage = new Storage({
+  //     keyFilename: '../config/inheritlytest-55b611cf095a.json'
+  //   })
+  //   const bucketName = process.env.BUCKET_NAME
+  //   console.log('bucketName', bucketName)
 
-    // Sending the upload request
-    bucket.upload(
-      photo,
-      {
-        destination: `${user._id}/${name}.png`
-      },
-      function (err, file) {
-        if (err) {
-          next(err)
-          console.error(`Error uploading image image_to_upload.jpeg: ${err}`)
-        } else {
-          console.log(`Image image_to_upload.jpeg uploaded to ${bucketName}.`)
-        }
-      }
-    )
-  }
+  //   const bucket = storage.bucket(bucketName)
 
-  const property = { name, currency, date, value, taxStatus, type, city, country, address, zip }
+  //   // Sending the upload request
+  //   bucket.upload(
+  //     photo,
+  //     {
+  //       destination: `${user._id}/${name}.png`
+  //     },
+  //     function (err, file) {
+  //       if (err) {
+  //         next(err)
+  //         console.error(`Error uploading image image_to_upload.jpeg: ${err}`)
+  //       } else {
+  //         console.log(`Image image_to_upload.jpeg uploaded to ${bucketName}.`)
+  //       }
+  //     }
+  //   )
+  // }
 
-  const newProperty = new Property({
-    ...property,
-    user: user._id
-  })
+  // const property = { name, currency, date, value, taxStatus, type, city, country, address, zip }
 
-  try {
-    const savedProperty = await newProperty.save()
+  // const newProperty = new Property({
+  //   ...property,
+  //   user: user._id
+  // })
 
-    user.assets.push(savedProperty._id)
-    await user.save()
+  // try {
+  //   const savedProperty = await newProperty.save()
 
-    res.status(201).json(savedProperty)
-  } catch (error) {
-    next(error)
-  }
+  //   user.assets.push(savedProperty._id)
+  //   await user.save()
+
+  //   res.status(201).json(savedProperty)
+  // } catch (error) {
+  //   next(error)
+  // }
 }
 
 const getAllUserProperties = async (req, res, next) => {
