@@ -2,8 +2,6 @@ import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Template from '../../components/form/user/template'
 
-import { useDispatch } from 'react-redux'
-import { setCredentials } from '../../features/authentication/hooks/authSlice'
 import { useLoginMutation } from '../../features/authentication/services/authApiSlice'
 
 import usePersist from '../../hook/usePersist'
@@ -22,7 +20,7 @@ const Login = () => {
   const [persist, setPersist] = usePersist()
 
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
   useEffect(() => {
     if (isSuccess) {
@@ -39,8 +37,7 @@ const Login = () => {
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault()
-    const accessToken = await login({ email, password }).unwrap()
-    dispatch(setCredentials({ accessToken }))
+    await login({ email, password }).unwrap()
   }
 
   const handleEmailInput = (e) => setEmail(e.target.value)

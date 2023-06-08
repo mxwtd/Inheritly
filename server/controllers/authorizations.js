@@ -90,6 +90,8 @@ const refresh = async (req, res, next) => {
 
         const user = await User.findOne({ email: decoded.email }).exec()
 
+        console.log('user found: ', user)
+
         if (!user) {
           const error = new Error('invalid email or password')
           error.name = 'InvalidCredentials'
@@ -108,6 +110,8 @@ const refresh = async (req, res, next) => {
           process.env.ACCESS_TOKEN_KEY,
           { expiresIn: '15m' }
         )
+
+        console.log('NEW accessToken: ', accessToken)
 
         res.json({
           accessToken,
