@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Properties from '../index.jsx'
 
 import { useAddNewPropertyMutation } from '../services/propertiesApiSlice'
+import { uploadPhotoToCloudStorage } from '../../../services/gcp/uploadToCloudStorage.js'
 
 const NewPropertyForm = () => {
   const [addNewProperty, {
@@ -88,6 +89,20 @@ const NewPropertyForm = () => {
 
       console.log('formData name', formData.get('name'))
       console.log('Call the add new property API')
+
+      // Add property photo to google cloud storage
+      if (photo) {
+        const photoPath = './path/to/photo.jpg' // Update this path to the actual path of the photo
+        const destinationPath = 'someFolderInBucket/photo.jpg' // Update with the desired destination path in the bucket
+        await uploadPhotoToCloudStorage(photoPath, destinationPath)
+      }
+
+      // Add property files to google cloud storage
+
+      // After the photo and files are uploaded, get their URLs and add them to the property object
+
+      // Add the property object to the database
+
       await addNewProperty(formData)
     }
   }
