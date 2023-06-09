@@ -1,28 +1,24 @@
-import { createContext, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { setToken } from '../../../services/properties'
-
+import { createContext, useMemo, useState } from 'react'
 export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
-  const navigate = useNavigate()
-  const user = null
+  const [userCredentials, setUserCredentials] = useState(null)
 
-  const login = (data) => {
-    setToken(data.token)
-    navigate('/')
+  const login = (credentials) => {
+    console.log('login with credentials', credentials)
+    setUserCredentials(credentials)
   }
 
   const logout = () => {
-    console.log('entering logout in authProvider')
-    navigate('/login', { replace: true })
+    console.log('logout')
+    setUserCredentials(null)
   }
 
   const value = useMemo(
     () => ({
-      user
+      userCredentials
     }),
-    [user]
+    [userCredentials]
   )
 
   return <AuthContext.Provider value={{ value, login, logout }}>{children}</AuthContext.Provider>

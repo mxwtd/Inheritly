@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 import Properties from '../index.jsx'
 
 import { useAddNewPropertyMutation } from '../services/propertiesApiSlice'
-import { uploadPhotoToCloudStorage } from '../../../services/gcp/uploadToCloudStorage.js'
+// import { uploadPhotoToCloudStorage } from '../../../services/gcp/uploadToCloudStorage.js'
+import { useSelector } from 'react-redux'
+import { userInformation } from '../../authentication/hooks/authSlice.js'
 
 const NewPropertyForm = () => {
   const [addNewProperty, {
@@ -27,6 +30,10 @@ const NewPropertyForm = () => {
   const [zip, setZip] = useState('')
   const [photo, setPhoto] = useState('')
   const [files, setFiles] = useState('')
+
+  const userInformationData = useSelector(userInformation)
+
+  console.log('userInformationData: ', userInformationData)
 
   useEffect(() => {
     if (isSuccess) {
@@ -92,9 +99,9 @@ const NewPropertyForm = () => {
 
       // Add property photo to google cloud storage
       if (photo) {
-        const photoPath = './path/to/photo.jpg' // Update this path to the actual path of the photo
-        const destinationPath = 'someFolderInBucket/photo.jpg' // Update with the desired destination path in the bucket
-        await uploadPhotoToCloudStorage(photoPath, destinationPath)
+        // const photoPath = `/properties/${}` // Update this path to the actual path of the photo
+        // const destinationPath = 'someFolderInBucket/photo.jpg' // Update with the desired destination path in the bucket
+        // await uploadPhotoToCloudStorage(photoPath, destinationPath)
       }
 
       // Add property files to google cloud storage
