@@ -29,13 +29,13 @@ const login = async (req, res, next) => {
         }
       },
       process.env.ACCESS_TOKEN_KEY,
-      { expiresIn: '1m' }
+      { expiresIn: '15m' }
     )
 
     const refreshToken = jwt.sign(
       { email: user.email },
       process.env.REFRESH_TOKEN_KEY,
-      { expiresIn: '2m' }
+      { expiresIn: '20m' }
     )
 
     const cookieUserData = {
@@ -79,7 +79,7 @@ const refresh = async (req, res, next) => {
     const refreshToken = cookie.jwt
 
     jwt.verify(
-      refreshToken,
+      refreshToken.refreshToken,
       process.env.REFRESH_TOKEN_KEY,
       async (err, decoded) => {
         if (err) {
@@ -89,6 +89,8 @@ const refresh = async (req, res, next) => {
         }
 
         const user = await User.findOne({ email: decoded.email }).exec()
+
+        console.log('user found: ', user)
 
         if (!user) {
           const error = new Error('invalid email or password')
@@ -106,8 +108,10 @@ const refresh = async (req, res, next) => {
             }
           },
           process.env.ACCESS_TOKEN_KEY,
-          { expiresIn: '1m' }
+          { expiresIn: '15m' }
         )
+
+        console.log('NEW accessToken: ', accessToken)
 
         res.json({
           accessToken,
