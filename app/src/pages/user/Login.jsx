@@ -55,7 +55,7 @@ const Login = () => {
 
   const content = (
     <>
-      <Template formTitle='Sign in to your accou nt'>
+      <Template formTitle='Sign in to your account'>
         <p className={errClass}>
           {
             (error?.data?.message) ? error?.data?.message : error?.data?.error
