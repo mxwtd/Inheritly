@@ -112,11 +112,11 @@ const SignUp = ({ toggleSignUp }) => {
               <div className='flex flex-row mb-4 gap-4'>
                 <div className='flex flex-col w-1/2'>
                   <label htmlFor='name' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>First Name</label>
-                  <input type='text' name='name' placeholder='Your First Name' value={userData.name} onChange={handleInputChange} required className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+                  <input type='text' name='name' placeholder='First Name' value={userData.name} onChange={handleInputChange} required className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
                 </div>
                 <div className='flex flex-col w-1/2'>
                   <label htmlFor='lastNames' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Surname</label>
-                  <input type='text' name='lastNames' placeholder='Your Surname' value={userData.lastNames} onChange={handleInputChange} required className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+                  <input type='text' name='lastNames' placeholder='Surname' value={userData.lastNames} onChange={handleInputChange} required className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
                 </div>
               </div>
 
