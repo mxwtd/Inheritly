@@ -71,7 +71,7 @@ const EditProperty = () => {
   const errClass = isError ? 'errorMsg text-red-500' : 'offscreen'
 
   const content = (
-    <Properties title='Edit Property' backTo={`/investments/properties/${id}`}>
+    <Properties backTo={`/investments/properties/${id}`}>
       <p className={errClass}>{error?.data?.message}</p>
       {
         (error?.data?.error === 'Forbidden token')
@@ -80,133 +80,153 @@ const EditProperty = () => {
             )
           : null
       }
-      <form onSubmit={onSavePropertyClicked} className='space-y-4 md:space-y-6' action='#'>
-        <div>
-          <label htmlFor='name' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Your name</label>
-          <input
-            type='text'
-            value={name}
-            name='name'
-            id='name'
-            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            placeholder='Property name'
-            onChange={onNameChanged}
-            required=''
-          />
-        </div>
-        <div>
-          <label htmlFor='currency' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Currency</label>
-          <input
-            type='text'
-            value={currency}
-            name='currency'
-            id='currency'
-            placeholder='USD'
-            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            onChange={onCurrencyChanged}
-            required=''
-          />
-        </div>
-        <div>
-          <label htmlFor='date' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Date</label>
-          <input
-            type='date'
-            value={date}
-            name='date'
-            id='date'
-            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            onChange={onDateChanged}
-            required=''
-          />
-        </div>
-        <div>
-          <label htmlFor='value' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Value</label>
-          <input
-            type='value'
-            value={value}
-            name='value'
-            id='value'
-            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            onChange={onValueChanged}
-            required=''
-          />
-        </div>
-        <div>
-          <label htmlFor='taxStatus' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Tax Status</label>
-          <input
-            type='taxStatus'
-            value={taxStatus}
-            name='taxStatus'
-            id='taxStatus'
-            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            onChange={onTaxStatusChanged}
-            required=''
-          />
-        </div>
-        <div>
-          <label htmlFor='type' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Type</label>
-          <input
-            type='type'
-            value={type}
-            name='type'
-            id='type'
-            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            onChange={onTypeChanged}
-            required=''
-          />
-        </div>
-        <div>
-          <label htmlFor='city' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>City</label>
-          <input
-            type='city'
-            value={city}
-            name='city'
-            id='city'
-            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            onChange={onCityChanged}
-            required=''
-          />
-        </div>
-        <div>
-          <label htmlFor='country' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Country</label>
-          <input
-            type='text'
-            value={country}
-            name='country'
-            id='country'
-            placeholder='Country Name'
-            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            onChange={onCountryChanged}
-            required=''
-          />
-        </div>
-        <div>
-          <label htmlFor='address' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Address</label>
-          <input
-            type='address'
-            value={address}
-            name='address'
-            id='address'
-            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            onChange={onAddressChanged}
-            required=''
-          />
-        </div>
-        <div>
-          <label htmlFor='zip' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Zip</label>
-          <input
-            type='zip'
-            value={zip}
-            name='zip'
-            id='zip'
-            className='bg-slate-50/[.3] border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700/[.3] dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            onChange={onZipChanged}
-            required=''
-          />
-        </div>
-        <p className={errClass}>{error?.data?.message}</p>
-        <button className='w-full text-slate-600 hover:text-slate-300 bg-slate-400/[.3] hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-500 dark:hover:bg-slate-700 dark:focus:ring-slate-800 dark:text-slate-300 dark:hover:text-slate-100'>Save</button>
-      </form>
+      <div className='bg-white backdrop-blur-md rounded-3xl shadow-xl dark:border md:mt-0 p-6 dark:bg-slate-800/[.3] dark:border-slate-700'>
+        <h1 className='text-3xl md:text-4xl font-bold pb-6 pt-2 mg:pb-10 md:pt-4 text-slate-800 dark:text-white'>Edit Property</h1>
+        <form onSubmit={onSavePropertyClicked} className='space-y-4 md:space-y-6 flex flex-col gap-4' action='#'>
+          <div className='w-full md:min-w-full flex flex-wrap justify-between space-y-4 md:space-y-0'>
+            <div className='w-full md:w-1/2 space-y-4'>
+              <div className='md:mr-2'>
+                <label htmlFor='name' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Name</label>
+                <input
+                  type='text'
+                  value={name}
+                  name='name'
+                  id='name'
+                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  placeholder='Property name'
+                  onChange={onNameChanged}
+                  required=''
+                />
+              </div>
+              <div className='md:mr-2'>
+                <label htmlFor='type' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Type</label>
+                <input
+                  type='type'
+                  value={type}
+                  name='type'
+                  id='type'
+                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  onChange={onTypeChanged}
+                  required=''
+                />
+              </div>
+            </div>
+            <div className='w-full md:w-1/2 space-y-4'>
+              <div>
+                <label htmlFor='currency' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Currency</label>
+                <input
+                  type='text'
+                  value={currency}
+                  name='currency'
+                  id='currency'
+                  placeholder='USD'
+                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  onChange={onCurrencyChanged}
+                  required=''
+                />
+              </div>
+              <div>
+                <label htmlFor='value' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Value</label>
+                <input
+                  type='value'
+                  value={value}
+                  name='value'
+                  id='value'
+                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  onChange={onValueChanged}
+                  required=''
+                />
+              </div>
+            </div>
+          </div>
+          <div className='w-full md:min-w-full space-y-4'>
+            <div>
+              <label htmlFor='date' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Date</label>
+              <input
+                type='date'
+                value={date}
+                name='date'
+                id='date'
+                className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                onChange={onDateChanged}
+                required=''
+              />
+            </div>
+            <div>
+              <label htmlFor='taxStatus' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Tax Status</label>
+              <input
+                type='text'
+                value={taxStatus}
+                name='taxStatus'
+                id='taxStatus'
+                className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                onChange={onTaxStatusChanged}
+                required=''
+              />
+            </div>
+          </div>
+          <div className='w-full md:min-w-full flex flex-wrap justify-between space-y-4 md:space-y-0'>
+            <div className='w-full md:w-1/2 space-y-4'>
+              <div className='md:mr-2'>
+                <label htmlFor='address' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Address</label>
+                <input
+                  type='text'
+                  value={address}
+                  name='address'
+                  id='address'
+                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  onChange={onAddressChanged}
+                  required=''
+                />
+              </div>
+              <div className='md:mr-2'>
+                <label htmlFor='city' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>City</label>
+                <input
+                  type='text'
+                  value={city}
+                  name='city'
+                  id='city'
+                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  onChange={onCityChanged}
+                  required=''
+                />
+              </div>
+            </div>
+            <div className='w-full md:w-1/2 space-y-4'>
+              <div>
+                <label htmlFor='zip' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Postcode / ZIP</label>
+                <input
+                  type='text'
+                  value={zip}
+                  name='zip'
+                  id='zip'
+                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  onChange={onZipChanged}
+                  required=''
+                />
+              </div>
+              <div>
+                <label htmlFor='country' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Country</label>
+                <input
+                  type='text'
+                  value={country}
+                  name='country'
+                  id='country'
+                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  onChange={onCountryChanged}
+                  required=''
+                />
+              </div>
+            </div>
+          </div>
+          <button
+            type='submit'
+            className='w-full py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 bg-blue-600 hover:bg-blue-700 focus:ring-offset-blue-200 focus:ring-blue-500'
+          >
+            Save Property
+          </button>
+        </form>
+      </div>
     </Properties>
   )
 
