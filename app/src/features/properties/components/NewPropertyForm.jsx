@@ -31,6 +31,8 @@ const NewPropertyForm = () => {
   const [photo, setPhoto] = useState('')
   const [files, setFiles] = useState('')
 
+  const [photoUrl, setPhotoUrl] = useState('')
+
   // const userInformationData = useSelector(userInformation)
 
   useEffect(() => {
@@ -95,25 +97,11 @@ const NewPropertyForm = () => {
 
       console.log('photo after', formData.get('photo'))
 
-      // Add property photo to google cloud storage
-      // if (photo) {
-      // const destinationPath = `${userInformationData.id}/properties/photo`
+      const responseWithBody = await addNewProperty(formData)
 
-      // const destinationPath = 'someFolderInBucket/photo.jpg' // Update with the desired destination path in the bucket
-      // const photoUrl = await uploadPhotoToCloudStorage(photo, destinationPath)
-      // await uploadPhotoToCloudStorage(photo, destinationPath)
+      console.log('responseWithBody', responseWithBody)
 
-      // console.log('The photo URL is: ', photoUrl)
-      // formData.append('photo', photoUrl)
-      // }
-
-      // Add property files to google cloud storage
-
-      // After the photo and files are uploaded, get their URLs and add them to the property object
-
-      // Add the property object to the database
-
-      await addNewProperty(formData)
+      if (responseWithBody) setPhotoUrl(responseWithBody.data.photo)
     }
   }
 
