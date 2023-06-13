@@ -2,9 +2,29 @@ const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
 
 const createProperty = async (req, res, next) => {
-  console.log('req.body', req.body)
+  console.log('createProperty')
 
+  // console.log('request: ', req)
+  console.log('req.body', req.body)
   res.status(201).json({ message: 'Property created' })
+
+  const {
+    name,
+    currency,
+    date,
+    value,
+    taxStatus,
+    type,
+    city,
+    country,
+    address,
+    zip,
+    photo
+  } = req.body
+
+  console.log('photo data type', typeof photo)
+  console.log('photo type', photo.type)
+
   // const {
   //   name,
   //   currency,
