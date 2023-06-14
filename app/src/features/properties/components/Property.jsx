@@ -117,11 +117,14 @@ const Property = () => {
             </div>
           </div>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4'>
-            <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
-              <img
-                src='https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
-                className='object-cover rounded-xl w-full h-full'
-              />
+            <div className='relative bg-slate-50 dark:bg-slate-800 p-4 rounded-xl aspect-w-1 aspect-h-1'>
+              {/* <img src={property.image} alt='' className='mb-3 w-full rounded-xl object-cover' style={{ aspectRatio: '1/1' }} /> */}
+              <div className='mb-3 h-full w-full rounded-lg overflow-hidden'>
+                <img
+                  src='https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+                  className='object-cover w-full h-full transform transition-all duration-500 hover:scale-110'
+                />
+              </div>
             </div>
             <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg'>
               <div className='h-[100%]'>
