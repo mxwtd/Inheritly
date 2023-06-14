@@ -80,7 +80,7 @@ const EditProperty = () => {
             )
           : null
       }
-      <div className='bg-white backdrop-blur-md rounded-3xl shadow-xl dark:border md:mt-0 p-6 dark:bg-slate-800/[.3] dark:border-slate-700'>
+      <div className='bg-white backdrop-blur-md rounded-3xl shadow-xl dark:border md:mt-0 p-6 dark:bg-slate-800 dark:border-slate-700'>
         <h1 className='text-3xl md:text-4xl font-bold pb-6 pt-2 mg:pb-10 md:pt-4 text-slate-800 dark:text-white'>Edit Property</h1>
         <form onSubmit={onSavePropertyClicked} className='space-y-4 md:space-y-6 flex flex-col gap-4' action='#'>
           <div className='w-full md:min-w-full flex flex-wrap justify-between space-y-4 md:space-y-0'>
@@ -92,7 +92,7 @@ const EditProperty = () => {
                   value={name}
                   name='name'
                   id='name'
-                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                   placeholder='Property name'
                   onChange={onNameChanged}
                   required=''
@@ -105,7 +105,7 @@ const EditProperty = () => {
                   value={type}
                   name='type'
                   id='type'
-                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                   onChange={onTypeChanged}
                   required=''
                 />
@@ -120,7 +120,7 @@ const EditProperty = () => {
                   name='currency'
                   id='currency'
                   placeholder='USD'
-                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                   onChange={onCurrencyChanged}
                   required=''
                 />
@@ -132,7 +132,7 @@ const EditProperty = () => {
                   value={value}
                   name='value'
                   id='value'
-                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                   onChange={onValueChanged}
                   required=''
                 />
@@ -147,7 +147,7 @@ const EditProperty = () => {
                 value={date}
                 name='date'
                 id='date'
-                className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                 onChange={onDateChanged}
                 required=''
               />
@@ -159,7 +159,7 @@ const EditProperty = () => {
                 value={taxStatus}
                 name='taxStatus'
                 id='taxStatus'
-                className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                 onChange={onTaxStatusChanged}
                 required=''
               />
@@ -174,7 +174,7 @@ const EditProperty = () => {
                   value={address}
                   name='address'
                   id='address'
-                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                   onChange={onAddressChanged}
                   required=''
                 />
@@ -186,7 +186,7 @@ const EditProperty = () => {
                   value={city}
                   name='city'
                   id='city'
-                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                   onChange={onCityChanged}
                   required=''
                 />
@@ -200,7 +200,7 @@ const EditProperty = () => {
                   value={zip}
                   name='zip'
                   id='zip'
-                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                   onChange={onZipChanged}
                   required=''
                 />
@@ -212,7 +212,7 @@ const EditProperty = () => {
                   value={country}
                   name='country'
                   id='country'
-                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                   onChange={onCountryChanged}
                   required=''
                 />
