@@ -1,4 +1,4 @@
-PUT http://localhost:3001/api/reviews/644a5a74faa71ccea9918d21 
+PUT http://localhost:3001/api/properties/644a5a74faa71ccea9918d21 
 Content-Type: application/json
 
 {

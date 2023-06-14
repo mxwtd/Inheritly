@@ -31,7 +31,7 @@ const NewPropertyForm = () => {
   const [photo, setPhoto] = useState('')
   const [files, setFiles] = useState('')
 
-  const [photoUrl, setPhotoUrl] = useState('')
+  const [, setPhotoUrl] = useState('')
 
   // const userInformationData = useSelector(userInformation)
 

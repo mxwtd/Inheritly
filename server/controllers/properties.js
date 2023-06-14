@@ -25,6 +25,8 @@ const createProperty = async (req, res, next) => {
   console.log('photo data type', typeof photo)
   console.log('photo type', photo.type)
 
+  console.log('')
+
   // const {
   //   name,
   //   currency,
