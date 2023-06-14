@@ -1,7 +1,6 @@
 const express = require('express')
 const vehicleRouter = express.Router()
 const vehiclesController = require('../controllers/vehicles')
-// const userExtractor = require('../middleware/userExtractor')
 const verifyJWT = require('../middleware/verifyJWT')
 
 vehicleRouter.use(verifyJWT)

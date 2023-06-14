@@ -1,13 +1,18 @@
+const { format } = require('util')
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
+const { Storage } = require('@google-cloud/storage')
+
+const storage = new Storage()
+
+const bucketName = process.env.BUCKET_NAME
+
+const bucket = storage.bucket(bucketName)
 
 const createProperty = async (req, res, next) => {
-  console.log('createProperty')
+  console.log('req.body is: ', req.body)
 
-  // console.log('request: ', req)
-  console.log('req.body', req.body)
-  res.status(201).json({ message: 'Property created' })
-
+  let photoUrl = null
   const {
     name,
     currency,
@@ -22,74 +27,61 @@ const createProperty = async (req, res, next) => {
     photo
   } = req.body
 
-  console.log('photo data type', typeof photo)
-  console.log('photo type', photo.type)
+  console.log('req file ', req.file)
 
-  console.log('')
+  console.log('photo is: ', photo)
 
-  // const {
-  //   name,
-  //   currency,
-  //   date,
-  //   value,
-  //   taxStatus,
-  //   type,
-  //   city,
-  //   country,
-  //   address,
-  //   zip,
-  //   photo
-  // } = req.body
+  console.log('photo type of ', typeof photo)
 
-  // // Get user ID from token
-  // const { userId } = req
-  // const user = await User.findById(userId)
+  console.log('photo name is ', photo.name)
+  console.log('photo name is ', photo[name])
 
-  // // Check if photo is empty
-  // if (photo) {
-  //   // Initialize storage
-  //   const storage = new Storage({
-  //     keyFilename: '../config/inheritlytest-55b611cf095a.json'
-  //   })
-  //   const bucketName = process.env.BUCKET_NAME
-  //   console.log('bucketName', bucketName)
+  if (photo) {
+    console.log('photo found')
 
-  //   const bucket = storage.bucket(bucketName)
+    const blob = bucket.file(photo.name)
+    console.log('blob is ', blob)
+    const blobStream = blob.createWriteStream()
 
-  //   // Sending the upload request
-  //   bucket.upload(
-  //     photo,
-  //     {
-  //       destination: `${user._id}/${name}.png`
-  //     },
-  //     function (err, file) {
-  //       if (err) {
-  //         next(err)
-  //         console.error(`Error uploading image image_to_upload.jpeg: ${err}`)
-  //       } else {
-  //         console.log(`Image image_to_upload.jpeg uploaded to ${bucketName}.`)
-  //       }
-  //     }
-  //   )
-  // }
+    blobStream.on('error', (err) => {
+      console.log('error is: ', err)
+      next(err)
+    })
 
-  // const property = { name, currency, date, value, taxStatus, type, city, country, address, zip }
+    blobStream.on('finish', () => {
+      photoUrl = format(
+        `https://storage.googleapis.com/${bucketName}/${blob.name}`
+      )
+      console.log('photoUrl is: ', photoUrl)
+      console.log('blobStream finished')
+    })
 
-  // const newProperty = new Property({
-  //   ...property,
-  //   user: user._id
-  // })
+    blobStream.end(photo.buffer)
+  }
 
-  // try {
-  //   const savedProperty = await newProperty.save()
+  // Get user ID from token
+  const { userId } = req
+  const user = await User.findById(userId)
 
-  //   user.assets.push(savedProperty._id)
-  //   await user.save()
+  const property = { name, currency, date, value, taxStatus, type, city, country, address, zip, photoUrl }
 
-  //   res.status(201).json(savedProperty)
-  // } catch (error) {
-  //   next(error)
-  // }
+  console.log('Property to create: ', property)
+
+  const newProperty = new Property({
+    ...property,
+    user: user._id
+  })
+
+  try {
+    const savedProperty = await newProperty.save()
+
+    user.assets.push(savedProperty._id)
+    await user.save()
+
+    res.status(201).json(savedProperty)
+  } catch (error) {
+    next(error)
+  }
 }
 
 const getAllUserProperties = async (req, res, next) => {

@@ -15,9 +15,9 @@ const Vehicles = () => {
   }, [])
 
   const fetchVehicles = async () => {
-    const reviews = await getAllVehicles()
+    const vehicles = await getAllVehicles()
     try {
-      updateVehicles(reviews)
+      updateVehicles(vehicles)
     } catch {
       setError('Error')
       setTimeout(() => {

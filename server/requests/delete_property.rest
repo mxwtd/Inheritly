@@ -1,1 +1,1 @@
-DELETE http://localhost:3001/api/reviews/644a43db2e6efb2026644734
+DELETE http://localhost:3001/api/properties/644a43db2e6efb2026644734

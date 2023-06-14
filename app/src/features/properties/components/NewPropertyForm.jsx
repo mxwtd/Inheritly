@@ -28,10 +28,10 @@ const NewPropertyForm = () => {
   const [city, setCity] = useState('')
   const [address, setAddress] = useState('')
   const [zip, setZip] = useState('')
-  const [photo, setPhoto] = useState('')
+  const [photo, setPhoto] = useState({})
   const [files, setFiles] = useState('')
 
-  const [, setPhotoUrl] = useState('')
+  const [, setPhotoUrl] = useState({})
 
   // const userInformationData = useSelector(userInformation)
 
@@ -93,7 +93,7 @@ const NewPropertyForm = () => {
 
       formData.delete('photo')
 
-      formData.set('photo', photo)
+      formData.set('photo', JSON.stringify(photo))
 
       console.log('photo after', formData.get('photo'))
 

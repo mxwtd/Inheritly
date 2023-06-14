@@ -37,6 +37,7 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
         const photo = data.photo
 
         console.log('photo', photo)
+        console.log('photo type', typeof photo)
 
         return {
           url: '/properties',
