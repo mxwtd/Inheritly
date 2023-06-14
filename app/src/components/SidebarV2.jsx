@@ -9,19 +9,11 @@ const SidebarV2 = () => {
   const [isOpen, setIsOpen] = useState(false)
   const ref = useRef(null)
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false) // add this state variable
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
-  // This is the click handler for the button
+  // Click handler for the Sidebar Menu (Mobile)
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen)
-  }
-
-  const handleSidebarClose = () => {
-    setIsSidebarOpen(false)
-  }
-
-  const handleSidebarClick = (event) => {
-    event.stopPropagation()
   }
 
   const navigate = useNavigate()
