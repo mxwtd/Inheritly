@@ -1,18 +1,46 @@
-const { format } = require('util')
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
-const { Storage } = require('@google-cloud/storage')
 
-const storage = new Storage()
+// const { Storage } = require('@google-cloud/storage')
+const multer = require('multer')
 
-const bucketName = process.env.BUCKET_NAME
+// const bucketName = process.env.BUCKET_NAME
 
-const bucket = storage.bucket(bucketName)
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    console.log('file is: ', file) // see the file
+    cb(null, './app/public/uploads')
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`)
+  }
+})
+
+const upload = multer({ storage })
+
+const handleFileUpload = (req, res, next) => {
+  upload.single('photo')(req, res, (error) => {
+    if (error instanceof multer.MulterError) {
+      // Handle multer error
+      console.log('multer error')
+      next(error)
+    } else if (error) {
+      // Handle other errors
+      console.log('other error', error)
+      next(error)
+    } else {
+      // Continue to the next middleware
+      console.log('continue to next middleware')
+      next()
+    }
+  })
+}
 
 const createProperty = async (req, res, next) => {
   console.log('req.body is: ', req.body)
+  console.log('req file is: ', req.file)
 
-  let photoUrl = null
+  const photoUrl = req.file ? req.file.path : null
   const {
     name,
     currency,
@@ -23,41 +51,14 @@ const createProperty = async (req, res, next) => {
     city,
     country,
     address,
-    zip,
-    photo
+    zip
   } = req.body
 
-  console.log('req file ', req.file)
+  const {
+    photo
+  } = req.file
 
-  console.log('photo is: ', photo)
-
-  console.log('photo type of ', typeof photo)
-
-  console.log('photo name is ', photo.name)
-  console.log('photo name is ', photo[name])
-
-  if (photo) {
-    console.log('photo found')
-
-    const blob = bucket.file(photo.name)
-    console.log('blob is ', blob)
-    const blobStream = blob.createWriteStream()
-
-    blobStream.on('error', (err) => {
-      console.log('error is: ', err)
-      next(err)
-    })
-
-    blobStream.on('finish', () => {
-      photoUrl = format(
-        `https://storage.googleapis.com/${bucketName}/${blob.name}`
-      )
-      console.log('photoUrl is: ', photoUrl)
-      console.log('blobStream finished')
-    })
-
-    blobStream.end(photo.buffer)
-  }
+  console.log('req.body photo: ', photo)
 
   // Get user ID from token
   const { userId } = req
@@ -161,6 +162,7 @@ const deleteProperty = async (req, res, next) => {
 }
 
 module.exports = {
+  handleFileUpload,
   createProperty,
   getAllUserProperties,
   getPropertyById,

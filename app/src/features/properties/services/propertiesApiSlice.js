@@ -22,29 +22,32 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
     }),
     addNewProperty: builder.mutation({
       query: propertyData => {
+        console.log('add New Property')
         let data = {}
 
         // Display the key/value pairs
         for (const pair of propertyData.entries()) {
+          // if (pair[0] !== 'photo') {
           data = {
             ...data,
             [pair[0]]: pair[1]
           }
+          // }
         }
 
         console.log('data', data)
 
-        const photo = data.photo
+        const photo = propertyData.get('photo')
 
         console.log('photo', photo)
-        console.log('photo type', typeof photo)
 
         return {
           url: '/properties',
           method: 'POST',
-          body: {
-            ...data
-          }
+          body: propertyData
+          // body: {
+          //   ...propertyData
+          // }
         }
       },
       invalidatesTags: [

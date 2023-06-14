@@ -31,8 +31,6 @@ const NewPropertyForm = () => {
   const [photo, setPhoto] = useState({})
   const [files, setFiles] = useState('')
 
-  const [, setPhotoUrl] = useState({})
-
   // const userInformationData = useSelector(userInformation)
 
   useEffect(() => {
@@ -64,14 +62,7 @@ const NewPropertyForm = () => {
   const onAddressChanged = e => setAddress(e.target.value)
   const onZipChanged = e => setZip(e.target.value)
   const onFilesChanged = e => setFiles(e.target.files)
-
-  const onPhotoChanged = e => {
-    const img = {
-      data: e.target.files[0],
-      preview: URL.createObjectURL(e.target.files[0])
-    }
-    setPhoto(img)
-  }
+  const onPhotoChanged = e => setPhoto(e.target.files[0])
 
   const canSave = [name, country, currency, date, value, taxStatus, type, city, address, zip].every(Boolean) && !isLoading
 
@@ -82,6 +73,7 @@ const NewPropertyForm = () => {
 
     if (canSave) {
       const formData = new FormData(e.target)
+      // const formData = new FormData()
 
       if (files) {
         for (let i = 0; i < files.length; i++) {
@@ -89,19 +81,13 @@ const NewPropertyForm = () => {
         }
       }
 
-      console.log('photo before', formData.get('photo'))
+      console.log('photo state', photo)
 
-      formData.delete('photo')
-
-      formData.set('photo', JSON.stringify(photo))
-
-      console.log('photo after', formData.get('photo'))
+      console.log('photo', formData.get('photo'))
 
       const responseWithBody = await addNewProperty(formData)
 
       console.log('responseWithBody', responseWithBody)
-
-      if (responseWithBody) setPhotoUrl(responseWithBody.data.photo)
     }
   }
 
@@ -116,7 +102,7 @@ const NewPropertyForm = () => {
         <div className='mb-10'>
           <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Add a Property</h1>
         </div>
-        <form onSubmit={onSavePropertyClicked} className='space-y-4 md:space-y-6' action='#'>
+        <form encType='multipart/form-data' onSubmit={onSavePropertyClicked} className='space-y-4 md:space-y-6' action='#'>
           <div>
             <label htmlFor='name' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Your name</label>
             <input
