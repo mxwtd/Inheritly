@@ -121,19 +121,19 @@ const Property = () => {
                   <div className='grid grid-cols-1 grid-rows-1 md:grid-cols-2 md:grid-rows-2 gap-4 text-slate-700 dark:text-white'>
                     <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Date of Purchase</h2>
-                      <h3 className='text-md xl:text-xl'>{new Date(property.date).toLocaleDateString()}</h3>
+                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{new Date(property.date).toLocaleDateString()}</h3>
                     </div>
                     <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Value</h2>
-                      <h3 className='text-md xl:text-xl'>{property.currency} {property.value}</h3>
+                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{property.currency} {property.value}</h3>
                     </div>
                     <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Property Type</h2>
-                      <h3 className='text-md xl:text-xl'>{property.type}</h3>
+                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{property.type}</h3>
                     </div>
                     <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Tax Status</h2>
-                      <h3 className='text-md xl:text-xl'>{property.taxStatus}</h3>
+                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{property.taxStatus}</h3>
                     </div>
                   </div>
                   <div className='py-2 px-4 mt-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg'>
@@ -178,11 +178,23 @@ const Property = () => {
                 </div>
               </div>
             </div>
-            <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg'>
-              <p className='text-xl lg:text-2xl px-4 pt-4 text-slate-400 dark:text-slate-500'>Address</p>
+            <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
+              <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg'>
+                <p className='text-xl lg:text-2xl px-4 mb-2'>Address</p>
+                <p className='text-md lg:text-lg px-4'>{property.address}</p>
+                <p className='text-md lg:text-lg px-4'>{property.city}</p>
+                <p className='text-md lg:text-lg px-4'>{property.zip}</p>
+                <p className='text-md lg:text-lg px-4'>{property.country}</p>
+              </div>
             </div>
-            <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg'>
-              <p className='text-xl lg:text-2xl px-4 pt-4 text-slate-400 dark:text-slate-500'>Contact</p>
+            <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
+              <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg'>
+                <p className='text-xl lg:text-2xl px-4 mb-2'>Contact</p>
+                <p className='text-md lg:text-lg px-4'>Account Number</p>
+                <p className='text-md lg:text-lg px-4'>Email</p>
+                <p className='text-md lg:text-lg px-4'>Phone</p>
+                <p className='text-md lg:text-lg px-4'>Company Address</p>
+              </div>
             </div>
           </div>
         </Properties>
