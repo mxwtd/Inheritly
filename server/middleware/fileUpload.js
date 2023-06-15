@@ -1,50 +1,38 @@
-const multer = require('multer')
+const Multer = require('multer')
 const { Storage } = require('@google-cloud/storage')
 
-// Set up Multer
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    // Set the temporary upload destination on your server
-    console.log('set temp upload destination')
-    cb(null, '../temp/uploads')
-  },
-  filename: (req, file, cb, next) => {
-    // Set the filename for the uploaded file
-    console.log('set filename')
-    cb(null, Date.now() + '-' + file.originalname)
+const storage = new Storage({ projectId: process.env.GCLOUD_PROJECT, credentials: { client_email: process.env.GCLOUD_CLIENT_EMAIL, private_key: process.env.GCLOUD_PRIVATE_KEY } })
+
+const bucket = storage.bucket(process.env.GCS_BUCKET)
+
+const multer = Multer({
+  storage: Multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024 // no larger than 5mb
   }
 })
 
-const upload = multer({ storage })
-
-// Create a Google Cloud Storage client
-const storageClient = new Storage()
-
 // Upload the file to Google Cloud Storage
 const uploadToGCS = async (file) => {
+  console.log('enter to uploadToGCS')
   console.log('save file: ', file)
-  const bucketName = process.env.BUCKET_NAME
-  const bucket = storageClient.bucket(bucketName)
+  return new Promise((resolve, reject) => {
+    const newFileName = `${Date.now()}-${file.originalname}`
+    const blob = bucket.file(newFileName)
+    const blobStream = blob.createWriteStream()
 
-  const fileName = Date.now() + '-' + file.originalname
-  const fileDestination = 'uploaded-files/' + fileName
+    blobStream.on('error', (err) => reject(err))
 
-  // Upload the file to Google Cloud Storage
-  await bucket.upload(file.path, {
-    destination: fileDestination
+    blobStream.on('finish', () => {
+      const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
+      resolve(publicUrl)
+    })
+
+    blobStream.end(file.buffer)
   })
-
-  // Get the signed URL of the uploaded file
-  const signedUrl = await bucket.file(fileDestination).getSignedUrl({
-    action: 'read',
-    expires: '03-01-2024' // Set the expiration date as needed
-  })
-
-  return signedUrl[0]
 }
 
 module.exports = {
-  upload,
-  storageClient,
+  multer,
   uploadToGCS
 }

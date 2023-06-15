@@ -2,30 +2,14 @@ const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
 const { uploadToGCS } = require('../middleware/fileUpload')
 
-// const handleFileUpload = (req, res, next) => {
-//   upload.single('photo')(req, res, (error) => {
-//     if (error instanceof multer.MulterError) {
-//       // Handle multer error
-//       console.log('multer error')
-//       next(error)
-//     } else if (error) {
-//       // Handle other errors
-//       console.log('other error', error)
-//       next(error)
-//     } else {
-//       // Continue to the next middleware
-//       console.log('continue to next middleware')
-//       next()
-//     }
-//   })
-// }
-
 const createProperty = async (req, res, next) => {
   try {
     console.log('create property')
-    console.log('req.body is: ', req.body)
     console.log('req file is: ', req.file)
     const photoUrl = req.file ? await uploadToGCS(req.file) : null
+
+    console.log('photo URL', photoUrl)
+
     const {
       name,
       currency,

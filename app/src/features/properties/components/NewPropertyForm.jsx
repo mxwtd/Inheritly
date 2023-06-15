@@ -83,7 +83,8 @@ const NewPropertyForm = () => {
 
       console.log('photo state', photo)
 
-      console.log('photo', formData.get('photo'))
+      console.log('photo')
+      console.log(formData.get('photo'))
 
       const responseWithBody = await addNewProperty(formData)
 
