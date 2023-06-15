@@ -1,79 +1,68 @@
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
+const { uploadToGCS } = require('../middleware/fileUpload')
 
-// const { Storage } = require('@google-cloud/storage')
-const multer = require('multer')
-
-// const bucketName = process.env.BUCKET_NAME
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    console.log('file is: ', file) // see the file
-    cb(null, './app/public/uploads')
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`)
-  }
-})
-
-const upload = multer({ storage })
-
-const handleFileUpload = (req, res, next) => {
-  upload.single('photo')(req, res, (error) => {
-    if (error instanceof multer.MulterError) {
-      // Handle multer error
-      console.log('multer error')
-      next(error)
-    } else if (error) {
-      // Handle other errors
-      console.log('other error', error)
-      next(error)
-    } else {
-      // Continue to the next middleware
-      console.log('continue to next middleware')
-      next()
-    }
-  })
-}
+// const handleFileUpload = (req, res, next) => {
+//   upload.single('photo')(req, res, (error) => {
+//     if (error instanceof multer.MulterError) {
+//       // Handle multer error
+//       console.log('multer error')
+//       next(error)
+//     } else if (error) {
+//       // Handle other errors
+//       console.log('other error', error)
+//       next(error)
+//     } else {
+//       // Continue to the next middleware
+//       console.log('continue to next middleware')
+//       next()
+//     }
+//   })
+// }
 
 const createProperty = async (req, res, next) => {
-  console.log('req.body is: ', req.body)
-  console.log('req file is: ', req.file)
-
-  const photoUrl = req.file ? req.file.path : null
-  const {
-    name,
-    currency,
-    date,
-    value,
-    taxStatus,
-    type,
-    city,
-    country,
-    address,
-    zip
-  } = req.body
-
-  const {
-    photo
-  } = req.file
-
-  console.log('req.body photo: ', photo)
-
-  // Get user ID from token
-  const { userId } = req
-  const user = await User.findById(userId)
-
-  const property = { name, currency, date, value, taxStatus, type, city, country, address, zip, photoUrl }
-
-  console.log('Property to create: ', property)
-
-  const newProperty = new Property({
-    ...property,
-    user: user._id
-  })
-
   try {
+    console.log('create property')
+    console.log('req.body is: ', req.body)
+    console.log('req file is: ', req.file)
+    const photoUrl = req.file ? await uploadToGCS(req.file) : null
+    const {
+      name,
+      currency,
+      date,
+      value,
+      taxStatus,
+      type,
+      city,
+      country,
+      address,
+      zip
+    } = req.body
+
+    const { userId } = req
+    const user = await User.findById(userId)
+
+    const property = {
+      name,
+      currency,
+      date,
+      value,
+      taxStatus,
+      type,
+      city,
+      country,
+      address,
+      zip,
+      photoUrl
+    }
+
+    console.log('Property to create: ', property)
+
+    const newProperty = new Property({
+      ...property,
+      user: user._id
+    })
+
     const savedProperty = await newProperty.save()
 
     user.assets.push(savedProperty._id)
@@ -84,6 +73,55 @@ const createProperty = async (req, res, next) => {
     next(error)
   }
 }
+
+// const createProperty = async (req, res, next) => {
+//   console.log('req.body is: ', req.body)
+//   console.log('req file is: ', req.file)
+
+//   const photoUrl = req.file ? req.file.path : null
+//   const {
+//     name,
+//     currency,
+//     date,
+//     value,
+//     taxStatus,
+//     type,
+//     city,
+//     country,
+//     address,
+//     zip
+//   } = req.body
+
+//   const {
+//     photo
+//   } = req.file
+
+//   console.log('req.body photo: ', photo)
+
+//   // Get user ID from token
+//   const { userId } = req
+//   const user = await User.findById(userId)
+
+//   const property = { name, currency, date, value, taxStatus, type, city, country, address, zip, photoUrl }
+
+//   console.log('Property to create: ', property)
+
+//   const newProperty = new Property({
+//     ...property,
+//     user: user._id
+//   })
+
+//   try {
+//     const savedProperty = await newProperty.save()
+
+//     user.assets.push(savedProperty._id)
+//     await user.save()
+
+//     res.status(201).json(savedProperty)
+//   } catch (error) {
+//     next(error)
+//   }
+// }
 
 const getAllUserProperties = async (req, res, next) => {
   // Get the user ID from the request body
@@ -162,7 +200,6 @@ const deleteProperty = async (req, res, next) => {
 }
 
 module.exports = {
-  handleFileUpload,
   createProperty,
   getAllUserProperties,
   getPropertyById,
