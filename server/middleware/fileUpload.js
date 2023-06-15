@@ -13,11 +13,12 @@ const multer = Multer({
 })
 
 // Upload the file to Google Cloud Storage
-const uploadToGCS = async (file) => {
+const uploadToGCS = async (file, folder) => {
   console.log('enter to uploadToGCS')
   console.log('save file: ', file)
   return new Promise((resolve, reject) => {
-    const newFileName = `${Date.now()}-${file.originalname}`
+    const folderPath = `${folder}/`
+    const newFileName = `${folderPath}${Date.now()}-${file.originalname}`
     const blob = bucket.file(newFileName)
     const blobStream = blob.createWriteStream()
 

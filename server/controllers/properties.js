@@ -6,7 +6,11 @@ const createProperty = async (req, res, next) => {
   try {
     console.log('create property')
     console.log('req file is: ', req.file)
-    const photoUrl = req.file ? await uploadToGCS(req.file) : null
+
+    const { userId } = req
+    const user = await User.findById(userId)
+
+    const photoUrl = req.file ? await uploadToGCS(req.file, userId) : null
 
     console.log('photo URL', photoUrl)
 
@@ -22,9 +26,6 @@ const createProperty = async (req, res, next) => {
       address,
       zip
     } = req.body
-
-    const { userId } = req
-    const user = await User.findById(userId)
 
     const property = {
       name,
@@ -57,55 +58,6 @@ const createProperty = async (req, res, next) => {
     next(error)
   }
 }
-
-// const createProperty = async (req, res, next) => {
-//   console.log('req.body is: ', req.body)
-//   console.log('req file is: ', req.file)
-
-//   const photoUrl = req.file ? req.file.path : null
-//   const {
-//     name,
-//     currency,
-//     date,
-//     value,
-//     taxStatus,
-//     type,
-//     city,
-//     country,
-//     address,
-//     zip
-//   } = req.body
-
-//   const {
-//     photo
-//   } = req.file
-
-//   console.log('req.body photo: ', photo)
-
-//   // Get user ID from token
-//   const { userId } = req
-//   const user = await User.findById(userId)
-
-//   const property = { name, currency, date, value, taxStatus, type, city, country, address, zip, photoUrl }
-
-//   console.log('Property to create: ', property)
-
-//   const newProperty = new Property({
-//     ...property,
-//     user: user._id
-//   })
-
-//   try {
-//     const savedProperty = await newProperty.save()
-
-//     user.assets.push(savedProperty._id)
-//     await user.save()
-
-//     res.status(201).json(savedProperty)
-//   } catch (error) {
-//     next(error)
-//   }
-// }
 
 const getAllUserProperties = async (req, res, next) => {
   // Get the user ID from the request body
