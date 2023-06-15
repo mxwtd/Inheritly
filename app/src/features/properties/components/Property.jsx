@@ -154,7 +154,7 @@ const Property = () => {
                         <thead className='text-xs text-slate-700 uppercase bg-slate-50 dark:bg-slate-700 dark:text-slate-400'>
                           <tr>
                             <th scope='col' className='px-6 py-4'>
-                              File Name
+                              Name
                             </th>
                           </tr>
                         </thead>
