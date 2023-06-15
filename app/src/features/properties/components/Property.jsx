@@ -117,41 +117,44 @@ const Property = () => {
             </div>
           </div>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4'>
-            <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
-              <img
-                src='https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
-                className='object-cover rounded-xl w-full h-full'
-              />
+            <div className='relative bg-slate-50 dark:bg-slate-800 p-4 rounded-xl aspect-w-1 aspect-h-1'>
+              {/* <img src={property.image} alt='' className='mb-3 w-full rounded-xl object-cover' style={{ aspectRatio: '1/1' }} /> */}
+              <div className='mb-3 h-full w-full rounded-lg overflow-hidden'>
+                <img
+                  src='https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+                  className='object-cover w-full h-full transform transition-all duration-500 hover:scale-110'
+                />
+              </div>
             </div>
-            <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg'>
-              <div className='h-[100%]'>
-                <div className='max-h-full p-4'>
-                  <div className='grid grid-cols-1 grid-rows-1 md:grid-cols-2 md:grid-rows-2 gap-4 text-slate-700 dark:text-white'>
-                    <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden'>
-                      <h2 className='text-lg xl:text-2xl font-semibold'>Date of Purchase</h2>
+            <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg flex justify-center items-center p-2 lg:p-4'>
+              <div className='min-w-full'>
+                <div className='h-full p-4'>
+                  <div className='grid grid-cols-2 grid-rows-2 gap-4 xl:gap-8 text-slate-700 dark:text-white'>
+                    <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center'>
+                      <h2 className='text-lg xl:text-2xl font-semibold'>Purchased</h2>
                       <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{new Date(property.date).toLocaleDateString()}</h3>
                     </div>
-                    <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden'>
+                    <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Value</h2>
                       <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{property.currency} {property.value}</h3>
                     </div>
-                    <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden'>
-                      <h2 className='text-lg xl:text-2xl font-semibold'>Property Type</h2>
+                    <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center'>
+                      <h2 className='text-lg xl:text-2xl font-semibold'>Type</h2>
                       <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{property.type}</h3>
                     </div>
-                    <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden'>
+                    <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Tax Status</h2>
                       <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{property.taxStatus}</h3>
                     </div>
                   </div>
-                  <div className='py-2 px-4 mt-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg'>
+                  <div className='py-2 px-4 mt-4 xl:mt-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg'>
                     <h1 className='py-2 text-md md:text-lg font-semibold'>Files</h1>
                     <div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
                       <table className='w-full text-sm text-left text-slate-500 dark:text-slate-400'>
                         <thead className='text-xs text-slate-700 uppercase bg-slate-50 dark:bg-slate-700 dark:text-slate-400'>
                           <tr>
                             <th scope='col' className='px-6 py-4'>
-                              File Name
+                              Name
                             </th>
                           </tr>
                         </thead>
@@ -187,7 +190,7 @@ const Property = () => {
               </div>
             </div>
             <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
-              <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg'>
+              <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg h-full flex flex-col justify-center'>
                 <p className='text-xl lg:text-2xl px-4 mb-2'>Address</p>
                 <p className='text-md lg:text-lg px-4'>{property.address}</p>
                 <p className='text-md lg:text-lg px-4'>{property.city}</p>
@@ -196,7 +199,7 @@ const Property = () => {
               </div>
             </div>
             <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
-              <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg'>
+              <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg h-full flex flex-col justify-center'>
                 <p className='text-xl lg:text-2xl px-4 mb-2'>Contact</p>
                 <p className='text-md lg:text-lg px-4'>Account Number</p>
                 <p className='text-md lg:text-lg px-4'>Email</p>
