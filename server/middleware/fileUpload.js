@@ -3,7 +3,8 @@ const { Storage } = require('@google-cloud/storage')
 
 const storage = new Storage({ projectId: process.env.GCLOUD_PROJECT, credentials: { client_email: process.env.GCLOUD_CLIENT_EMAIL, private_key: process.env.GCLOUD_PRIVATE_KEY } })
 
-const bucket = storage.bucket(process.env.GCS_BUCKET)
+const bucketName = process.env.GCS_BUCKET
+const bucket = storage.bucket(bucketName)
 
 const multer = Multer({
   storage: Multer.memoryStorage(),
@@ -14,8 +15,6 @@ const multer = Multer({
 
 // Upload the file to Google Cloud Storage
 const uploadToGCS = async (file, folder) => {
-  console.log('enter to uploadToGCS')
-  console.log('save file: ', file)
   return new Promise((resolve, reject) => {
     const folderPath = `${folder}/`
     const newFileName = `${folderPath}${Date.now()}-${file.originalname}`
@@ -25,15 +24,32 @@ const uploadToGCS = async (file, folder) => {
     blobStream.on('error', (err) => reject(err))
 
     blobStream.on('finish', () => {
-      const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
-      resolve(publicUrl)
+      resolve(newFileName)
     })
 
     blobStream.end(file.buffer)
   })
 }
 
+const loadFileFromGCS = async (fileName) => {
+  const options = {
+    version: 'v4',
+    action: 'read',
+    expires: Date.now() + 1000 * 60 * 60
+  }
+
+  const [url] = await storage
+    .bucket(bucketName)
+    .file(fileName)
+    .getSignedUrl(options)
+
+  return new Promise((resolve, reject) => {
+    resolve(url)
+  })
+}
+
 module.exports = {
   multer,
-  uploadToGCS
+  uploadToGCS,
+  loadFileFromGCS
 }

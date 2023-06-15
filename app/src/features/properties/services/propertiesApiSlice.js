@@ -22,7 +22,6 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
     }),
     addNewProperty: builder.mutation({
       query: propertyData => {
-        console.log('add New Property')
         return {
           url: '/properties',
           method: 'POST',

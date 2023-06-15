@@ -1,6 +1,6 @@
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
-const { uploadToGCS } = require('../middleware/fileUpload')
+const { uploadToGCS, loadFileFromGCS } = require('../middleware/fileUpload')
 
 const createProperty = async (req, res, next) => {
   try {
@@ -10,9 +10,9 @@ const createProperty = async (req, res, next) => {
     const { userId } = req
     const user = await User.findById(userId)
 
-    const photoUrl = req.file ? await uploadToGCS(req.file, userId) : null
+    const photo = req.file ? await uploadToGCS(req.file, userId) : null
 
-    console.log('photo URL', photoUrl)
+    console.log('photo URL', photo)
 
     const {
       name,
@@ -38,15 +38,15 @@ const createProperty = async (req, res, next) => {
       country,
       address,
       zip,
-      photoUrl
+      photo
     }
-
-    console.log('Property to create: ', property)
 
     const newProperty = new Property({
       ...property,
       user: user._id
     })
+
+    console.log('new property: ', newProperty)
 
     const savedProperty = await newProperty.save()
 
@@ -61,12 +61,24 @@ const createProperty = async (req, res, next) => {
 
 const getAllUserProperties = async (req, res, next) => {
   // Get the user ID from the request body
-
   const { userId } = req
 
   try {
     // Find properties that belong to the user with the given ID
     const properties = await Property.find({ user: userId })
+
+    // Create an array of promises for changing the photo URLs
+    const changePhotoPromises = properties.map(async (property) => {
+      if (property.photo) {
+        property.photo = await loadFileFromGCS(property.photo)
+      } else {
+        property.photo = 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+      }
+    })
+
+    // Wait for all the promises to complete
+    await Promise.all(changePhotoPromises)
+
     res.json(properties)
   } catch (error) {
     next(error)
@@ -78,6 +90,19 @@ const getPropertyById = async (req, res, next) => {
 
   try {
     const property = await Property.findById(id)
+
+    // Create a promises for changing the photo URL
+    const changePhotoPromise = async () => {
+      if (property.photo) {
+        property.photo = await loadFileFromGCS(property.photo)
+      } else {
+        property.photo = 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+      }
+    }
+
+    // Wait for the promise to complete
+    await changePhotoPromise()
+
     res.json(property)
   } catch (error) {
     (isNaN(id)) ? next(error) : res.status(404).end()

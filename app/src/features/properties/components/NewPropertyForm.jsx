@@ -28,7 +28,7 @@ const NewPropertyForm = () => {
   const [city, setCity] = useState('')
   const [address, setAddress] = useState('')
   const [zip, setZip] = useState('')
-  const [photo, setPhoto] = useState({})
+  const [, setPhoto] = useState({})
   const [files, setFiles] = useState('')
 
   // const userInformationData = useSelector(userInformation)
@@ -81,14 +81,7 @@ const NewPropertyForm = () => {
         }
       }
 
-      console.log('photo state', photo)
-
-      console.log('photo')
-      console.log(formData.get('photo'))
-
-      const responseWithBody = await addNewProperty(formData)
-
-      console.log('responseWithBody', responseWithBody)
+      await addNewProperty(formData)
     }
   }
 
