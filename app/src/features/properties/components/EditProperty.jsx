@@ -21,9 +21,26 @@ const EditProperty = () => {
     error
   }] = useUpdatePropertyMutation()
 
-  // const [updateProperty, { isLoading, isSuccess, isError, error }] = useUpdatePropertyMutation()
-
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (properties) {
+      const property = properties.find((property) => property.id === id)
+
+      if (property) {
+        setName(property.name)
+        setCountry(property.country)
+        setCurrency(property.currency)
+        setDate(formatDate(new Date(property.date)))
+        setValue(property.value)
+        setTaxStatus(property.taxStatus)
+        setType(property.type)
+        setCity(property.city)
+        setAddress(property.address)
+        setZip(property.zip)
+      }
+    }
+  }, [properties, id])
 
   useEffect(() => {
     if (isSuccess) {
@@ -31,7 +48,7 @@ const EditProperty = () => {
     }
   }, [id, isSuccess, navigate])
 
-  const property = properties.find(property => property.id === id)
+  const property = properties?.find(property => property.id === id)
 
   const formatDate = (date) => {
     const year = date.getFullYear()
@@ -40,19 +57,19 @@ const EditProperty = () => {
     return `${year}-${month}-${day}`
   }
 
-  const [name, setName] = useState(property.name)
-  const [country, setCountry] = useState(property.country)
-  const [currency, setCurrency] = useState(property.currency)
+  const [name, setName] = useState(property?.name || '')
+  const [country, setCountry] = useState(property?.country || '')
+  const [currency, setCurrency] = useState(property?.currency || '')
   const [date, setDate] = useState(() => {
-    const originalDate = new Date(property.date)
+    const originalDate = new Date(property?.date)
     return formatDate(originalDate)
   })
-  const [value, setValue] = useState(property.value)
-  const [taxStatus, setTaxStatus] = useState(property.taxStatus)
-  const [type, setType] = useState(property.type)
-  const [city, setCity] = useState(property.city)
-  const [address, setAddress] = useState(property.address)
-  const [zip, setZip] = useState(property.zip)
+  const [value, setValue] = useState(property?.value || '')
+  const [taxStatus, setTaxStatus] = useState(property?.taxStatus || '')
+  const [type, setType] = useState(property?.type || '')
+  const [city, setCity] = useState(property?.city || '')
+  const [address, setAddress] = useState(property?.address || '')
+  const [zip, setZip] = useState(property?.zip || '')
 
   const onNameChanged = e => setName(e.target.value)
   const onCountryChanged = e => setCountry(e.target.value)
@@ -65,17 +82,13 @@ const EditProperty = () => {
   const onAddressChanged = e => setAddress(e.target.value)
   const onZipChanged = e => setZip(e.target.value)
 
-  // const canSave = [name, country, currency, date, value, taxStatus, type, city, address, zip].every(Boolean) && !isLoading
-
   const onSavePropertyClicked = async (e) => {
     e.preventDefault()
 
     const propertyData = { name, country, currency, date, value, taxStatus, type, city, address, zip }
 
-    // if (canSave) {
     console.log('Update property')
     await updateProperty({ id, propertyData })
-    // }
   }
 
   const errClass = isError ? 'errorMsg text-red-500' : 'offscreen'
