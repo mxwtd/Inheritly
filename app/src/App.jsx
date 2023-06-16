@@ -1,4 +1,4 @@
-import { Route, Routes, Outlet } from 'react-router-dom'
+import { Route, Routes, Outlet, useLocation } from 'react-router-dom'
 
 import SidebarV2 from './components/SidebarV2'
 
@@ -30,6 +30,9 @@ import { AuthProvider } from './features/authentication/hooks/authProvider'
 import GenerateWill from './pages/GenerateWill'
 
 const App = () => {
+  const location = useLocation()
+  const noFooterPaths = ['/login', '/signUp', '/forgotPassword']
+  const showFooter = !noFooterPaths.includes(location.pathname)
   return (
     <>
       <div className='w-full min-h-screen bg-slate-200 dark:bg-slate-700'>
@@ -68,7 +71,7 @@ const App = () => {
 
             <Route path='*' element={<Error type='Not Found' />} />
           </Routes>
-          <Footer />
+          {showFooter && <Footer />}
         </AuthProvider>
       </div>
     </>
