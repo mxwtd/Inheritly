@@ -23,7 +23,7 @@ const PropertyCard = ({ property }) => {
                 {/* <img src={property.image} alt='' className='mb-3 w-full rounded-xl object-cover' style={{ aspectRatio: '1/1' }} /> */}
                 <div className='mb-3 w-full rounded-lg overflow-hidden' style={{ aspectRatio: '1/1' }}>
                   <img
-                    src='https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+                    src={property.photo}
                     className='object-cover w-full h-full transform transition-all duration-500 hover:scale-110'
                   />
                 </div>

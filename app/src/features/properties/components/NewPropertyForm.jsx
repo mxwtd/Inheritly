@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 import Properties from '../index.jsx'
 
 import { useAddNewPropertyMutation } from '../services/propertiesApiSlice'
+// import { uploadPhotoToCloudStorage } from '../../../services/gcp/uploadToCloudStorage.js'
+// import { useSelector } from 'react-redux'
+// import { userInformation } from '../../authentication/hooks/authSlice.js'
 
 const NewPropertyForm = () => {
   const [addNewProperty, {
@@ -24,8 +28,10 @@ const NewPropertyForm = () => {
   const [city, setCity] = useState('')
   const [address, setAddress] = useState('')
   const [zip, setZip] = useState('')
-  const [photo, setPhoto] = useState('')
+  const [, setPhoto] = useState({})
   const [files, setFiles] = useState('')
+
+  // const userInformationData = useSelector(userInformation)
 
   useEffect(() => {
     if (isSuccess) {
@@ -55,8 +61,8 @@ const NewPropertyForm = () => {
   const onCityChanged = e => setCity(e.target.value)
   const onAddressChanged = e => setAddress(e.target.value)
   const onZipChanged = e => setZip(e.target.value)
-  const onPhotoChanged = e => setPhoto(e.target.files[0])
   const onFilesChanged = e => setFiles(e.target.files)
+  const onPhotoChanged = e => setPhoto(e.target.files[0])
 
   const canSave = [name, country, currency, date, value, taxStatus, type, city, address, zip].every(Boolean) && !isLoading
 
@@ -66,19 +72,8 @@ const NewPropertyForm = () => {
     console.log('create button clicked')
 
     if (canSave) {
-      const formData = new FormData()
-
-      formData.append('name', name)
-      formData.append('country', country)
-      formData.append('currency', currency)
-      formData.append('date', date)
-      formData.append('value', value)
-      formData.append('taxStatus', taxStatus)
-      formData.append('type', type)
-      formData.append('city', city)
-      formData.append('address', address)
-      formData.append('zip', zip)
-      formData.append('photo', photo)
+      const formData = new FormData(e.target)
+      // const formData = new FormData()
 
       if (files) {
         for (let i = 0; i < files.length; i++) {
@@ -86,8 +81,6 @@ const NewPropertyForm = () => {
         }
       }
 
-      console.log('formData name', formData.get('name'))
-      console.log('Call the add new property API')
       await addNewProperty(formData)
     }
   }
@@ -103,7 +96,7 @@ const NewPropertyForm = () => {
         <div className='mb-10'>
           <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Add a Property</h1>
         </div>
-        <form onSubmit={onSavePropertyClicked} className='space-y-4 md:space-y-6' action='#'>
+        <form encType='multipart/form-data' onSubmit={onSavePropertyClicked} className='space-y-4 md:space-y-6' action='#'>
           <div className='md:flex md:justify-between'>
             <div className='md:w-1/2 md:pr-2'>
               <div className='mb-2'>

@@ -1,14 +1,15 @@
 const express = require('express')
 const propertyRouter = express.Router()
 const propertiesController = require('../controllers/properties')
-// const userExtractor = require('../middleware/userExtractor')
 const verifyJWT = require('../middleware/verifyJWT')
+
+const { multer } = require('../middleware/fileUpload')
 
 propertyRouter.use(verifyJWT)
 
 propertyRouter.route('/api/properties')
   .get(propertiesController.getAllUserProperties)
-  .post(propertiesController.createProperty)
+  .post(multer.single('photo'), propertiesController.createProperty)
 
 propertyRouter.route('/api/properties/:id')
   .get(propertiesController.getPropertyById)

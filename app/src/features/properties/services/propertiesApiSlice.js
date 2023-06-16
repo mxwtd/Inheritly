@@ -22,13 +22,10 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
     }),
     addNewProperty: builder.mutation({
       query: propertyData => {
-        console.log('propertyData', propertyData)
         return {
           url: '/properties',
           method: 'POST',
-          body: {
-            ...propertyData
-          }
+          body: propertyData
         }
       },
       invalidatesTags: [

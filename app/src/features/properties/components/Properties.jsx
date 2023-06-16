@@ -19,9 +19,9 @@ const Properties = () => {
   }, [])
 
   const fetchProperties = async () => {
-    const reviews = await getAllProperties()
+    const properties = await getAllProperties()
     try {
-      updateProperties(reviews)
+      updateProperties(properties)
     } catch {
       setError('Error')
       setTimeout(() => {

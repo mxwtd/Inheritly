@@ -1,83 +1,84 @@
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
+const { uploadToGCS, loadFileFromGCS } = require('../middleware/fileUpload')
 
 const createProperty = async (req, res, next) => {
-  console.log('req.body', req.body)
+  try {
+    console.log('create property')
+    console.log('req file is: ', req.file)
 
-  res.status(201).json({ message: 'Property created' })
-  // const {
-  //   name,
-  //   currency,
-  //   date,
-  //   value,
-  //   taxStatus,
-  //   type,
-  //   city,
-  //   country,
-  //   address,
-  //   zip,
-  //   photo
-  // } = req.body
+    const { userId } = req
+    const user = await User.findById(userId)
 
-  // // Get user ID from token
-  // const { userId } = req
-  // const user = await User.findById(userId)
+    const photo = req.file ? await uploadToGCS(req.file, userId) : null
 
-  // // Check if photo is empty
-  // if (photo) {
-  //   // Initialize storage
-  //   const storage = new Storage({
-  //     keyFilename: '../config/inheritlytest-55b611cf095a.json'
-  //   })
-  //   const bucketName = process.env.BUCKET_NAME
-  //   console.log('bucketName', bucketName)
+    console.log('photo URL', photo)
 
-  //   const bucket = storage.bucket(bucketName)
+    const {
+      name,
+      currency,
+      date,
+      value,
+      taxStatus,
+      type,
+      city,
+      country,
+      address,
+      zip
+    } = req.body
 
-  //   // Sending the upload request
-  //   bucket.upload(
-  //     photo,
-  //     {
-  //       destination: `${user._id}/${name}.png`
-  //     },
-  //     function (err, file) {
-  //       if (err) {
-  //         next(err)
-  //         console.error(`Error uploading image image_to_upload.jpeg: ${err}`)
-  //       } else {
-  //         console.log(`Image image_to_upload.jpeg uploaded to ${bucketName}.`)
-  //       }
-  //     }
-  //   )
-  // }
+    const property = {
+      name,
+      currency,
+      date,
+      value,
+      taxStatus,
+      type,
+      city,
+      country,
+      address,
+      zip,
+      photo
+    }
 
-  // const property = { name, currency, date, value, taxStatus, type, city, country, address, zip }
+    const newProperty = new Property({
+      ...property,
+      user: user._id
+    })
 
-  // const newProperty = new Property({
-  //   ...property,
-  //   user: user._id
-  // })
+    console.log('new property: ', newProperty)
 
-  // try {
-  //   const savedProperty = await newProperty.save()
+    const savedProperty = await newProperty.save()
 
-  //   user.assets.push(savedProperty._id)
-  //   await user.save()
+    user.assets.push(savedProperty._id)
+    await user.save()
 
-  //   res.status(201).json(savedProperty)
-  // } catch (error) {
-  //   next(error)
-  // }
+    res.status(201).json(savedProperty)
+  } catch (error) {
+    next(error)
+  }
 }
 
 const getAllUserProperties = async (req, res, next) => {
   // Get the user ID from the request body
-
   const { userId } = req
 
   try {
     // Find properties that belong to the user with the given ID
     const properties = await Property.find({ user: userId })
+
+    // Create an array of promises for changing the photo URLs
+    const changePhotoPromises = properties.map(async (property) => {
+      if (property.photo) {
+        property.photo = await loadFileFromGCS(property.photo)
+      } else {
+        property.photo = 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+      }
+    })
+
+    // Wait for all the promises to complete
+    await Promise.all(changePhotoPromises)
+
     res.json(properties)
   } catch (error) {
     next(error)
@@ -89,6 +90,19 @@ const getPropertyById = async (req, res, next) => {
 
   try {
     const property = await Property.findById(id)
+
+    // Create a promises for changing the photo URL
+    const changePhotoPromise = async () => {
+      if (property.photo) {
+        property.photo = await loadFileFromGCS(property.photo)
+      } else {
+        property.photo = 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+      }
+    }
+
+    // Wait for the promise to complete
+    await changePhotoPromise()
+
     res.json(property)
   } catch (error) {
     (isNaN(id)) ? next(error) : res.status(404).end()
