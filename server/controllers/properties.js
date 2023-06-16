@@ -1,6 +1,6 @@
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
-const { uploadToGCS, loadFileFromGCS } = require('../middleware/fileUpload')
+const { uploadToGCS, loadFileFromGCS, deleteFileFromGCS } = require('../middleware/googleCloud')
 
 const createProperty = async (req, res, next) => {
   try {
@@ -145,7 +145,13 @@ const deleteProperty = async (req, res, next) => {
   const { id } = req.params
 
   try {
-    await Property.findByIdAndDelete(id)
+    const propertyToDelete = await Property.findByIdAndDelete(id)
+
+    console.log('property to delete: ', propertyToDelete)
+
+    if (propertyToDelete.photo) {
+      await deleteFileFromGCS(propertyToDelete.photo)
+    }
 
     const { userId } = req
     const user = await User.findById(userId)

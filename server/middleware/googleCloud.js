@@ -48,8 +48,21 @@ const loadFileFromGCS = async (fileName) => {
   })
 }
 
+const deleteFileFromGCS = async (fileName) => {
+  return new Promise((resolve, reject) => {
+    bucket.file(fileName).delete()
+      .then(() => {
+        resolve()
+      })
+      .catch((err) => {
+        reject(err)
+      })
+  })
+}
+
 module.exports = {
   multer,
   uploadToGCS,
-  loadFileFromGCS
+  loadFileFromGCS,
+  deleteFileFromGCS
 }
