@@ -109,7 +109,7 @@ const EditProperty = () => {
           <div className='w-full md:min-w-full flex flex-wrap justify-between space-y-4 md:space-y-0'>
             <div className='w-full md:w-1/2 space-y-4'>
               <div className='md:mr-2'>
-                <label htmlFor='name' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Name</label>
+                <label htmlFor='name' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Property name</label>
                 <input
                   type='text'
                   value={name}
@@ -164,7 +164,7 @@ const EditProperty = () => {
           </div>
           <div className='w-full md:min-w-full space-y-4'>
             <div>
-              <label htmlFor='date' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Date</label>
+              <label htmlFor='date' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Date Of Purchase</label>
               <input
                 type='date'
                 value={date}
