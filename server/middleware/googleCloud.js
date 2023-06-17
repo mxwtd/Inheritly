@@ -48,8 +48,37 @@ const loadFileFromGCS = async (fileName) => {
   })
 }
 
+const updateFileFromGCS = async (file, fileName) => {
+  return new Promise((resolve, reject) => {
+    const blob = bucket.file(fileName)
+    const blobStream = blob.createWriteStream()
+
+    blobStream.on('error', (err) => reject(err))
+
+    blobStream.on('finish', () => {
+      resolve()
+    })
+
+    blobStream.end(file.buffer)
+  })
+}
+
+const deleteFileFromGCS = async (fileName) => {
+  return new Promise((resolve, reject) => {
+    bucket.file(fileName).delete()
+      .then(() => {
+        resolve()
+      })
+      .catch((err) => {
+        reject(err)
+      })
+  })
+}
+
 module.exports = {
   multer,
   uploadToGCS,
-  loadFileFromGCS
+  loadFileFromGCS,
+  updateFileFromGCS,
+  deleteFileFromGCS
 }

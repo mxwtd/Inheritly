@@ -1,6 +1,6 @@
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
-const { uploadToGCS, loadFileFromGCS } = require('../middleware/fileUpload')
+const { uploadToGCS, loadFileFromGCS, deleteFileFromGCS, updateFileFromGCS } = require('../middleware/googleCloud')
 
 const createProperty = async (req, res, next) => {
   try {
@@ -113,19 +113,28 @@ const updateProperty = async (req, res, next) => {
   const { id } = req.params
   const updates = req.body
 
-  // Check for empty values in updates
-  const hasEmptyValues = Object.values(updates).some((value) => {
-    if (typeof value === 'string') {
-      return value.trim() === ''
-    }
-    return false
-  })
-
-  if (hasEmptyValues) {
-    return res.status(400).json({ error: 'Empty values are not allowed' })
-  }
-
   try {
+    const propertyToUpdate = await Property.findById(id)
+
+    const photo = req.file ? await updateFileFromGCS(req.file, propertyToUpdate.photo) : null
+
+    // Check for empty values in updates
+    const hasEmptyValues = Object.values(updates).some((value) => {
+      if (typeof value === 'string') {
+        return value.trim() === ''
+      }
+      return false
+    })
+
+    if (hasEmptyValues) {
+      return res.status(400).json({ error: 'Empty values are not allowed' })
+    }
+
+    // add photo to updates if it exists
+    if (photo) {
+      updates.photo = photo
+    }
+
     // Confirm note exists to update
     const updatedProperty = await Property.findByIdAndUpdate(
       id,
@@ -145,7 +154,11 @@ const deleteProperty = async (req, res, next) => {
   const { id } = req.params
 
   try {
-    await Property.findByIdAndDelete(id)
+    const propertyToDelete = await Property.findByIdAndDelete(id)
+
+    if (propertyToDelete.photo) {
+      await deleteFileFromGCS(propertyToDelete.photo)
+    }
 
     const { userId } = req
     const user = await User.findById(userId)

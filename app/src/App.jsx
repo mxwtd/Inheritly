@@ -22,6 +22,7 @@ import PropertiesList from './features/properties/components/PropertiesList'
 import Property from './features/properties/components/Property'
 import NewProperty from './features/properties/components/NewProperty'
 import EditProperty from './features/properties/components/EditProperty'
+import DeleteProperty from './features/properties/components/DeleteProperty'
 
 import Error from './pages/Error'
 import Footer from './components/Footer'
@@ -56,6 +57,7 @@ const App = () => {
                       <Route path='new' element={<NewProperty />} />
                       <Route path=':id' element={<Property />} />
                       <Route path=':id/edit' element={<EditProperty />} />
+                      <Route path=':id/delete' element={<DeleteProperty />} />
                     </Route>
                   </Route>
 

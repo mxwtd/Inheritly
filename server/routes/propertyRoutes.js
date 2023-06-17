@@ -3,7 +3,7 @@ const propertyRouter = express.Router()
 const propertiesController = require('../controllers/properties')
 const verifyJWT = require('../middleware/verifyJWT')
 
-const { multer } = require('../middleware/fileUpload')
+const { multer } = require('../middleware/googleCloud')
 
 propertyRouter.use(verifyJWT)
 
