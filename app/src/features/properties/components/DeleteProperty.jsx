@@ -29,7 +29,7 @@ const DeleteProperty = () => {
     }
   }, [id, isSuccess, navigate])
 
-  const property = properties.find(property => property.id === id)
+  const property = properties?.find(property => property.id === id)
 
   const handleConfirm = async (e) => {
     e.preventDefault()
@@ -51,7 +51,7 @@ const DeleteProperty = () => {
             )
           : null
       }
-      <h1>Do you want to delete {property.name}?</h1>
+      <h1>Do you want to delete {property?.name}?</h1>
       <button className='my-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={handleConfirm}>Yes</button>
       <Link to={`../${id}`} className='my-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>No</Link>
     </Properties>
