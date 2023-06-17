@@ -1,5 +1,5 @@
 import MapChart from '../components/HoverMap'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const Balance = ({ price, pricesVisible }) => {
   return (
@@ -10,7 +10,7 @@ const Balance = ({ price, pricesVisible }) => {
           <div className='text-sm lg:text-xl font-semibold flex justify-end'>
             <p className='text-green-400'>▴ 21%</p>
           </div>
-          <h1 className={`flex justify-end text-lg lg:text-3xl font-semibold text-white mt-1 ${pricesVisible ? '' : 'blur-md'} select-none`}>
+          <h1 className={`flex justify-end text-lg lg:text-xl xl:text-3xl 2xl:text-4xl font-semibold text-white mt-1 ${pricesVisible ? '' : 'blur-md'} select-none`}>
             {pricesVisible ? price : 'X'.repeat(price.length)}
           </h1>
         </div>
@@ -62,7 +62,15 @@ const BestPerformingAssets = ({ Assets, stockPrices, pricesVisible }) => {
 }
 
 const Overview = () => {
-  const [pricesVisible, setPricesVisible] = useState(true)
+  const [pricesVisible, setPricesVisible] = useState(() => {
+    const saved = localStorage.getItem('pricesVisible')
+    return saved ? JSON.parse(saved) : true
+  })
+
+  // Update localStorage whenever pricesVisible changes
+  useEffect(() => {
+    localStorage.setItem('pricesVisible', JSON.stringify(pricesVisible))
+  }, [pricesVisible])
 
   const priceData = '$ 1,543,453' // Test price data, replace it with actual data
   const totalAssets = '12' // Test number of assets data, replace it with actual data
