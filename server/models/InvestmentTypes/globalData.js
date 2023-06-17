@@ -14,6 +14,7 @@ const defaultData = {
   purchaseDate: Date,
   taxStatus: String,
   description: String,
+  photo: String,
   beneficiaryGroup: { type: Schema.Types.ObjectId, ref: 'BeneficiaryGroup' }
 }
 

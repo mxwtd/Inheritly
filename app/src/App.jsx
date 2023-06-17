@@ -1,4 +1,4 @@
-import { Route, Routes, Outlet } from 'react-router-dom'
+import { Route, Routes, Outlet, useLocation } from 'react-router-dom'
 
 import SidebarV2 from './components/SidebarV2'
 
@@ -22,6 +22,7 @@ import PropertiesList from './features/properties/components/PropertiesList'
 import Property from './features/properties/components/Property'
 import NewProperty from './features/properties/components/NewProperty'
 import EditProperty from './features/properties/components/EditProperty'
+import DeleteProperty from './features/properties/components/DeleteProperty'
 
 import Error from './pages/Error'
 import Footer from './components/Footer'
@@ -30,6 +31,9 @@ import { AuthProvider } from './features/authentication/hooks/authProvider'
 import GenerateWill from './pages/GenerateWill'
 
 const App = () => {
+  const location = useLocation()
+  const noFooterPaths = ['/login', '/signUp', '/forgotPassword']
+  const showFooter = !noFooterPaths.includes(location.pathname)
   return (
     <>
       <div className='w-full min-h-screen bg-slate-200 dark:bg-slate-700'>
@@ -53,6 +57,7 @@ const App = () => {
                       <Route path='new' element={<NewProperty />} />
                       <Route path=':id' element={<Property />} />
                       <Route path=':id/edit' element={<EditProperty />} />
+                      <Route path=':id/delete' element={<DeleteProperty />} />
                     </Route>
                   </Route>
 
@@ -68,7 +73,7 @@ const App = () => {
 
             <Route path='*' element={<Error type='Not Found' />} />
           </Routes>
-          <Footer />
+          {showFooter && <Footer />}
         </AuthProvider>
       </div>
     </>
