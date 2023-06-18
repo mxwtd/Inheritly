@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+// NOT IN USE FOR NOW
+
 const RenameModal = ({ isOpen, onRename, onCancel }) => {
   const [newName, setNewName] = useState('')
 
