@@ -92,11 +92,21 @@ const deleteFileFromGCS = async (fileName) => {
   })
 }
 
+const deleteFolderFromGCS = async (folderPath) => {
+  const [files] = await storage.bucket(bucketName).getFiles({ prefix: folderPath })
+
+  const deletionPromises = files.map((file) => file.delete())
+  await Promise.all(deletionPromises)
+
+  return storage.bucket(bucketName).deleteFiles({ prefix: folderPath })
+}
+
 module.exports = {
   multer,
   uploadPhotoToGCS,
   uploadFilesToGCS,
   loadFileFromGCS,
   updateFileFromGCS,
-  deleteFileFromGCS
+  deleteFileFromGCS,
+  deleteFolderFromGCS
 }

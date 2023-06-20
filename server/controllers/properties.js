@@ -1,7 +1,7 @@
 /* eslint-disable dot-notation */
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
-const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFileFromGCS, updateFileFromGCS } = require('../middleware/googleCloud')
+const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFolderFromGCS, updateFileFromGCS } = require('../middleware/googleCloud')
 
 const createProperty = async (req, res, next) => {
   try {
@@ -173,14 +173,14 @@ const deleteProperty = async (req, res, next) => {
   const { id } = req.params
 
   try {
+    const { userId } = req
+    const user = await User.findById(userId)
     const propertyToDelete = await Property.findByIdAndDelete(id)
 
     if (propertyToDelete.photo) {
-      await deleteFileFromGCS(propertyToDelete.photo)
+      const folderPath = `${userId}/properties/${propertyToDelete.name}/`
+      await deleteFolderFromGCS(folderPath)
     }
-
-    const { userId } = req
-    const user = await User.findById(userId)
 
     const updatedAssets = user.assets.filter(asset => asset.toString() !== id)
     user.assets = updatedAssets
