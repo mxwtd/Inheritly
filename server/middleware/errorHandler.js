@@ -5,6 +5,7 @@ const ERROR_HANDLERS = {
   InvalidCredentials: response => response.status(401).send({ error: 'invalid username or password' }),
   ValidationError: (response, error) => response.status(422).send({ error: error.message }),
   Forbidden: (response, error) => response.status(403).send({ error: 'Forbidden token' }),
+  NotAcceptable: (response, error) => response.status(406).send({ error: 'cannot repeat property name' }),
   defaultError: response => response.status(500).end()
 }
 

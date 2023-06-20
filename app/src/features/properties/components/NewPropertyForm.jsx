@@ -132,7 +132,7 @@ const NewPropertyForm = () => {
     }
   }, [])
 
-  const errClass = isError ? 'error msg' : 'offscreen'
+  const errClass = isError ? 'errorMsg text-red-500' : 'offscreen'
   // const validNameClass = !name ? 'form__input--incomplete' : ''
   // const validCountryClass = !country ? 'form__input--incomplete' : ''
 
@@ -180,12 +180,16 @@ const NewPropertyForm = () => {
 
   const content = (
     <Properties backTo='/investments/properties'>
-      <p className={errClass}>{error?.data?.message}</p>
       <div className='bg-white backdrop-blur-md rounded-3xl shadow-xl dark:border md:mt-0 p-6 dark:bg-slate-800 dark:border-slate-700'>
         <div className='mb-10'>
           <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Add a Property</h1>
         </div>
         <form encType='multipart/form-data' onSubmit={onSavePropertyClicked} className='space-y-4 md:space-y-6' action='#'>
+          <p className={errClass}>
+            {
+            (error?.data?.message) ? error?.data?.message : error?.data?.error
+            }
+          </p>
           <div className='md:flex md:justify-between items-center bg-slate-100 dark:bg-slate-900 rounded-2xl p-5'>
             <div className='md:w-2/3 md:mr-12'>
               <label htmlFor='photo' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Photo</label>
