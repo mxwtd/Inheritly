@@ -1,22 +1,17 @@
 /* eslint-disable dot-notation */
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
-const { uploadToGCS, loadFileFromGCS, deleteFileFromGCS, updateFileFromGCS } = require('../middleware/googleCloud')
+const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFileFromGCS, updateFileFromGCS } = require('../middleware/googleCloud')
 
 const createProperty = async (req, res, next) => {
   try {
     console.log('create property')
-    console.log('req file is: ', req.files)
+    // console.log('req file is: ', req.files)
 
-    console.log('req photo is: ', req.files['photo'])
+    // console.log('req photo is: ', req.files['photo'])
 
     const { userId } = req
     const user = await User.findById(userId)
-
-    const photoFile = req.files['photo'][0]
-    const photo = photoFile ? await uploadToGCS(photoFile, userId) : null
-
-    console.log('photo URL', photo)
 
     const {
       name,
@@ -31,6 +26,25 @@ const createProperty = async (req, res, next) => {
       zip
     } = req.body
 
+    const photoFile = req.files['photo'][0]
+    const propertyFiles = req.files['files']
+
+    console.log('photo file is: ', photoFile)
+    console.log('property files are: ', propertyFiles)
+
+    const photo = photoFile ? await uploadPhotoToGCS(photoFile, userId, name) : null
+    let files = null
+
+    if (propertyFiles) {
+      // files = propertyFiles ? await uploadFilesToGCS(propertyFiles, userId, name) : null
+      files = await Promise.all(propertyFiles.map(async (file) => {
+        return await uploadFilesToGCS(file, userId, name)
+      }))
+    }
+
+    console.log('photo path folder', photo)
+    console.log('files path folder', files)
+
     const property = {
       name,
       currency,
@@ -42,7 +56,8 @@ const createProperty = async (req, res, next) => {
       country,
       address,
       zip,
-      photo
+      photo,
+      files
     }
 
     const newProperty = new Property({

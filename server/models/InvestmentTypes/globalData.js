@@ -15,7 +15,8 @@ const defaultData = {
   taxStatus: String,
   description: String,
   photo: String,
-  beneficiaryGroup: { type: Schema.Types.ObjectId, ref: 'BeneficiaryGroup' }
+  beneficiaryGroup: { type: Schema.Types.ObjectId, ref: 'BeneficiaryGroup' },
+  files: [{ type: String }]
 }
 
 module.exports = defaultData
