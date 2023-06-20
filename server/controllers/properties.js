@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
 const { uploadToGCS, loadFileFromGCS, deleteFileFromGCS, updateFileFromGCS } = require('../middleware/googleCloud')
@@ -5,12 +6,15 @@ const { uploadToGCS, loadFileFromGCS, deleteFileFromGCS, updateFileFromGCS } = r
 const createProperty = async (req, res, next) => {
   try {
     console.log('create property')
-    console.log('req file is: ', req.file)
+    console.log('req file is: ', req.files)
+
+    console.log('req photo is: ', req.files['photo'])
 
     const { userId } = req
     const user = await User.findById(userId)
 
-    const photo = req.file ? await uploadToGCS(req.file, userId) : null
+    const photoFile = req.files['photo'][0]
+    const photo = photoFile ? await uploadToGCS(photoFile, userId) : null
 
     console.log('photo URL', photo)
 

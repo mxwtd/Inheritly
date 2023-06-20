@@ -62,7 +62,6 @@ const NewPropertyForm = () => {
   const onCityChanged = e => setCity(e.target.value)
   const onAddressChanged = e => setAddress(e.target.value)
   const onZipChanged = e => setZip(e.target.value)
-  // const onFilesChanged = e => setFiles(e.target.files)
   const onFilesChanged = (event) => {
     setFiles(prevFiles => [...prevFiles, ...Array.from(event.target.files)])
   }
@@ -88,18 +87,14 @@ const NewPropertyForm = () => {
     if (canSave) {
       const formData = new FormData(e.target)
 
-      formData.delete('files')
-
       if (files) {
+        formData.delete('files')
         files.forEach(file => {
           formData.append('files', file)
         })
       }
 
-      console.log('formData information')
-      console.log(formData.getAll('files'))
-
-      // await addNewProperty(formData)
+      await addNewProperty(formData)
     }
   }
 
