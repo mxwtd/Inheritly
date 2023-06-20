@@ -87,21 +87,19 @@ const NewPropertyForm = () => {
 
     if (canSave) {
       const formData = new FormData(e.target)
-      // const formData = new FormData()
 
-      // if (files) {
-      //   for (let i = 0; i < files.length; i++) {
-      //     formData.append('files', files[i])
-      //   }
-      // }
+      formData.delete('files')
 
       if (files) {
-        for (let i = 0; i < files.length; i++) {
-          formData.append(`files[${i}]`, files[i])
-        }
+        files.forEach(file => {
+          formData.append('files', file)
+        })
       }
 
-      await addNewProperty(formData)
+      console.log('formData information')
+      console.log(formData.getAll('files'))
+
+      // await addNewProperty(formData)
     }
   }
 
