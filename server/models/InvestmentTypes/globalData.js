@@ -7,7 +7,7 @@ const defaultData = {
     required: true
   },
   type: { type: String, required: true, enum: ['Property', 'Vehicle'] },
-  name: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
   currency: String,
   date: Date,
   value: Number,

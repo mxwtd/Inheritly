@@ -5,11 +5,6 @@ const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFolderFromGCS
 
 const createProperty = async (req, res, next) => {
   try {
-    console.log('create property')
-    // console.log('req file is: ', req.files)
-
-    // console.log('req photo is: ', req.files['photo'])
-
     const { userId } = req
     const user = await User.findById(userId)
 
@@ -26,12 +21,8 @@ const createProperty = async (req, res, next) => {
       zip
     } = req.body
 
-    console.log('name is: ', name)
     const photoFile = req.files['photo'] ? req.files['photo'][0] : null
     const propertyFiles = req.files['files']
-
-    console.log('photo file is: ', photoFile)
-    console.log('property files are: ', propertyFiles)
 
     let photo = null
     let files = null
@@ -79,12 +70,12 @@ const createProperty = async (req, res, next) => {
 
     res.status(201).json(savedProperty)
   } catch (error) {
-    console.log('error is: ', error)
-    if (error.message.includes('E11000')) {
-      const error = new Error('cannot repeat property name')
-      error.name = 'NotAcceptable'
-      return next(error)
-    }
+    // console.log('error is: ', error)
+    // if (error.message.includes('E11000')) {
+    //   const error = new Error('cannot repeat property name')
+    //   error.name = 'NotAcceptable'
+    //   return next(error)
+    // }
     next(error)
   }
 }
