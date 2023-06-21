@@ -14,9 +14,26 @@ const multer = Multer({
 })
 
 // Upload the file to Google Cloud Storage
-const uploadToGCS = async (file, folder) => {
+const uploadPhotoToGCS = async (file, userId, propertyName) => {
   return new Promise((resolve, reject) => {
-    const folderPath = `${folder}/`
+    const folderPath = `${userId}/properties/${propertyName}/photos/`
+    const newFileName = `${folderPath}${Date.now()}-${file.originalname}`
+    const blob = bucket.file(newFileName)
+    const blobStream = blob.createWriteStream()
+
+    blobStream.on('error', (err) => reject(err))
+
+    blobStream.on('finish', () => {
+      resolve(newFileName)
+    })
+
+    blobStream.end(file.buffer)
+  })
+}
+
+const uploadFilesToGCS = async (file, userId, propertyName) => {
+  return new Promise((resolve, reject) => {
+    const folderPath = `${userId}/properties/${propertyName}/files/`
     const newFileName = `${folderPath}${Date.now()}-${file.originalname}`
     const blob = bucket.file(newFileName)
     const blobStream = blob.createWriteStream()
@@ -38,6 +55,7 @@ const loadFileFromGCS = async (fileName) => {
     expires: Date.now() + 1000 * 60 * 60
   }
 
+  // const [name] = await storage.bucket(bucketName).file(fileName)
   const [url] = await storage
     .bucket(bucketName)
     .file(fileName)
@@ -75,10 +93,21 @@ const deleteFileFromGCS = async (fileName) => {
   })
 }
 
+const deleteFolderFromGCS = async (folderPath) => {
+  const [files] = await storage.bucket(bucketName).getFiles({ prefix: folderPath })
+
+  const deletionPromises = files.map((file) => file.delete())
+  await Promise.all(deletionPromises)
+
+  return storage.bucket(bucketName).deleteFiles({ prefix: folderPath })
+}
+
 module.exports = {
   multer,
-  uploadToGCS,
+  uploadPhotoToGCS,
+  uploadFilesToGCS,
   loadFileFromGCS,
   updateFileFromGCS,
-  deleteFileFromGCS
+  deleteFileFromGCS,
+  deleteFolderFromGCS
 }

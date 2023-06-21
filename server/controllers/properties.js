@@ -1,18 +1,12 @@
+/* eslint-disable dot-notation */
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
-const { uploadToGCS, loadFileFromGCS, deleteFileFromGCS, updateFileFromGCS } = require('../middleware/googleCloud')
+const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFolderFromGCS, updateFileFromGCS } = require('../middleware/googleCloud')
 
 const createProperty = async (req, res, next) => {
   try {
-    console.log('create property')
-    console.log('req file is: ', req.file)
-
     const { userId } = req
     const user = await User.findById(userId)
-
-    const photo = req.file ? await uploadToGCS(req.file, userId) : null
-
-    console.log('photo URL', photo)
 
     const {
       name,
@@ -27,6 +21,26 @@ const createProperty = async (req, res, next) => {
       zip
     } = req.body
 
+    const photoFile = req.files['photo'] ? req.files['photo'][0] : null
+    const propertyFiles = req.files['files']
+
+    let photo = null
+    let files = null
+
+    if (photoFile) {
+      photo = await uploadPhotoToGCS(photoFile, userId, name)
+    }
+
+    if (propertyFiles) {
+      // files = propertyFiles ? await uploadFilesToGCS(propertyFiles, userId, name) : null
+      files = await Promise.all(propertyFiles.map(async (file) => {
+        return await uploadFilesToGCS(file, userId, name)
+      }))
+    }
+
+    console.log('photo path folder', photo)
+    console.log('files path folder', files)
+
     const property = {
       name,
       currency,
@@ -38,7 +52,8 @@ const createProperty = async (req, res, next) => {
       country,
       address,
       zip,
-      photo
+      photo,
+      files
     }
 
     const newProperty = new Property({
@@ -73,6 +88,12 @@ const getAllUserProperties = async (req, res, next) => {
         property.photo = await loadFileFromGCS(property.photo)
       } else {
         property.photo = 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+      }
+
+      if (property.files) {
+        property.files = await Promise.all(property.files.map(async (file) => {
+          return await loadFileFromGCS(file)
+        }))
       }
     })
 
@@ -154,18 +175,25 @@ const deleteProperty = async (req, res, next) => {
   const { id } = req.params
 
   try {
+    const { userId } = req
+    const user = await User.findById(userId)
     const propertyToDelete = await Property.findByIdAndDelete(id)
 
     if (propertyToDelete.photo) {
-      await deleteFileFromGCS(propertyToDelete.photo)
+      const folderPath = `${userId}/properties/${propertyToDelete.name}/`
+      await deleteFolderFromGCS(folderPath)
     }
 
-    const { userId } = req
-    const user = await User.findById(userId)
+    console.log('assets before: ', user.assets)
+
+    console.log('property id: ', id)
+    console.log('property id type: ', typeof id)
 
     const updatedAssets = user.assets.filter(asset => asset.toString() !== id)
     user.assets = updatedAssets
     await user.save()
+
+    console.log('assets after: ', user.assets)
 
     res.status(204).end()
   } catch (error) {

@@ -2,17 +2,11 @@ import Properties from '../index.jsx'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useGetPropertiesQuery } from '../services/propertiesApiSlice'
 import MapChart from '../../../components/HoverMap.jsx'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const Property = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-
-  const files = ['File1.pdf', 'File2.pdf', 'File3.pdf', 'File4.docx', 'File5.xlsx'] // demo array
-  const [currentPage, setCurrentPage] = useState(0) // page state
-  const itemsPerPage = 2 // items per page
-
-  let content
 
   const {
     data: properties,
@@ -25,6 +19,33 @@ const Property = () => {
     refetchOnFocus: false,
     pollingInterval: 20000
   })
+
+  // const files = ['File1.pdf', 'File2.pdf', 'File3.pdf', 'File4.docx', 'File5.xlsx'] // demo array
+  const [files, setFiles] = useState([])
+  const [currentPage, setCurrentPage] = useState(0) // page state
+  const [downloadUrl, setDownloadUrl] = useState(null)
+  const itemsPerPage = 2 // items per page
+
+  let content
+  let property
+
+  const handleDownload = async (fileUrl) => {
+    setDownloadUrl(fileUrl)
+  }
+
+  useEffect(() => {
+    setFiles(property?.files)
+  }, [property, id, properties])
+
+  useEffect(() => {
+    if (downloadUrl) {
+      const link = document.createElement('a')
+      link.href = downloadUrl
+      link.target = '_blank'
+      link.click()
+      setDownloadUrl(null)
+    }
+  }, [downloadUrl])
 
   if (isLoading) {
     return (
@@ -58,7 +79,7 @@ const Property = () => {
   }
 
   if (isSuccess) {
-    const property = properties?.find(property => property.id === id)
+    property = properties?.find(property => property.id === id)
 
     const handleNext = () => {
       setCurrentPage((currentPage) => currentPage + 1)
@@ -68,6 +89,14 @@ const Property = () => {
       setCurrentPage((currentPage) => currentPage - 1)
     }
 
+    const getFileNameFromUrl = (url) => {
+      const decodedUrl = decodeURIComponent(url)
+      const fileNameRegex = /\/\d+-([^/]+)(?=\?)/
+      const matches = decodedUrl.match(fileNameRegex)
+      const fileName = matches[1]
+      return fileName
+    }
+
     if (property) {
       const handleEdit = () => navigate('./edit')
       const handleDelete = () => navigate('./delete')
@@ -75,7 +104,7 @@ const Property = () => {
       content = (
         <Properties backTo='/investments/properties'>
           <div className='flex justify-between items-center mb-5 md:mb-10'>
-            <h1 className='text-3xl md:text-4xl font-bold text-slate-800 dark:text-white'>{property.name}</h1>
+            <h1 className='text-3xl md:text-4xl font-bold text-slate-800 dark:text-white'>{property?.name}</h1>
             <div className='flex flex-row gap-2 md:gap-4 bg-slate-300 dark:bg-slate-800 p-2 rounded-full'>
               <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold p-3 rounded-full' onClick={handleEdit}>
                 <svg className='w-4 h-4 md:w-6 md:h-6' fill='none' stroke='currentColor' strokeWidth='1.5' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' aria-hidden='true'>
@@ -94,7 +123,7 @@ const Property = () => {
               {/* <img src={property.image} alt='' className='mb-3 w-full rounded-xl object-cover' style={{ aspectRatio: '1/1' }} /> */}
               <div className='mb-3 h-full w-full rounded-lg overflow-hidden'>
                 <img
-                  src={property.photo}
+                  src={property?.photo}
                   className='object-cover w-full h-full transform transition-all duration-500 hover:scale-110'
                 />
               </div>
@@ -105,19 +134,19 @@ const Property = () => {
                   <div className='grid grid-cols-2 grid-rows-2 gap-4 xl:gap-8 text-slate-700 dark:text-white'>
                     <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Purchased</h2>
-                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{new Date(property.date).toLocaleDateString()}</h3>
+                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{new Date(property?.date).toLocaleDateString()}</h3>
                     </div>
                     <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Value</h2>
-                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{property.currency} {property.value}</h3>
+                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{property?.currency} {property?.value}</h3>
                     </div>
                     <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Type</h2>
-                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{property.type}</h3>
+                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{property?.type}</h3>
                     </div>
                     <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Tax Status</h2>
-                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{property.taxStatus}</h3>
+                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{property?.taxStatus}</h3>
                     </div>
                   </div>
                   <div className='py-2 px-4 mt-4 xl:mt-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg'>
@@ -132,10 +161,10 @@ const Property = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {files.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage).map((file, index) => (
-                            <tr key={index} className={(index + currentPage * itemsPerPage) % 2 === 0 ? 'bg-white border-b dark:bg-slate-800 dark:border-slate-700' : 'border-b bg-slate-50 dark:bg-slate-800 dark:border-slate-700'}>
-                              <th scope='row' className='px-6 py-4 font-medium text-slate-900 whitespace-nowrap dark:text-white'>
-                                {file}
+                          {files?.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage).map((file, index) => (
+                            <tr key={index} className={(index + currentPage * itemsPerPage) % 2 === 0 ? 'cursor-pointer bg-white border-b dark:bg-slate-800 dark:border-slate-700' : 'cursor-pointer border-b bg-slate-50 dark:bg-slate-800 dark:border-slate-700'}>
+                              <th onClick={() => handleDownload(file)} scope='row' className='px-6 py-4 font-medium text-slate-900 whitespace-nowrap dark:text-white'>
+                                {getFileNameFromUrl(file)}
                               </th>
                             </tr>
                           ))}
@@ -144,7 +173,7 @@ const Property = () => {
                     </div>
                     <div className='p-3'>
                       {currentPage > 0 && <button onClick={handlePrevious} className='mr-4'>❮ Previous</button>}
-                      {(currentPage + 1) * itemsPerPage < files.length && <button onClick={handleNext}>Next ❯</button>}
+                      {(currentPage + 1) * itemsPerPage < files?.length && <button onClick={handleNext}>Next ❯</button>}
                     </div>
                   </div>
                 </div>
@@ -165,10 +194,10 @@ const Property = () => {
             <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
               <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg h-full flex flex-col justify-center'>
                 <p className='text-xl lg:text-2xl px-4 mb-2'>Address</p>
-                <p className='text-md lg:text-lg px-4'>{property.address}</p>
-                <p className='text-md lg:text-lg px-4'>{property.city}</p>
-                <p className='text-md lg:text-lg px-4'>{property.zip}</p>
-                <p className='text-md lg:text-lg px-4'>{property.country}</p>
+                <p className='text-md lg:text-lg px-4'>{property?.address}</p>
+                <p className='text-md lg:text-lg px-4'>{property?.city}</p>
+                <p className='text-md lg:text-lg px-4'>{property?.zip}</p>
+                <p className='text-md lg:text-lg px-4'>{property?.country}</p>
               </div>
             </div>
             <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
