@@ -2,17 +2,25 @@ import Properties from '../index.jsx'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useGetPropertiesQuery } from '../services/propertiesApiSlice'
 import MapChart from '../../../components/HoverMap.jsx'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const Property = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const files = ['File1.pdf', 'File2.pdf', 'File3.pdf', 'File4.docx', 'File5.xlsx'] // demo array
+  // const files = ['File1.pdf', 'File2.pdf', 'File3.pdf', 'File4.docx', 'File5.xlsx'] // demo array
+  const [files, setFiles] = useState([])
   const [currentPage, setCurrentPage] = useState(0) // page state
   const itemsPerPage = 2 // items per page
 
   let content
+  let property
+
+  useEffect(() => {
+    console.log('property files: ', property.files)
+    console.log('property file length: ', property.files.length)
+    setFiles(property.files)
+  }, [property])
 
   const {
     data: properties,
@@ -58,7 +66,7 @@ const Property = () => {
   }
 
   if (isSuccess) {
-    const property = properties?.find(property => property.id === id)
+    property = properties?.find(property => property.id === id)
 
     const handleNext = () => {
       setCurrentPage((currentPage) => currentPage + 1)

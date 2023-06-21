@@ -89,6 +89,12 @@ const getAllUserProperties = async (req, res, next) => {
       } else {
         property.photo = 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
       }
+
+      if (property.files) {
+        property.files = await Promise.all(property.files.map(async (file) => {
+          return await loadFileFromGCS(file)
+        }))
+      }
     })
 
     // Wait for all the promises to complete
