@@ -29,7 +29,7 @@ const Property = () => {
   let content
   let property
 
-  const handleDownload = (fileUrl) => {
+  const handleDownload = async (fileUrl) => {
     setDownloadUrl(fileUrl)
   }
 
@@ -39,16 +39,10 @@ const Property = () => {
 
   useEffect(() => {
     if (downloadUrl) {
-      // Create a temporary anchor element
       const link = document.createElement('a')
       link.href = downloadUrl
-      // link.download = getFileNameFromUrl(downloadUrl) // Get the file name from the URL
       link.target = '_blank'
-
-      // Simulate a click on the anchor element to start the download
       link.click()
-
-      // Clean up by resetting the download URL
       setDownloadUrl(null)
     }
   }, [downloadUrl])
