@@ -75,9 +75,10 @@ const Property = () => {
     }
 
     const getFileNameFromUrl = (url) => {
-      const urlParts = url.split('/')
-      const fileNameWithParams = urlParts[urlParts.length - 1]
-      const fileName = fileNameWithParams.split('?')[0]
+      const decodedUrl = decodeURIComponent(url)
+      const fileNameRegex = /\/\d+-([^/]+)(?=\?)/
+      const matches = decodedUrl.match(fileNameRegex)
+      const fileName = matches[1]
       return fileName
     }
 
