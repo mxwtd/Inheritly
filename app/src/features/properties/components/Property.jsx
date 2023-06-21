@@ -23,14 +23,35 @@ const Property = () => {
   // const files = ['File1.pdf', 'File2.pdf', 'File3.pdf', 'File4.docx', 'File5.xlsx'] // demo array
   const [files, setFiles] = useState([])
   const [currentPage, setCurrentPage] = useState(0) // page state
+  const [downloadUrl, setDownloadUrl] = useState(null)
   const itemsPerPage = 2 // items per page
 
   let content
   let property
 
+  const handleDownload = (fileUrl) => {
+    setDownloadUrl(fileUrl)
+  }
+
   useEffect(() => {
     setFiles(property?.files)
   }, [property, id, properties])
+
+  useEffect(() => {
+    if (downloadUrl) {
+      // Create a temporary anchor element
+      const link = document.createElement('a')
+      link.href = downloadUrl
+      // link.download = getFileNameFromUrl(downloadUrl) // Get the file name from the URL
+      link.target = '_blank'
+
+      // Simulate a click on the anchor element to start the download
+      link.click()
+
+      // Clean up by resetting the download URL
+      setDownloadUrl(null)
+    }
+  }, [downloadUrl])
 
   if (isLoading) {
     return (
@@ -147,8 +168,8 @@ const Property = () => {
                         </thead>
                         <tbody>
                           {files?.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage).map((file, index) => (
-                            <tr key={index} className={(index + currentPage * itemsPerPage) % 2 === 0 ? 'bg-white border-b dark:bg-slate-800 dark:border-slate-700' : 'border-b bg-slate-50 dark:bg-slate-800 dark:border-slate-700'}>
-                              <th scope='row' className='px-6 py-4 font-medium text-slate-900 whitespace-nowrap dark:text-white'>
+                            <tr key={index} className={(index + currentPage * itemsPerPage) % 2 === 0 ? 'cursor-pointer bg-white border-b dark:bg-slate-800 dark:border-slate-700' : 'cursor-pointer border-b bg-slate-50 dark:bg-slate-800 dark:border-slate-700'}>
+                              <th onClick={() => handleDownload(file)} scope='row' className='px-6 py-4 font-medium text-slate-900 whitespace-nowrap dark:text-white'>
                                 {getFileNameFromUrl(file)}
                               </th>
                             </tr>
