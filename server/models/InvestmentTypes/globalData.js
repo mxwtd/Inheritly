@@ -16,7 +16,14 @@ const defaultData = {
   description: String,
   photo: String,
   beneficiaryGroup: { type: Schema.Types.ObjectId, ref: 'BeneficiaryGroup' },
-  files: [{ type: String }]
+  files: [{ type: String }],
+  // Add contact info
+  contactInformation: {
+    accountNumber: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: String, required: true },
+    companyAddress: { type: String, required: true }
+  }
 }
 
 module.exports = defaultData

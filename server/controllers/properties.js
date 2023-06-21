@@ -18,7 +18,11 @@ const createProperty = async (req, res, next) => {
       city,
       country,
       address,
-      zip
+      zip,
+      accountNumber,
+      email,
+      phone,
+      companyAddress
     } = req.body
 
     const photoFile = req.files['photo'] ? req.files['photo'][0] : null
@@ -41,6 +45,13 @@ const createProperty = async (req, res, next) => {
     console.log('photo path folder', photo)
     console.log('files path folder', files)
 
+    const contactInformation = {
+      accountNumber,
+      email,
+      phone,
+      companyAddress
+    }
+
     const property = {
       name,
       currency,
@@ -52,6 +63,7 @@ const createProperty = async (req, res, next) => {
       country,
       address,
       zip,
+      contactInformation,
       photo,
       files
     }

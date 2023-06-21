@@ -31,6 +31,11 @@ const NewPropertyForm = () => {
   const [photo, setPhoto] = useState(null)
   const [files, setFiles] = useState([]) // changed to array for the file upload
 
+  const [accountNumber, setAccountNumber] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [companyAddress, setCompanyAddress] = useState('')
+
   // const userInformationData = useSelector(userInformation)
 
   useEffect(() => {
@@ -48,6 +53,11 @@ const NewPropertyForm = () => {
       setPhoto('')
       setFiles([]) // reset files array
 
+      setAccountNumber('')
+      setEmail('')
+      setPhone('')
+      setCompanyAddress('')
+
       navigate('/investments/properties')
     }
   }, [isSuccess, navigate])
@@ -62,6 +72,10 @@ const NewPropertyForm = () => {
   const onCityChanged = e => setCity(e.target.value)
   const onAddressChanged = e => setAddress(e.target.value)
   const onZipChanged = e => setZip(e.target.value)
+  const onAccountNumberChanged = e => setAccountNumber(e.target.value)
+  const onEmailChanged = e => setEmail(e.target.value)
+  const onPhoneChanged = e => setPhone(e.target.value)
+  const onCompanyAddressChanged = e => setCompanyAddress(e.target.value)
   const onFilesChanged = (event) => {
     setFiles(prevFiles => [...prevFiles, ...Array.from(event.target.files)])
   }
@@ -355,6 +369,65 @@ const NewPropertyForm = () => {
                   placeholder='Country Name'
                   className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                   onChange={onCountryChanged}
+                  required=''
+                />
+              </div>
+            </div>
+          </div>
+          <h3 className='text-xl font-semibold text-slate-800 dark:text-slate-100 text-center'>Contact Information</h3>
+          <div className='md:flex md:justify-between items-center bg-slate-100 dark:bg-slate-900 rounded-2xl p-5'>
+            <div className='md:w-1/2 md:pr-2'>
+              <div className='mb-3'>
+                <label htmlFor='accountNumber' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Account number</label>
+                <input
+                  type='text'
+                  value={accountNumber}
+                  name='accountNumber'
+                  id='accountNumber'
+                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  placeholder='E.g. xxxxxxx99'
+                  onChange={onAccountNumberChanged}
+                  required=''
+                />
+              </div>
+              <div>
+                <label htmlFor='email' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Email</label>
+                <input
+                  type='email'
+                  value={email}
+                  name='email'
+                  id='email'
+                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  placeholder='E.g. example@inheritly.com'
+                  onChange={onEmailChanged}
+                  required=''
+                />
+              </div>
+            </div>
+            <div className='md:w-1/2 md:pl-2'>
+              <div className='mb-3'>
+                <label htmlFor='phone' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Phone</label>
+                <input
+                  type='text'
+                  value={phone}
+                  name='phone'
+                  id='phone'
+                  placeholder='E.g. +44 1234 567890'
+                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  onChange={onPhoneChanged}
+                  required=''
+                />
+              </div>
+              <div>
+                <label htmlFor='companyAddress' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Company Address</label>
+                <input
+                  type='companyAddress'
+                  value={companyAddress}
+                  name='companyAddress'
+                  id='companyAddress'
+                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  placeholder='Company Address'
+                  onChange={onCompanyAddressChanged}
                   required=''
                 />
               </div>
