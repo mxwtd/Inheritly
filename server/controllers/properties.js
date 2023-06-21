@@ -70,12 +70,6 @@ const createProperty = async (req, res, next) => {
 
     res.status(201).json(savedProperty)
   } catch (error) {
-    // console.log('error is: ', error)
-    // if (error.message.includes('E11000')) {
-    //   const error = new Error('cannot repeat property name')
-    //   error.name = 'NotAcceptable'
-    //   return next(error)
-    // }
     next(error)
   }
 }
@@ -184,9 +178,16 @@ const deleteProperty = async (req, res, next) => {
       await deleteFolderFromGCS(folderPath)
     }
 
+    console.log('assets before: ', user.assets)
+
+    console.log('property id: ', id)
+    console.log('property id type: ', typeof id)
+
     const updatedAssets = user.assets.filter(asset => asset.toString() !== id)
     user.assets = updatedAssets
     await user.save()
+
+    console.log('assets after: ', user.assets)
 
     res.status(204).end()
   } catch (error) {
