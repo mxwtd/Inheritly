@@ -60,8 +60,11 @@ const PropertiesList = () => {
       : null
 
     content = (
-      <Properties title='Properties' backTo='/investments'>
-        <Link to='./new'><ModalAddButton /></Link>
+      <Properties backTo='/investments'>
+        <div className='flex justify-between my-8'>
+          <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Properties</h1>
+          <Link to='./new'><ModalAddButton /></Link>
+        </div>
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 my-4 '>
           {listContent}
         </div>
