@@ -20,6 +20,19 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: 'Property', id: 'LIST' }]
       }
     }),
+    getPropertyById: builder.query({
+      query: (id) => ({
+        url: `/properties/${id}`
+      }),
+      // keepUnusedDataFor: 5,
+      providesTags: (result, error, arg) => {
+        if (result) {
+          return [{ type: 'Property', id: result._id }]
+        } else if (error) {
+          return [{ type: 'Property', id: arg.id }]
+        } else return [{ type: 'Property', id: arg.id }]
+      }
+    }),
     addNewProperty: builder.mutation({
       query: propertyData => {
         return {
@@ -56,6 +69,7 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetPropertiesQuery,
+  useGetPropertyByIdQuery,
   useAddNewPropertyMutation,
   useUpdatePropertyMutation,
   useDeletePropertyMutation

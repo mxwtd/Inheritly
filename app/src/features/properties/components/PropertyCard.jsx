@@ -1,26 +1,13 @@
-// import { useNavigate } from 'react-router-dom'
-
-// import { useSelector } from 'react-redux'
-// import { selectPropertyById } from './../services/propertiesApiSlice'
 import { Link } from 'react-router-dom'
 
 const PropertyCard = ({ property }) => {
-  // const property = useSelector(state => selectPropertyById(state, propertyId))
-
-  // const navigate = useNavigate()
-
-  // if (property) {
-  // const handleEdit = () => navigate(`/dash/properties/${propertyId}`)
-
   return (
     <>
-      {/* <div key={property.id} className='bg-white dark:bg-gray-800 shadow-lg rounded-lg' onClick={handleEdit}> */}
       <Link to={`./${property.id}`}>
         <div key={property.id} className='bg-white dark:bg-slate-800 shadow-lg rounded-xl'>
           <div className='z-5 relative flex flex-col rounded-xl bg-white dark:bg-slate-800 bg-clip-border shadow-3xl shadow-shadow-500 w-full p-4'>
             <div className='h-full w-full'>
               <div className='relative w-full'>
-                {/* <img src={property.image} alt='' className='mb-3 w-full rounded-xl object-cover' style={{ aspectRatio: '1/1' }} /> */}
                 <div className='mb-3 w-full rounded-lg overflow-hidden' style={{ aspectRatio: '1/1' }}>
                   <img
                     src={property.photo}
@@ -46,6 +33,5 @@ const PropertyCard = ({ property }) => {
       </Link>
     </>
   )
-  // } else return null
 }
 export default PropertyCard
