@@ -2,14 +2,14 @@ import Properties from '../index'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 
-import { useDeletePropertyMutation, useGetPropertiesQuery } from '../services/propertiesApiSlice'
+import { useDeletePropertyMutation, useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
 
 const DeleteProperty = () => {
   const { id } = useParams()
 
   const {
-    data: properties
-  } = useGetPropertiesQuery('propertiesList', {
+    data: property
+  } = useGetPropertyByIdQuery(id, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
     pollingInterval: 20000
@@ -28,8 +28,6 @@ const DeleteProperty = () => {
       navigate('/investments/properties/')
     }
   }, [id, isSuccess, navigate])
-
-  const property = properties?.find(property => property.id === id)
 
   const handleConfirm = async (e) => {
     e.preventDefault()
