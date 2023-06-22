@@ -202,10 +202,10 @@ const NewPropertyForm = () => {
           <div className='md:flex md:justify-between items-center bg-slate-100 dark:bg-slate-900 rounded-2xl p-5'>
             <div className='md:w-2/3 md:mr-12'>
               <label htmlFor='photo' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Photo</label>
-              <label htmlFor='photo' className='flex flex-col items-center justify-center w-full h-44 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-200 dark:hover:bg-bray-800 dark:bg-slate-700 hover:bg-slate-300 dark:text-white  dark:border-slate-600 dark:hover:border-slate-500 dark:hover:bg-slate-600'>
+              <label htmlFor='photo' className='flex flex-col items-center justify-center w-full h-60 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-200 dark:hover:bg-bray-800 dark:bg-slate-700 hover:bg-slate-300 dark:text-white  dark:border-slate-600 dark:hover:border-slate-500 dark:hover:bg-slate-600'>
                 {photo
                   ? (
-                    <img src={photo} alt='Selected' className='object-cover w-full h-44 rounded-lg' />
+                    <img src={photo} alt='Selected' className='object-cover w-full h-60 rounded-lg' />
                     )
                   : (
                     <div className='flex flex-col items-center justify-center pt-5 pb-6'>
@@ -213,7 +213,7 @@ const NewPropertyForm = () => {
                         <path strokeLinecap='round' strokeLinejoin='round' d='M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z' />
                       </svg>
                       <p className='mb-2 text-sm text-slate-500 dark:text-slate-400'><span className='font-semibold'>Click to upload</span> or drag and drop</p>
-                      <p className='text-xs text-slate-500 dark:text-slate-400'>PDF, PNG, JPG or GIF</p>
+                      <p className='text-xs text-slate-500 dark:text-slate-400'>PDF, PNG or JPG</p>
                     </div>
                     )}
                 <input
@@ -284,147 +284,152 @@ const NewPropertyForm = () => {
               </div>
             </div>
           </div>
-          <div className='md:flex md:justify-between'>
-            <div className='md:w-1/2 md:pr-2'>
-              <label htmlFor='date' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Date Of Purchase</label>
-              <input
-                type='date'
-                value={date}
-                name='date'
-                id='date'
-                className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                onChange={onDateChanged}
-                required=''
-              />
+          <div className='bg-slate-100 dark:bg-slate-900 rounded-2xl p-5'>
+            <h3 className='text-xl font-semibold text-slate-800 dark:text-slate-100 text-left mb-2'>Property Information</h3>
+            <div className='md:flex md:justify-between'>
+              <div className='md:w-1/2 md:pr-2 mt-2'>
+                <label htmlFor='date' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Date Of Purchase</label>
+                <input
+                  type='date'
+                  value={date}
+                  name='date'
+                  id='date'
+                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  onChange={onDateChanged}
+                  required=''
+                />
+              </div>
+              <div className='md:w-1/2 md:pl-2 mt-2'>
+                <label htmlFor='taxStatus' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Tax Status</label>
+                <input
+                  type='taxStatus'
+                  value={taxStatus}
+                  name='taxStatus'
+                  id='taxStatus'
+                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  placeholder='E.g. Taxable, Tax Free, etc.'
+                  onChange={onTaxStatusChanged}
+                  required=''
+                />
+              </div>
             </div>
-            <div className='md:w-1/2 md:pl-2'>
-              <label htmlFor='taxStatus' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Tax Status</label>
-              <input
-                type='taxStatus'
-                value={taxStatus}
-                name='taxStatus'
-                id='taxStatus'
-                className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                placeholder='E.g. Taxable, Tax Free, etc.'
-                onChange={onTaxStatusChanged}
-                required=''
-              />
+            <div className='md:flex md:justify-between'>
+              <div className='md:w-1/2 md:pr-2 my-4'>
+                <div className='mb-2'>
+                  <label htmlFor='address' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Address</label>
+                  <input
+                    type='address'
+                    value={address}
+                    name='address'
+                    id='address'
+                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    placeholder='Street Address'
+                    onChange={onAddressChanged}
+                    required=''
+                  />
+                </div>
+                <div className='mt-3'>
+                  <label htmlFor='city' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>City</label>
+                  <input
+                    type='city'
+                    value={city}
+                    name='city'
+                    id='city'
+                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    placeholder='City Name'
+                    onChange={onCityChanged}
+                    required=''
+                  />
+                </div>
+              </div>
+              <div className='md:w-1/2 md:pl-2 my-4'>
+                <div className='mb-2'>
+                  <label htmlFor='zip' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Postcode / Zip</label>
+                  <input
+                    type='zip'
+                    value={zip}
+                    name='zip'
+                    id='zip'
+                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    placeholder='Postcode / Zip Code'
+                    onChange={onZipChanged}
+                    required=''
+                  />
+                </div>
+                <div className='mt-3'>
+                  <label htmlFor='country' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Country</label>
+                  <input
+                    type='text'
+                    value={country}
+                    name='country'
+                    id='country'
+                    placeholder='Country Name'
+                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    onChange={onCountryChanged}
+                    required=''
+                  />
+                </div>
+              </div>
             </div>
           </div>
-          <div className='md:flex md:justify-between'>
-            <div className='md:w-1/2 md:pr-2'>
-              <div className='mb-2'>
-                <label htmlFor='address' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Address</label>
-                <input
-                  type='address'
-                  value={address}
-                  name='address'
-                  id='address'
-                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  placeholder='Street Address'
-                  onChange={onAddressChanged}
-                  required=''
-                />
+          <div className='bg-slate-100 dark:bg-slate-900 rounded-2xl p-5'>
+            <h3 className='text-xl font-semibold text-slate-800 dark:text-slate-100 text-left mb-2'>Contact Information</h3>
+            <div className='md:flex md:justify-between items-center'>
+              <div className='md:w-1/2 md:pr-2'>
+                <div className='mb-3'>
+                  <label htmlFor='accountNumber' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Account number</label>
+                  <input
+                    type='text'
+                    value={accountNumber}
+                    name='accountNumber'
+                    id='accountNumber'
+                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    placeholder='E.g. xxxxxxx99'
+                    onChange={onAccountNumberChanged}
+                    required=''
+                  />
+                </div>
+                <div>
+                  <label htmlFor='email' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Email</label>
+                  <input
+                    type='email'
+                    value={email}
+                    name='email'
+                    id='email'
+                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    placeholder='E.g. example@inheritly.com'
+                    onChange={onEmailChanged}
+                    required=''
+                  />
+                </div>
               </div>
-              <div>
-                <label htmlFor='city' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>City</label>
-                <input
-                  type='city'
-                  value={city}
-                  name='city'
-                  id='city'
-                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  placeholder='City Name'
-                  onChange={onCityChanged}
-                  required=''
-                />
-              </div>
-            </div>
-            <div className='md:w-1/2 md:pl-2'>
-              <div className='mb-2'>
-                <label htmlFor='zip' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Postcode / Zip</label>
-                <input
-                  type='zip'
-                  value={zip}
-                  name='zip'
-                  id='zip'
-                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  placeholder='Postcode / Zip Code'
-                  onChange={onZipChanged}
-                  required=''
-                />
-              </div>
-              <div>
-                <label htmlFor='country' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Country</label>
-                <input
-                  type='text'
-                  value={country}
-                  name='country'
-                  id='country'
-                  placeholder='Country Name'
-                  className='bg-slate-100 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  onChange={onCountryChanged}
-                  required=''
-                />
-              </div>
-            </div>
-          </div>
-          <h3 className='text-xl font-semibold text-slate-800 dark:text-slate-100 text-center'>Contact Information</h3>
-          <div className='md:flex md:justify-between items-center bg-slate-100 dark:bg-slate-900 rounded-2xl p-5'>
-            <div className='md:w-1/2 md:pr-2'>
-              <div className='mb-3'>
-                <label htmlFor='accountNumber' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Account number</label>
-                <input
-                  type='text'
-                  value={accountNumber}
-                  name='accountNumber'
-                  id='accountNumber'
-                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  placeholder='E.g. xxxxxxx99'
-                  onChange={onAccountNumberChanged}
-                  required=''
-                />
-              </div>
-              <div>
-                <label htmlFor='email' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Email</label>
-                <input
-                  type='email'
-                  value={email}
-                  name='email'
-                  id='email'
-                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  placeholder='E.g. example@inheritly.com'
-                  onChange={onEmailChanged}
-                  required=''
-                />
-              </div>
-            </div>
-            <div className='md:w-1/2 md:pl-2'>
-              <div className='mb-3'>
-                <label htmlFor='phone' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Phone</label>
-                <input
-                  type='text'
-                  value={phone}
-                  name='phone'
-                  id='phone'
-                  placeholder='E.g. +44 1234 567890'
-                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  onChange={onPhoneChanged}
-                  required=''
-                />
-              </div>
-              <div>
-                <label htmlFor='companyAddress' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Company Address</label>
-                <input
-                  type='companyAddress'
-                  value={companyAddress}
-                  name='companyAddress'
-                  id='companyAddress'
-                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  placeholder='Company Address'
-                  onChange={onCompanyAddressChanged}
-                  required=''
-                />
+              <div className='md:w-1/2 md:pl-2'>
+                <div className='mb-3'>
+                  <label htmlFor='phone' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Phone</label>
+                  <input
+                    type='text'
+                    value={phone}
+                    name='phone'
+                    id='phone'
+                    placeholder='E.g. +44 1234 567890'
+                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    onChange={onPhoneChanged}
+                    required=''
+                  />
+                </div>
+                <div>
+                  <label htmlFor='companyAddress' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Company Address</label>
+                  <input
+                    type='companyAddress'
+                    value={companyAddress}
+                    name='companyAddress'
+                    id='companyAddress'
+                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    placeholder='Company Address'
+                    onChange={onCompanyAddressChanged}
+                    required=''
+                  />
+                </div>
               </div>
             </div>
           </div>
