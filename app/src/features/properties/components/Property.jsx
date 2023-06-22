@@ -77,8 +77,6 @@ const Property = () => {
   }
 
   if (isSuccess) {
-    // property = properties?.find(property => property.id === id)
-
     const handleNext = () => {
       setCurrentPage((currentPage) => currentPage + 1)
     }

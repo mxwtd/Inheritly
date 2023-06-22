@@ -9,7 +9,6 @@ propertyRouter.use(verifyJWT)
 
 propertyRouter.route('/api/properties')
   .get(propertiesController.getAllUserProperties)
-  // .post(multer.single('photo'), propertiesController.createProperty)
   .post(multer.fields([{ name: 'photo', maxCount: 1 }, { name: 'files', maxCount: 10 }]), propertiesController.createProperty)
 
 propertyRouter.route('/api/properties/:id')

@@ -18,15 +18,14 @@ const AssetList = () => {
             <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Your {'{'} Assets {'}'}</h1>
           </div>
           <div>
-            {/* Modal overlay */}
+
             {isModalOpen &&
               <div className='fixed inset-0 bg-black bg-opacity-70 z-50' />}
-            {/* Main modal */}
+
             <div id='defaultModal' className={`fixed inset-0 z-50 flex items-center justify-center w-full h-full ${isModalOpen ? '' : 'hidden'}`}>
               <div className='relative z-40 p-4 w-full max-w-2xl md:h-auto bg-white rounded-lg shadow dark:bg-slate-800 sm:p-5 mx-8'>
-                {/* Modal content */}
+
                 <div className='relative p-4 rounded-lg dark:bg-slate-800 sm:p-5'>
-                  {/* Modal header */}
                   <div className='flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-slate-600'>
                     <h2 className='text-xl font-semibold text-slate-900 dark:text-white'>
                       Add Investment
@@ -35,7 +34,6 @@ const AssetList = () => {
                       <ModalCloseButton onClick={() => setIsModalOpen(false)} />
                     </div>
                   </div>
-                  {/* Modal body */}
                   <form action='#'>
                     <div className='grid gap-4 mb-4 sm:grid-cols-2'>
                       <div>

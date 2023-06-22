@@ -1,4 +1,3 @@
-// import { useSelector } from 'react'
 import NewPropertyForm from './NewPropertyForm'
 
 const NewProperty = () => {
