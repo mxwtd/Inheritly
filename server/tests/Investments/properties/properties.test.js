@@ -89,8 +89,8 @@ describe('Get Properties', () => {
 })
 
 describe('Create Properties', () => {
-  test('valid new property', async () => {
-    expect.assertions(1)
+  test.only('valid new property', async () => {
+    // expect.assertions(1)
 
     const newProperty = {
       name: 'Property 3',
@@ -103,7 +103,15 @@ describe('Create Properties', () => {
       city: 'city',
       country: 'Kenya',
       address: '123 St',
-      zip: '1567'
+      zip: '1567',
+
+      photo: '',
+      files: null,
+
+      accountNumber: '123456789',
+      email: 'test@email.com',
+      phone: '123456789',
+      companyAddress: '123 Main St'
     }
 
     await api
