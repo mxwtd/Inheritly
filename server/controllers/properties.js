@@ -5,6 +5,7 @@ const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFolderFromGCS
 
 const createProperty = async (req, res, next) => {
   try {
+    console.log('create property')
     const { userId } = req
     const user = await User.findById(userId)
 
@@ -25,14 +26,19 @@ const createProperty = async (req, res, next) => {
       companyAddress
     } = req.body
 
-    const photoFile = req.files['photo'] ? req.files['photo'][0] : null
-    const propertyFiles = req.files['files']
+    let photoFile = null
+    let propertyFiles = null
+
+    if (req.files) {
+      photoFile = req.files['photo'] ? req.files['photo'][0] : null
+      propertyFiles = req.files['files'] ? req.files['files'] : null
+    }
 
     let photo = null
     let files = null
 
     if (photoFile) {
-      photo = await uploadPhotoToGCS(photoFile, userId, name)
+      photo = await uploadPhotoToGCS(photoFile, userId, name, 'properties')
     }
 
     if (propertyFiles) {
@@ -87,7 +93,6 @@ const createProperty = async (req, res, next) => {
 }
 
 const getAllUserProperties = async (req, res, next) => {
-  // Get the user ID from the request body
   const { userId } = req
 
   try {

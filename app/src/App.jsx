@@ -24,6 +24,12 @@ import NewProperty from './features/properties/components/NewProperty'
 import EditProperty from './features/properties/components/EditProperty'
 import DeleteProperty from './features/properties/components/DeleteProperty'
 
+import VehiclesList from './features/vehicles/components/VehiclesList'
+import Vehicle from './features/vehicles/components/Vehicle'
+import NewVehicle from './features/vehicles/components/NewVehicle'
+import EditVehicle from './features/vehicles/components/EditVehicle'
+import DeleteVehicle from './features/vehicles/components/DeleteVehicle'
+
 import Error from './pages/Error'
 import Footer from './components/Footer'
 
@@ -58,6 +64,14 @@ const App = () => {
                       <Route path=':id' element={<Property />} />
                       <Route path=':id/edit' element={<EditProperty />} />
                       <Route path=':id/delete' element={<DeleteProperty />} />
+                    </Route>
+
+                    <Route path='vehicles'>
+                      <Route index element={<VehiclesList />} />
+                      <Route path='new' element={<NewVehicle />} />
+                      <Route path=':id' element={<Vehicle />} />
+                      <Route path=':id/edit' element={<EditVehicle />} />
+                      <Route path=':id/delete' element={<DeleteVehicle />} />
                     </Route>
                   </Route>
 
