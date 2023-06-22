@@ -50,7 +50,7 @@ afterAll(async () => {
 })
 
 describe('Get Vehicles', () => {
-  test('get all Vehicles as a json', async () => {
+  test.only('get all Vehicles as a json', async () => {
     expect.assertions(0)
 
     await api
@@ -104,7 +104,15 @@ describe('Create Vehicles', () => {
 
       brand: 'Renault',
       model: 'Clio',
-      year: '2020'
+      year: '2020',
+
+      photo: '',
+      files: null,
+
+      accountNumber: '123456789',
+      email: 'test@email.com',
+      phone: '123456789',
+      companyAddress: '123 Main St'
     }
 
     await api

@@ -29,23 +29,16 @@ const createProperty = async (req, res, next) => {
     let photoFile = null
     let propertyFiles = null
 
-    console.log('set photo File')
-
-    console.log('req.files', req.files)
-
     if (req.files) {
       photoFile = req.files['photo'] ? req.files['photo'][0] : null
       propertyFiles = req.files['files'] ? req.files['files'] : null
     }
 
-    console.log('photo file', photoFile)
-
     let photo = null
     let files = null
 
     if (photoFile) {
-      console.log('photo file: ', photoFile)
-      photo = await uploadPhotoToGCS(photoFile, userId, name)
+      photo = await uploadPhotoToGCS(photoFile, userId, name, 'properties')
     }
 
     if (propertyFiles) {
@@ -64,8 +57,6 @@ const createProperty = async (req, res, next) => {
       phone,
       companyAddress
     }
-
-    console.log('photo to save: ', photo)
 
     const property = {
       name,
@@ -102,7 +93,6 @@ const createProperty = async (req, res, next) => {
 }
 
 const getAllUserProperties = async (req, res, next) => {
-  // Get the user ID from the request body
   const { userId } = req
 
   try {

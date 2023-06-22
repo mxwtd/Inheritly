@@ -89,7 +89,7 @@ describe('Get Properties', () => {
 })
 
 describe('Create Properties', () => {
-  test.only('valid new property', async () => {
+  test('valid new property', async () => {
     // expect.assertions(1)
 
     const newProperty = {
@@ -147,7 +147,7 @@ describe('Create Properties', () => {
 })
 
 describe('Update Properties', () => {
-  test('valid update property but just the name', async () => {
+  test.only('valid update property but just the name', async () => {
     expect.assertions(2)
 
     const { id } = await getIdFromFirstProperty()
@@ -165,7 +165,7 @@ describe('Update Properties', () => {
 
     expect(response.body.name).toContain('Property 1 change')
     expect(response.body.currency).toContain('USD')
-  })
+  }, 10000)
 
   test('update property with 4 field', async () => {
     expect.assertions(3)

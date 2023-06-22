@@ -13,7 +13,15 @@ const initialVehicles = async () => {
 
       brand: 'Toyota',
       model: 'Corolla',
-      year: '2010'
+      year: '2010',
+
+      photo: '',
+      files: null,
+
+      accountNumber: '123456789',
+      email: 'test@email.com',
+      phone: '123456789',
+      companyAddress: '123 Main St'
     },
     {
       name: 'Vehicle 2',
@@ -25,7 +33,15 @@ const initialVehicles = async () => {
 
       brand: 'Mercedes',
       model: 'Benz',
-      year: '2020'
+      year: '2020',
+
+      photo: '',
+      files: null,
+
+      accountNumber: '123456789',
+      email: 'test@email.com',
+      phone: '123456789',
+      companyAddress: '123 Main St'
     }
   ]
 }
