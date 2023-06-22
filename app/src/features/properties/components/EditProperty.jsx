@@ -2,14 +2,14 @@ import Properties from '../index'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { useUpdatePropertyMutation, useGetPropertiesQuery } from '../services/propertiesApiSlice'
+import { useUpdatePropertyMutation, useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
 
 const EditProperty = () => {
   const { id } = useParams()
 
   const {
-    data: properties
-  } = useGetPropertiesQuery('propertiesList', {
+    data: property
+  } = useGetPropertyByIdQuery(id, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
     pollingInterval: 20000
@@ -24,31 +24,25 @@ const EditProperty = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (properties) {
-      const property = properties.find((property) => property.id === id)
-
-      if (property) {
-        setName(property.name)
-        setCountry(property.country)
-        setCurrency(property.currency)
-        setDate(formatDate(new Date(property.date)))
-        setValue(property.value)
-        setTaxStatus(property.taxStatus)
-        setType(property.type)
-        setCity(property.city)
-        setAddress(property.address)
-        setZip(property.zip)
-      }
+    if (property) {
+      setName(property.name)
+      setCountry(property.country)
+      setCurrency(property.currency)
+      setDate(formatDate(new Date(property.date)))
+      setValue(property.value)
+      setTaxStatus(property.taxStatus)
+      setType(property.type)
+      setCity(property.city)
+      setAddress(property.address)
+      setZip(property.zip)
     }
-  }, [properties, id])
+  }, [property, id])
 
   useEffect(() => {
     if (isSuccess) {
       navigate(`/investments/properties/${id}`)
     }
   }, [id, isSuccess, navigate])
-
-  const property = properties?.find(property => property.id === id)
 
   const formatDate = (date) => {
     const year = date.getFullYear()

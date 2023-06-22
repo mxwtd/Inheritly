@@ -1,6 +1,6 @@
 import Properties from '../index.jsx'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useGetPropertiesQuery } from '../services/propertiesApiSlice'
+import { useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
 import MapChart from '../../../components/HoverMap.jsx'
 import { useState, useEffect } from 'react'
 
@@ -9,25 +9,23 @@ const Property = () => {
   const navigate = useNavigate()
 
   const {
-    data: properties,
+    data: property,
     isLoading,
     isSuccess,
     isError,
     error
-  } = useGetPropertiesQuery('propertiesList', {
+  } = useGetPropertyByIdQuery(id, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
     pollingInterval: 20000
   })
 
-  // const files = ['File1.pdf', 'File2.pdf', 'File3.pdf', 'File4.docx', 'File5.xlsx'] // demo array
   const [files, setFiles] = useState([])
   const [currentPage, setCurrentPage] = useState(0) // page state
   const [downloadUrl, setDownloadUrl] = useState(null)
   const itemsPerPage = 2 // items per page
 
   let content
-  let property
 
   const handleDownload = async (fileUrl) => {
     setDownloadUrl(fileUrl)
@@ -35,7 +33,7 @@ const Property = () => {
 
   useEffect(() => {
     setFiles(property?.files)
-  }, [property, id, properties])
+  }, [property, id])
 
   useEffect(() => {
     if (downloadUrl) {
@@ -79,8 +77,6 @@ const Property = () => {
   }
 
   if (isSuccess) {
-    property = properties?.find(property => property.id === id)
-
     const handleNext = () => {
       setCurrentPage((currentPage) => currentPage + 1)
     }
@@ -120,6 +116,7 @@ const Property = () => {
           </div>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4'>
             <div className='relative bg-slate-50 dark:bg-slate-800 p-4 rounded-xl aspect-w-1 aspect-h-1'>
+
               {/* <img src={property.image} alt='' className='mb-3 w-full rounded-xl object-cover' style={{ aspectRatio: '1/1' }} /> */}
               <div className='mb-3 h-full w-full rounded-lg overflow-hidden' style={{ aspectRatio: '1/1' }}>
                 <img

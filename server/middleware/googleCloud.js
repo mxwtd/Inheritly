@@ -55,7 +55,6 @@ const loadFileFromGCS = async (fileName) => {
     expires: Date.now() + 1000 * 60 * 60
   }
 
-  // const [name] = await storage.bucket(bucketName).file(fileName)
   const [url] = await storage
     .bucket(bucketName)
     .file(fileName)

@@ -4,9 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import Properties from '../index.jsx'
 
 import { useAddNewPropertyMutation } from '../services/propertiesApiSlice'
-// import { uploadPhotoToCloudStorage } from '../../../services/gcp/uploadToCloudStorage.js'
-// import { useSelector } from 'react-redux'
-// import { userInformation } from '../../authentication/hooks/authSlice.js'
 
 const NewPropertyForm = () => {
   const [addNewProperty, {
@@ -35,8 +32,6 @@ const NewPropertyForm = () => {
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [companyAddress, setCompanyAddress] = useState('')
-
-  // const userInformationData = useSelector(userInformation)
 
   useEffect(() => {
     if (isSuccess) {

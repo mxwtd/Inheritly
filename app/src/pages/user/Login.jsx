@@ -20,7 +20,6 @@ const Login = () => {
   const [persist, setPersist] = usePersist()
 
   const navigate = useNavigate()
-  // const dispatch = useDispatch()
 
   useEffect(() => {
     if (isSuccess) {
