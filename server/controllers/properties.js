@@ -181,7 +181,35 @@ const updateProperty = async (req, res, next) => {
   try {
     const propertyToUpdate = await Property.findById(id)
 
-    const photo = req.file ? await updateFileFromGCS(req.file, propertyToUpdate.photo) : null
+    // const photo = req.file ? await updateFileFromGCS(req.file, propertyToUpdate.photo) : null
+
+    let photoFile = null
+    // let propertyFiles = null
+
+    if (req.files) {
+      photoFile = req.files['photo'] ? req.files['photo'][0] : null
+      // propertyFiles = req.files['files'] ? req.files['files'] : null
+    }
+
+    console.log('photo file: ', photoFile)
+
+    let photoPath = null
+    // let files = null
+
+    if (photoFile) {
+      console.log('get photo file')
+      photoPath = await updateFileFromGCS(photoFile, propertyToUpdate.photo.folder)
+    }
+
+    // if (propertyFiles) {
+    //   // files = propertyFiles ? await uploadFilesToGCS(propertyFiles, userId, name) : null
+    //   files = await Promise.all(propertyFiles.map(async (file) => {
+    //     return await updateFileFromGCS(req.file, propertyToUpdate.photo)
+    //   }))
+    // }
+
+    console.log('photo path folder', photoPath)
+    // console.log('files path folder', files)
 
     // Check for empty values in updates
     const hasEmptyValues = Object.values(updates).some((value) => {
@@ -196,9 +224,14 @@ const updateProperty = async (req, res, next) => {
     }
 
     // add photo to updates if it exists
-    if (photo) {
-      updates.photo = photo
+    if (photoPath) {
+      updates.photo = {
+        ...updates.photo,
+        folder: photoPath
+      }
     }
+
+    console.log('updates photo: ', updates.photo)
 
     // Confirm note exists to update
     const updatedProperty = await Property.findByIdAndUpdate(

@@ -138,7 +138,7 @@ const EditProperty = () => {
 
     console.log('')
 
-    // await updateProperty({ id, propertyData })
+    await updateProperty({ id, propertyData })
   }
 
   const handleRenameFile = (index) => {
