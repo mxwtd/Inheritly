@@ -94,6 +94,7 @@ const NewPropertyForm = () => {
     console.log('create button clicked')
 
     if (canSave) {
+      console.log('can save')
       const formData = new FormData(e.target)
 
       if (files) {

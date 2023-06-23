@@ -102,20 +102,13 @@ const EditProperty = () => {
 
   const onContactInformationChanged = (e) => setContactInformation({ ...contactInformation, [e.target.name]: e.target.value })
 
-  // const onPhotoChanged = (e) => {
-  //   console.log('Photo changed')
-  //   const file = e.target.files[0]
-
-  //   console.log('file: ', file)
-  //   setPhoto(URL.createObjectURL(file))
-  // }
-  const onPhotoChanged = (e) => {
+  const onPhotoChanged = (event) => {
     console.log('Photo changed')
-    if (e.target.files && e.target.files[0]) {
+    if (event.target.files && event.target.files[0]) {
       console.log('enter to conditional')
       const reader = new FileReader()
 
-      console.log('result: ', e.target.result)
+      console.log('result: ', event.target.result)
       console.log('old photo', photo)
 
       reader.onload = (e) => {
@@ -123,11 +116,13 @@ const EditProperty = () => {
           ...photo,
           url: e.target.result
         })
+
+        console.log('new photo', photo.url)
       }
 
-      console.log('files: ', e.target.files[0])
+      console.log('files: ', event.target.files[0])
 
-      reader.readAsDataURL(e.target.files[0])
+      reader.readAsDataURL(event.target.files[0])
     }
   }
 
@@ -136,31 +131,10 @@ const EditProperty = () => {
 
     console.log('update button clicked')
 
-    const propertyData = new FormData()
-
-    // const propertyData = {
-    //   name,
-    //   country,
-    //   currency,
-    //   date,
-    //   value,
-    //   taxStatus,
-    //   type,
-    //   city,
-    //   address,
-    //   zip,
-    //   photo,
-    //   contactInformation
-    // }
+    const propertyData = new FormData(e.target)
 
     console.log('PropertyData name: ', propertyData.get('name'))
     console.log('PropertyData photo: ', propertyData.get('photo'))
-
-    propertyData.delete('photo')
-
-    if (photo) {
-      propertyData.append('photo', photo)
-    }
 
     console.log('')
 
