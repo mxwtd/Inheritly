@@ -34,11 +34,11 @@ const createProperty = async (req, res, next) => {
       propertyFiles = req.files['files'] ? req.files['files'] : null
     }
 
-    let photo = null
+    let photoPath = null
     let files = null
 
     if (photoFile) {
-      photo = await uploadPhotoToGCS(photoFile, userId, name, 'properties')
+      photoPath = await uploadPhotoToGCS(photoFile, userId, name, 'properties')
     }
 
     if (propertyFiles) {
@@ -48,7 +48,7 @@ const createProperty = async (req, res, next) => {
       }))
     }
 
-    console.log('photo path folder', photo)
+    console.log('photo path folder', photoPath)
     console.log('files path folder', files)
 
     const contactInformation = {
@@ -56,6 +56,11 @@ const createProperty = async (req, res, next) => {
       email,
       phone,
       companyAddress
+    }
+
+    const photo = {
+      url: null,
+      folder: photoPath
     }
 
     const property = {
@@ -101,10 +106,16 @@ const getAllUserProperties = async (req, res, next) => {
 
     // Create an array of promises for changing the photo URLs
     const changePhotoPromises = properties.map(async (property) => {
-      if (property.photo) {
-        property.photo = await loadFileFromGCS(property.photo)
+      if (property.photo.folder) {
+        property.photo = {
+          ...property.photo,
+          url: await loadFileFromGCS(property.photo.folder)
+        }
       } else {
-        property.photo = 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+        property.photo = {
+          ...property.photo,
+          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+        }
       }
 
       if (property.files) {
@@ -116,6 +127,8 @@ const getAllUserProperties = async (req, res, next) => {
 
     // Wait for all the promises to complete
     await Promise.all(changePhotoPromises)
+
+    console.log('properties: ', properties)
 
     res.json(properties)
   } catch (error) {
@@ -131,10 +144,16 @@ const getPropertyById = async (req, res, next) => {
 
     // Create a promises for changing the photo URL
     const changePhotoPromise = async () => {
-      if (property.photo) {
-        property.photo = await loadFileFromGCS(property.photo)
+      if (property.photo.folder) {
+        property.photo = {
+          ...property.photo,
+          url: await loadFileFromGCS(property.photo.folder)
+        }
       } else {
-        property.photo = 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+        property.photo = {
+          ...property.photo,
+          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+        }
       }
 
       if (property.files) {
@@ -156,6 +175,8 @@ const getPropertyById = async (req, res, next) => {
 const updateProperty = async (req, res, next) => {
   const { id } = req.params
   const updates = req.body
+
+  console.log('updates: ', updates)
 
   try {
     const propertyToUpdate = await Property.findById(id)

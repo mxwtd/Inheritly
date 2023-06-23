@@ -14,7 +14,10 @@ const defaultData = {
   purchaseDate: Date,
   taxStatus: String,
   description: String,
-  photo: String,
+  photo: {
+    url: { type: String },
+    folder: { type: String }
+  },
   beneficiaryGroup: { type: Schema.Types.ObjectId, ref: 'BeneficiaryGroup' },
   files: [{ type: String }],
   // Add contact info

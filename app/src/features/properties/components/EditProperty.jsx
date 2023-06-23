@@ -15,8 +15,6 @@ const EditProperty = () => {
     pollingInterval: 20000
   })
 
-  console.log('property', property)
-
   const [updateProperty, {
     isSuccess,
     isError,
@@ -84,7 +82,7 @@ const EditProperty = () => {
     companyAddress: property?.contactInformation.companyAddress || ''
   } || {})
 
-  const [files, setFiles] = useState([])
+  const [files, setFiles] = useState(property?.files || [])
 
   const onNameChanged = e => setName(e.target.value)
   const onCountryChanged = e => setCountry(e.target.value)
@@ -100,11 +98,6 @@ const EditProperty = () => {
   const onFilesChanged = (event) => {
     setFiles(prevFiles => [...prevFiles, ...Array.from(event.target.files)])
   }
-
-  // const onAccountNumberChanged = e => setAccountNumber(e.target.value)
-  // const onEmailChanged = e => setEmail(e.target.value)
-  // const onPhoneChanged = e => setPhone(e.target.value)
-  // const onCompanyAddressChanged = e => setCompanyAddress(e.target.value)
 
   const onContactInformationChanged = (e) => setContactInformation({ ...contactInformation, [e.target.name]: e.target.value })
 

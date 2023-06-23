@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
 const PropertyCard = ({ property }) => {
+  console.log('property photo', property.photo)
   return (
     <>
       <Link to={`./${property.id}`}>
@@ -10,7 +11,7 @@ const PropertyCard = ({ property }) => {
               <div className='relative w-full'>
                 <div className='mb-3 w-full rounded-lg overflow-hidden' style={{ aspectRatio: '1/1' }}>
                   <img
-                    src={property.photo}
+                    src={property.photo.url}
                     className='object-cover w-full h-full transform transition-all duration-500 hover:scale-110'
                   />
                 </div>

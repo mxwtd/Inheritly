@@ -49,6 +49,7 @@ const uploadFilesToGCS = async (file, userId, propertyName) => {
 }
 
 const loadFileFromGCS = async (fileName) => {
+  console.log('load file')
   const options = {
     version: 'v4',
     action: 'read',

@@ -116,11 +116,9 @@ const Property = () => {
           </div>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4'>
             <div className='relative bg-slate-50 dark:bg-slate-800 p-4 rounded-xl aspect-w-1 aspect-h-1'>
-
-              {/* <img src={property.image} alt='' className='mb-3 w-full rounded-xl object-cover' style={{ aspectRatio: '1/1' }} /> */}
               <div className='mb-3 h-full w-full rounded-lg overflow-hidden' style={{ aspectRatio: '1/1' }}>
                 <img
-                  src={property?.photo}
+                  src={property?.photo.url}
                   className='object-cover w-full h-full transform transition-all duration-500 hover:scale-110'
                 />
               </div>
