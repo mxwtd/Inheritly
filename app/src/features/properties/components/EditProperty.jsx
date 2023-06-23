@@ -15,6 +15,8 @@ const EditProperty = () => {
     pollingInterval: 20000
   })
 
+  console.log('property', property)
+
   const [updateProperty, {
     isSuccess,
     isError,
@@ -35,6 +37,16 @@ const EditProperty = () => {
       setCity(property.city)
       setAddress(property.address)
       setZip(property.zip)
+      setPhoto(property.photo)
+
+      setContactInformation({
+        accountNumber: property.contactInformation.accountNumber,
+        email: property.contactInformation.email,
+        phone: property.contactInformation.phone,
+        companyAddress: property.contactInformation.companyAddress
+      })
+
+      setFiles(property.files)
     }
   }, [property, id])
 
@@ -64,10 +76,14 @@ const EditProperty = () => {
   const [city, setCity] = useState(property?.city || '')
   const [address, setAddress] = useState(property?.address || '')
   const [zip, setZip] = useState(property?.zip || '')
-  const [accountNumber, setAccountNumber] = useState(property?.accountNumber || '')
-  const [email, setEmail] = useState(property?.email || '')
-  const [phone, setPhone] = useState(property?.phone || '')
-  const [companyAddress, setCompanyAddress] = useState(property?.companyAddress || '')
+
+  const [contactInformation, setContactInformation] = useState({
+    accountNumber: property?.contactInformation.accountNumber || '',
+    email: property?.contactInformation.email || '',
+    phone: property?.contactInformation.phone || '',
+    companyAddress: property?.contactInformation.companyAddress || ''
+  } || {})
+
   const [files, setFiles] = useState([])
 
   const onNameChanged = e => setName(e.target.value)
@@ -85,10 +101,12 @@ const EditProperty = () => {
     setFiles(prevFiles => [...prevFiles, ...Array.from(event.target.files)])
   }
 
-  const onAccountNumberChanged = e => setAccountNumber(e.target.value)
-  const onEmailChanged = e => setEmail(e.target.value)
-  const onPhoneChanged = e => setPhone(e.target.value)
-  const onCompanyAddressChanged = e => setCompanyAddress(e.target.value)
+  // const onAccountNumberChanged = e => setAccountNumber(e.target.value)
+  // const onEmailChanged = e => setEmail(e.target.value)
+  // const onPhoneChanged = e => setPhone(e.target.value)
+  // const onCompanyAddressChanged = e => setCompanyAddress(e.target.value)
+
+  const onContactInformationChanged = (e) => setContactInformation({ ...contactInformation, [e.target.name]: e.target.value })
 
   const onPhotoChanged = (e) => {
     const file = e.target.files[0]
@@ -110,10 +128,7 @@ const EditProperty = () => {
       address,
       zip,
       photo,
-      accountNumber,
-      email,
-      phone,
-      companyAddress
+      contactInformation
     }
 
     console.log('Update property')
@@ -380,12 +395,12 @@ const EditProperty = () => {
                   <label htmlFor='accountNumber' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Account number</label>
                   <input
                     type='text'
-                    value={accountNumber}
+                    value={contactInformation.accountNumber}
                     name='accountNumber'
                     id='accountNumber'
                     className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                     placeholder='E.g. xxxxxxx99'
-                    onChange={onAccountNumberChanged}
+                    onChange={onContactInformationChanged}
                     required=''
                   />
                 </div>
@@ -393,12 +408,12 @@ const EditProperty = () => {
                   <label htmlFor='email' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Email</label>
                   <input
                     type='email'
-                    value={email}
+                    value={contactInformation.email}
                     name='email'
                     id='email'
                     className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                     placeholder='E.g. example@inheritly.com'
-                    onChange={onEmailChanged}
+                    onChange={onContactInformationChanged}
                     required=''
                   />
                 </div>
@@ -408,12 +423,12 @@ const EditProperty = () => {
                   <label htmlFor='phone' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Phone</label>
                   <input
                     type='text'
-                    value={phone}
+                    value={contactInformation.phone}
                     name='phone'
                     id='phone'
                     placeholder='E.g. +44 1234 567890'
                     className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                    onChange={onPhoneChanged}
+                    onChange={onContactInformationChanged}
                     required=''
                   />
                 </div>
@@ -421,12 +436,12 @@ const EditProperty = () => {
                   <label htmlFor='companyAddress' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Company Address</label>
                   <input
                     type='companyAddress'
-                    value={companyAddress}
+                    value={contactInformation.companyAddress}
                     name='companyAddress'
                     id='companyAddress'
                     className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                     placeholder='Company Address'
-                    onChange={onCompanyAddressChanged}
+                    onChange={onContactInformationChanged}
                     required=''
                   />
                 </div>
