@@ -23,6 +23,37 @@ const EditProperty = () => {
 
   const navigate = useNavigate()
 
+  const formatDate = (date) => {
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
+
+  const [name, setName] = useState(property?.name || '')
+  const [country, setCountry] = useState(property?.country || '')
+  const [currency, setCurrency] = useState(property?.currency || '')
+  const [date, setDate] = useState(() => {
+    const originalDate = new Date(property?.date)
+    return formatDate(originalDate)
+  })
+  const [value, setValue] = useState(property?.value || '')
+  const [taxStatus, setTaxStatus] = useState(property?.taxStatus || '')
+  const [type, setType] = useState(property?.type || '')
+  const [city, setCity] = useState(property?.city || '')
+  const [address, setAddress] = useState(property?.address || '')
+  const [zip, setZip] = useState(property?.zip || '')
+
+  const [contactInformation, setContactInformation] = useState({
+    accountNumber: property?.contactInformation.accountNumber || '',
+    email: property?.contactInformation.email || '',
+    phone: property?.contactInformation.phone || '',
+    companyAddress: property?.contactInformation.companyAddress || ''
+  } || {})
+
+  const [photo, setPhoto] = useState(property?.photo || null)
+  const [files, setFiles] = useState(property?.files || [])
+
   useEffect(() => {
     if (property) {
       setName(property.name)
@@ -54,36 +85,6 @@ const EditProperty = () => {
     }
   }, [id, isSuccess, navigate])
 
-  const formatDate = (date) => {
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    return `${year}-${month}-${day}`
-  }
-
-  const [name, setName] = useState(property?.name || '')
-  const [country, setCountry] = useState(property?.country || '')
-  const [currency, setCurrency] = useState(property?.currency || '')
-  const [date, setDate] = useState(() => {
-    const originalDate = new Date(property?.date)
-    return formatDate(originalDate)
-  })
-  const [value, setValue] = useState(property?.value || '')
-  const [taxStatus, setTaxStatus] = useState(property?.taxStatus || '')
-  const [type, setType] = useState(property?.type || '')
-  const [city, setCity] = useState(property?.city || '')
-  const [address, setAddress] = useState(property?.address || '')
-  const [zip, setZip] = useState(property?.zip || '')
-
-  const [contactInformation, setContactInformation] = useState({
-    accountNumber: property?.contactInformation.accountNumber || '',
-    email: property?.contactInformation.email || '',
-    phone: property?.contactInformation.phone || '',
-    companyAddress: property?.contactInformation.companyAddress || ''
-  } || {})
-
-  const [files, setFiles] = useState(property?.files || [])
-
   const onNameChanged = e => setName(e.target.value)
   const onCountryChanged = e => setCountry(e.target.value)
   const onCurrencyChanged = e => setCurrency(e.target.value)
@@ -94,38 +95,76 @@ const EditProperty = () => {
   const onCityChanged = e => setCity(e.target.value)
   const onAddressChanged = e => setAddress(e.target.value)
   const onZipChanged = e => setZip(e.target.value)
-  const [photo, setPhoto] = useState(property?.photo || null)
+
   const onFilesChanged = (event) => {
     setFiles(prevFiles => [...prevFiles, ...Array.from(event.target.files)])
   }
 
   const onContactInformationChanged = (e) => setContactInformation({ ...contactInformation, [e.target.name]: e.target.value })
 
+  // const onPhotoChanged = (e) => {
+  //   console.log('Photo changed')
+  //   const file = e.target.files[0]
+
+  //   console.log('file: ', file)
+  //   setPhoto(URL.createObjectURL(file))
+  // }
   const onPhotoChanged = (e) => {
-    const file = e.target.files[0]
-    setPhoto(URL.createObjectURL(file))
+    console.log('Photo changed')
+    if (e.target.files && e.target.files[0]) {
+      console.log('enter to conditional')
+      const reader = new FileReader()
+
+      console.log('result: ', e.target.result)
+      console.log('old photo', photo)
+
+      reader.onload = (e) => {
+        setPhoto({
+          ...photo,
+          url: e.target.result
+        })
+      }
+
+      console.log('files: ', e.target.files[0])
+
+      reader.readAsDataURL(e.target.files[0])
+    }
   }
 
   const onSavePropertyClicked = async (e) => {
     e.preventDefault()
 
-    const propertyData = {
-      name,
-      country,
-      currency,
-      date,
-      value,
-      taxStatus,
-      type,
-      city,
-      address,
-      zip,
-      photo,
-      contactInformation
+    console.log('update button clicked')
+
+    const propertyData = new FormData()
+
+    // const propertyData = {
+    //   name,
+    //   country,
+    //   currency,
+    //   date,
+    //   value,
+    //   taxStatus,
+    //   type,
+    //   city,
+    //   address,
+    //   zip,
+    //   photo,
+    //   contactInformation
+    // }
+
+    console.log('PropertyData name: ', propertyData.get('name'))
+    console.log('PropertyData photo: ', propertyData.get('photo'))
+
+    propertyData.delete('photo')
+
+    if (photo) {
+      propertyData.append('photo', photo)
     }
 
-    console.log('Update property')
-    await updateProperty({ id, propertyData })
+    console.log('')
+
+    // await updateProperty({ id, propertyData })
   }
 
   const handleRenameFile = (index) => {
@@ -211,9 +250,9 @@ const EditProperty = () => {
             <div className='md:w-2/3 md:mr-12'>
               <label htmlFor='photo' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Photo</label>
               <label htmlFor='photo' className='flex flex-col items-center justify-center w-full h-60 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-200 dark:hover:bg-bray-800 dark:bg-slate-700 hover:bg-slate-300 dark:text-white  dark:border-slate-600 dark:hover:border-slate-500 dark:hover:bg-slate-600'>
-                {photo
+                {(photo?.url)
                   ? (
-                    <img src={photo} alt='Selected' className='object-cover w-full h-60 rounded-lg' />
+                    <img src={photo?.url} alt='Selected' className='object-cover w-full h-60 rounded-lg' />
                     )
                   : (
                     <div className='flex flex-col items-center justify-center pt-5 pb-6'>
@@ -441,7 +480,7 @@ const EditProperty = () => {
               </div>
             </div>
           </div>
-          {files.length > 0
+          {files?.length > 0
             ? (
               <div className='py-2 px-4 mt-4 xl:mt-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg pb-6'>
                 <h1 className='py-2 text-md md:text-lg font-semibold pb-4'>Files</h1>
