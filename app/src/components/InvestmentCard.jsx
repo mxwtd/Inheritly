@@ -8,7 +8,7 @@ const InvestmentCard = ({ cardName, path, balance, currency }) => {
         <div className='flex justify-start'>
           <div className='flex flex-col text-left rounded-2xl'>
             <p className='text-md lg:text-2xl text-slate-600 dark:text-slate-200 font-bold'>Balance</p>
-            <p className='text-sm lg:text-lg text-slate-500 dark:text-slate-200'>$14,000</p>
+            <p className='text-sm lg:text-lg text-slate-500 dark:text-slate-200'>$15,000</p>
           </div>
         </div>
       </div>
