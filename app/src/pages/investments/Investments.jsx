@@ -8,7 +8,7 @@ const Investments = () => {
           <div>
             <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Investment Type</h1>
           </div>
-          <div className='grid grid-cols-2 lg:grid-cols-3 gap-4 mb-4 px-4'>
+          <div className='grid grid-cols-2 lg:grid-cols-3 gap-4 mb-4 p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl'>
             <InvestmentCard cardName='Stocks' path='stocks' />
             <InvestmentCard cardName='Bonds' path='bonds' />
             <InvestmentCard cardName='Funds' path='funds' />
