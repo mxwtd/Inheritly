@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
 import MapChart from '../../../components/HoverMap.jsx'
 import { useState, useEffect } from 'react'
+import DeleteModal from './DeleteModal.jsx'
 
 const Property = () => {
   const { id } = useParams()
@@ -24,6 +25,7 @@ const Property = () => {
   const [currentPage, setCurrentPage] = useState(0) // page state
   const [downloadUrl, setDownloadUrl] = useState(null)
   const itemsPerPage = 2 // items per page
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   let content
 
@@ -93,9 +95,16 @@ const Property = () => {
       return fileName
     }
 
-    if (property) {
+    const handleDelete = () => {
+      setShowDeleteModal(true)
+    }
+
+    const handleCloseDelete = () => {
+      setShowDeleteModal(false)
+    }
+
+    if (isSuccess) {
       const handleEdit = () => navigate('./edit')
-      const handleDelete = () => navigate('./delete')
 
       content = (
         <Properties backTo='/investments/properties'>
@@ -116,8 +125,6 @@ const Property = () => {
           </div>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4'>
             <div className='relative bg-slate-50 dark:bg-slate-800 p-4 rounded-xl aspect-w-1 aspect-h-1'>
-
-              {/* <img src={property.image} alt='' className='mb-3 w-full rounded-xl object-cover' style={{ aspectRatio: '1/1' }} /> */}
               <div className='mb-3 h-full w-full rounded-lg overflow-hidden' style={{ aspectRatio: '1/1' }}>
                 <img
                   src={property?.photo}
@@ -210,9 +217,13 @@ const Property = () => {
         </Properties>
       )
     }
+    return (
+      <>
+        {content}
+        {showDeleteModal && <DeleteModal onClose={handleCloseDelete} property={property} />}
+      </>
+    )
   }
-
-  return content
 }
 
 export default Property
