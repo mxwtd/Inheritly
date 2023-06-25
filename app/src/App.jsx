@@ -38,8 +38,11 @@ import GenerateWill from './pages/GenerateWill'
 
 const App = () => {
   const location = useLocation()
-  const noFooterPaths = ['/login', '/signUp', '/forgotPassword']
-  const showFooter = !noFooterPaths.includes(location.pathname)
+  // const noFooterPaths = ['/login', '/signUp', '/forgotPassword']
+  // const showFooter = !noFooterPaths.includes(location.pathname)
+  const noFooterPaths = ['/login', '/signUp', '/forgotPassword', '/']
+  const showFooter = !noFooterPaths.some(path => location.pathname.startsWith(path))
+
   return (
     <>
       <div className='w-full min-h-screen bg-slate-200 dark:bg-slate-700'>
@@ -63,7 +66,6 @@ const App = () => {
                       <Route path='new' element={<NewProperty />} />
                       <Route path=':id' element={<Property />} />
                       <Route path=':id/edit' element={<EditProperty />} />
-                      {/* <Route path=':id/delete' element={<DeleteProperty />} /> */}
                     </Route>
 
                     <Route path='vehicles'>
