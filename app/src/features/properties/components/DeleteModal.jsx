@@ -1,14 +1,10 @@
 import { useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
-import { useDeletePropertyMutation, useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
+import { useDeletePropertyMutation } from '../services/propertiesApiSlice'
 
-const DeleteModal = ({ onClose }) => {
+const DeleteModal = ({ onClose, property }) => {
   const { id } = useParams()
   const navigate = useNavigate()
-
-  const {
-    data: property
-  } = useGetPropertyByIdQuery(id)
 
   const [deleteProperty, { isSuccess, isError }] = useDeletePropertyMutation()
 
@@ -45,7 +41,7 @@ const DeleteModal = ({ onClose }) => {
             <div className='bg-slate-200 dark:bg-slate-700 p-4 rounded-2xl'>
               <div className='relative w-full h-full overflow-hidden rounded-2xl'>
                 <img
-                  src={property?.photo}
+                  src={property?.photo.url}
                   alt={property?.name}
                   className='object-cover w-full h-full transform transition-all duration-500 hover:scale-110'
                   style={{ aspectRatio: '1/1' }}

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
 const PropertyCard = ({ property }) => {
-  console.log('property photo', property.photo)
+  console.log('Property files', property.files)
   return (
     <>
       <Link to={`./${property.id}`}>
