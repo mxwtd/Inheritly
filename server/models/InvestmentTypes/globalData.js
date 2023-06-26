@@ -19,7 +19,10 @@ const defaultData = {
     folder: { type: String }
   },
   beneficiaryGroup: { type: Schema.Types.ObjectId, ref: 'BeneficiaryGroup' },
-  files: [{ type: String }],
+  files: [{
+    url: { type: String },
+    folder: { type: String }
+  }],
   // Add contact info
   contactInformation: {
     accountNumber: { type: String, required: true },

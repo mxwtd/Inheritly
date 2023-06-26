@@ -143,21 +143,24 @@ const EditProperty = () => {
   }
 
   const handleRenameFile = (index) => {
-    const newFileName = window.prompt('Enter new name for the file:', files[index].name)
-    if (newFileName) {
-      const newFiles = [...files]
-      newFiles[index] = { ...newFiles[index], name: newFileName }
-      setFiles(newFiles)
-    }
+    // const newFileName = window.prompt('Enter new name for the file:', files[index].name)
+    // if (newFileName) {
+    //   const newFiles = [...files]
+    //   newFiles[index] = { ...newFiles[index], name: newFileName }
+    //   setFiles(newFiles)
+    // }
+
+    console.log('Rename file: ', index)
   }
 
   const handleDeleteFile = (index) => {
-    const confirmation = window.confirm('Are you sure you want to delete this file?')
-    if (confirmation) {
-      const newFiles = [...files]
-      newFiles.splice(index, 1)
-      setFiles(newFiles)
-    }
+    // const confirmation = window.confirm('Are you sure you want to delete this file?')
+    // if (confirmation) {
+    //   const newFiles = [...files]
+    //   newFiles.splice(index, 1)
+    //   setFiles(newFiles)
+    // }
+    console.log('Delete file: ', index)
   }
 
   /// ////////////////////////////////////////////////////////////////////////
@@ -474,7 +477,7 @@ const EditProperty = () => {
                           <td className='px-6 py-4'>
                             <div className='flex justify-between items-center'>
                               {
-                                getFileNameFromUrl(file)
+                                (file.name) ? file.name : getFileNameFromUrl(file.url)
                               }
                               <div className='relative'>
                                 <button id='dropdownMenuIconButton' data-dropdown-toggle='dropdownDots' className=' inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600' type='button' onClick={() => setOpenedDropdown(index + currentPage * itemsPerPage)}>
@@ -484,12 +487,12 @@ const EditProperty = () => {
                                   <div id='dropdownDotsHorizontal' className='absolute z-50 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600'>
                                     <ul className='py-2 text-sm text-gray-700 dark:text-gray-200' aria-labelledby='dropdownMenuIconHorizontalButton'>
                                       <li>
-                                        <button className='block px-4 py-2 min-w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-left' onClick={() => handleRenameFile(index + currentPage * itemsPerPage)}>
+                                        <button className='block px-4 py-2 min-w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-left' onClick={() => handleRenameFile(file)}>
                                           Rename
                                         </button>
                                       </li>
                                       <li>
-                                        <button className='block px-4 py-2 min-w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-left' onClick={() => handleDeleteFile(index + currentPage * itemsPerPage)}>
+                                        <button className='block px-4 py-2 min-w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-left' onClick={() => handleDeleteFile(file)}>
                                           Delete
                                         </button>
                                       </li>

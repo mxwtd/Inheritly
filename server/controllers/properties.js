@@ -34,33 +34,34 @@ const createProperty = async (req, res, next) => {
       propertyFiles = req.files['files'] ? req.files['files'] : null
     }
 
-    let photoPath = null
+    let photo = null
     let files = null
 
     if (photoFile) {
-      photoPath = await uploadPhotoToGCS(photoFile, userId, name, 'properties')
+      photo = {
+        url: null,
+        folder: await uploadPhotoToGCS(photoFile, userId, name)
+      }
     }
 
     if (propertyFiles) {
       // files = propertyFiles ? await uploadFilesToGCS(propertyFiles, userId, name) : null
       files = await Promise.all(propertyFiles.map(async (file) => {
-        return await uploadFilesToGCS(file, userId, name)
+        return {
+          url: null,
+          folder: await uploadFilesToGCS(file, userId, name, 'properties')
+        }
       }))
     }
 
-    console.log('photo path folder', photoPath)
-    console.log('files path folder', files)
+    console.log('photo ', photo)
+    console.log('files ', files)
 
     const contactInformation = {
       accountNumber,
       email,
       phone,
       companyAddress
-    }
-
-    const photo = {
-      url: null,
-      folder: photoPath
     }
 
     const property = {
@@ -118,17 +119,22 @@ const getAllUserProperties = async (req, res, next) => {
         }
       }
 
-      if (property.files) {
-        property.files = await Promise.all(property.files.map(async (file) => {
-          return await loadFileFromGCS(file)
-        }))
+      if (property.files.folder) {
+        property.files = await Promise.all(
+          property.files.map(async (file) => {
+            return {
+              ...file,
+              url: await loadFileFromGCS(file.folder)
+            }
+          })
+        )
       }
     })
 
     // Wait for all the promises to complete
     await Promise.all(changePhotoPromises)
 
-    console.log('properties: ', properties)
+    // console.log('properties: ', properties)
 
     res.json(properties)
   } catch (error) {
@@ -157,9 +163,16 @@ const getPropertyById = async (req, res, next) => {
       }
 
       if (property.files) {
-        property.files = await Promise.all(property.files.map(async (file) => {
-          return await loadFileFromGCS(file)
-        }))
+        console.log('Set files')
+        property.files = await Promise.all(
+          property.files.map(async (file) => {
+            console.log('setFile: ', file)
+            return {
+              ...file,
+              url: await loadFileFromGCS(file.folder)
+            }
+          })
+        )
       }
     }
 
@@ -176,39 +189,46 @@ const updateProperty = async (req, res, next) => {
   const { id } = req.params
   const updates = req.body
 
-  console.log('updates: ', updates)
-
   try {
     const propertyToUpdate = await Property.findById(id)
+    const { userId } = req
 
-    // const photo = req.file ? await updateFileFromGCS(req.file, propertyToUpdate.photo) : null
+    const { name } = propertyToUpdate
+    let { files } = propertyToUpdate
+
+    console.log('Files before: ', files)
 
     let photoFile = null
-    // let propertyFiles = null
+    let propertyFiles = null
 
     if (req.files) {
       photoFile = req.files['photo'] ? req.files['photo'][0] : null
-      // propertyFiles = req.files['files'] ? req.files['files'] : null
+      propertyFiles = req.files['files'] ? req.files['files'] : null
     }
 
-    console.log('photo file: ', photoFile)
+    // console.log('photo file: ', photoFile)
+    console.log('property files: ', propertyFiles)
 
     let photoPath = null
-    // let files = null
 
     if (photoFile) {
-      console.log('get photo file')
+      // console.log('get photo file')
       photoPath = await updateFileFromGCS(photoFile, propertyToUpdate.photo.folder)
     }
 
-    // if (propertyFiles) {
-    //   // files = propertyFiles ? await uploadFilesToGCS(propertyFiles, userId, name) : null
-    //   files = await Promise.all(propertyFiles.map(async (file) => {
-    //     return await updateFileFromGCS(req.file, propertyToUpdate.photo)
-    //   }))
-    // }
+    if (propertyFiles) {
+      console.log('Set files')
+      const newFiles = await Promise.all(propertyFiles.map(async (file) => {
+        return {
+          url: null,
+          folder: await uploadFilesToGCS(file, userId, name, 'properties')
+        }
+      }))
 
-    console.log('photo path folder', photoPath)
+      files = files.concat(newFiles)
+    }
+
+    // console.log('photo path folder', photoPath)
     // console.log('files path folder', files)
 
     // Check for empty values in updates
@@ -231,7 +251,12 @@ const updateProperty = async (req, res, next) => {
       }
     }
 
-    console.log('updates photo: ', updates.photo)
+    // add files to updates if it exists
+    if (files) {
+      updates.files = files
+    }
+
+    // console.log('updates photo: ', updates.photo)
 
     // Confirm note exists to update
     const updatedProperty = await Property.findByIdAndUpdate(
