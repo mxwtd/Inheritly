@@ -5,6 +5,8 @@ import MapChart from '../../../components/HoverMap.jsx'
 import { useState, useEffect } from 'react'
 import DeleteModal from './DeleteModal.jsx'
 
+import { getFileNameFromUrl } from '../../../hook/getFileNameFromUrl.js'
+
 const Property = () => {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -85,14 +87,6 @@ const Property = () => {
 
     const handlePrevious = () => {
       setCurrentPage((currentPage) => currentPage - 1)
-    }
-
-    const getFileNameFromUrl = (url) => {
-      const decodedUrl = decodeURIComponent(url)
-      const fileNameRegex = /\/\d+-([^/]+)(?=\?)/
-      const matches = decodedUrl.match(fileNameRegex)
-      const fileName = matches[1]
-      return fileName
     }
 
     const handleDelete = () => {
