@@ -5,6 +5,7 @@ import Properties from '../index.jsx'
 import { Link } from 'react-router-dom'
 import ModalAddButton from '../../../components/ModalAddButton.jsx'
 import CardSkeleton from '../../../components/CardSkeleton.jsx'
+import AddNewContainer from './AddNewContainer.jsx'
 
 const PropertiesList = () => {
   const {
@@ -65,6 +66,7 @@ const PropertiesList = () => {
           <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Properties</h1>
           <Link to='./new'><ModalAddButton /></Link>
         </div>
+        {(!listContent || listContent.length === 0) && <AddNewContainer />}
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 my-4 '>
           {listContent}
         </div>

@@ -88,13 +88,38 @@ const NewPropertyForm = () => {
 
   const canSave = [name, country, currency, date, value, taxStatus, type, city, address, zip].every(Boolean) && !isLoading
 
+  /// /////////////////////////////////////////////////////////////
+  // The following handles the visual error queues for the user //
+  /// ///////////////////////////////////////////////////////////
+
+  const [errors, setErrors] = useState({ name: false, type: false, photo: false })
+
   const onSavePropertyClicked = async (e) => {
     e.preventDefault()
 
-    console.log('create button clicked')
+    const newErrors = {
+      name: !name,
+      country: !country,
+      currency: !currency,
+      date: !date,
+      value: !value,
+      taxStatus: !taxStatus,
+      type: !type,
+      city: !city,
+      address: !address,
+      zip: !zip,
+      photo: !photo,
+      accountNumber: !accountNumber,
+      email: !email,
+      phone: !phone,
+      companyAddress: !companyAddress
+    }
 
-    if (canSave) {
-      console.log('can save')
+    setErrors(newErrors)
+
+    const hasErrors = Object.values(newErrors).some(Boolean)
+
+    if (!hasErrors && canSave) {
       const formData = new FormData(e.target)
 
       if (files) {
@@ -224,7 +249,6 @@ const NewPropertyForm = () => {
                   id='photo'
                   className='hidden'
                   onChange={onPhotoChanged}
-                  required=''
                 />
               </label>
             </div>
@@ -236,7 +260,7 @@ const NewPropertyForm = () => {
                   value={name}
                   name='name'
                   id='name'
-                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className={`bg-slate-200 border ${errors.name ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.name ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                   placeholder='Property name'
                   onChange={onNameChanged}
                   required=''
@@ -249,7 +273,7 @@ const NewPropertyForm = () => {
                   value={type}
                   name='type'
                   id='type'
-                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className={`bg-slate-200 border ${errors.type ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.type ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                   placeholder='E.g. House, Apartment, etc.'
                   onChange={onTypeChanged}
                   required=''
@@ -265,7 +289,7 @@ const NewPropertyForm = () => {
                   name='currency'
                   id='currency'
                   placeholder='E.g. USD'
-                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className={`bg-slate-200 border ${errors.currency ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.currency ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                   onChange={onCurrencyChanged}
                   required=''
                 />
@@ -277,7 +301,7 @@ const NewPropertyForm = () => {
                   value={value}
                   name='value'
                   id='value'
-                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className={`bg-slate-200 border ${errors.value ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.value ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                   placeholder='Property Value'
                   onChange={onValueChanged}
                   required=''
@@ -295,7 +319,7 @@ const NewPropertyForm = () => {
                   value={date}
                   name='date'
                   id='date'
-                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className={`bg-slate-200 border ${errors.date ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.date ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-slate-400 dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                   onChange={onDateChanged}
                   required=''
                 />
@@ -307,7 +331,7 @@ const NewPropertyForm = () => {
                   value={taxStatus}
                   name='taxStatus'
                   id='taxStatus'
-                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className={`bg-slate-200 border ${errors.taxStatus ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.taxStatus ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                   placeholder='E.g. Taxable, Tax Free, etc.'
                   onChange={onTaxStatusChanged}
                   required=''
@@ -323,7 +347,7 @@ const NewPropertyForm = () => {
                     value={address}
                     name='address'
                     id='address'
-                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    className={`bg-slate-200 border ${errors.address ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.address ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                     placeholder='Street Address'
                     onChange={onAddressChanged}
                     required=''
@@ -336,7 +360,7 @@ const NewPropertyForm = () => {
                     value={city}
                     name='city'
                     id='city'
-                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    className={`bg-slate-200 border ${errors.city ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.city ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                     placeholder='City Name'
                     onChange={onCityChanged}
                     required=''
@@ -351,7 +375,7 @@ const NewPropertyForm = () => {
                     value={zip}
                     name='zip'
                     id='zip'
-                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    className={`bg-slate-200 border ${errors.zip ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.zip ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                     placeholder='Postcode / Zip Code'
                     onChange={onZipChanged}
                     required=''
@@ -365,7 +389,7 @@ const NewPropertyForm = () => {
                     name='country'
                     id='country'
                     placeholder='Country Name'
-                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    className={`bg-slate-200 border ${errors.country ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.country ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                     onChange={onCountryChanged}
                     required=''
                   />
@@ -384,7 +408,7 @@ const NewPropertyForm = () => {
                     value={accountNumber}
                     name='accountNumber'
                     id='accountNumber'
-                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    className={`bg-slate-200 border ${errors.accountNumber ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.accountNumber ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                     placeholder='E.g. xxxxxxx99'
                     onChange={onAccountNumberChanged}
                     required=''
@@ -397,7 +421,7 @@ const NewPropertyForm = () => {
                     value={email}
                     name='email'
                     id='email'
-                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    className={`bg-slate-200 border ${errors.email ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.email ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                     placeholder='E.g. example@inheritly.com'
                     onChange={onEmailChanged}
                     required=''
@@ -413,7 +437,7 @@ const NewPropertyForm = () => {
                     name='phone'
                     id='phone'
                     placeholder='E.g. +44 1234 567890'
-                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    className={`bg-slate-200 border ${errors.phone ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.phone ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                     onChange={onPhoneChanged}
                     required=''
                   />
@@ -425,7 +449,7 @@ const NewPropertyForm = () => {
                     value={companyAddress}
                     name='companyAddress'
                     id='companyAddress'
-                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    className={`bg-slate-200 border ${errors.companyAddress ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.companyAddress ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                     placeholder='Company Address'
                     onChange={onCompanyAddressChanged}
                     required=''

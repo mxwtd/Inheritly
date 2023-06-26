@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
 import MapChart from '../../../components/HoverMap.jsx'
 import { useState, useEffect } from 'react'
+import DeleteModal from './DeleteModal.jsx'
 
 const Property = () => {
   const { id } = useParams()
@@ -24,6 +25,7 @@ const Property = () => {
   const [currentPage, setCurrentPage] = useState(0) // page state
   const [downloadUrl, setDownloadUrl] = useState(null)
   const itemsPerPage = 2 // items per page
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   let content
 
@@ -93,9 +95,16 @@ const Property = () => {
       return fileName
     }
 
-    if (property) {
+    const handleDelete = () => {
+      setShowDeleteModal(true)
+    }
+
+    const handleCloseDelete = () => {
+      setShowDeleteModal(false)
+    }
+
+    if (isSuccess) {
       const handleEdit = () => navigate('./edit')
-      const handleDelete = () => navigate('./delete')
 
       content = (
         <Properties backTo='/investments/properties'>
@@ -208,9 +217,13 @@ const Property = () => {
         </Properties>
       )
     }
+    return (
+      <>
+        {content}
+        {showDeleteModal && <DeleteModal onClose={handleCloseDelete} property={property} />}
+      </>
+    )
   }
-
-  return content
 }
 
 export default Property
