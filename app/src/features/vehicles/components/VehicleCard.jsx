@@ -10,7 +10,7 @@ const VehicleCard = ({ vehicle }) => {
               <div className='relative w-full'>
                 <div className='mb-3 w-full rounded-lg overflow-hidden' style={{ aspectRatio: '1/1' }}>
                   <img
-                    src={vehicle.photo}
+                    src={vehicle.photo.url}
                     className='object-cover w-full h-full transform transition-all duration-500 hover:scale-110'
                   />
                 </div>

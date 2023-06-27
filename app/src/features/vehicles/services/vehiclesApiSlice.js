@@ -63,6 +63,25 @@ export const vehiclesApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: (result, error, arg) => [
         { type: 'Vehicle', id: arg.id }
       ]
+    }),
+    deleteFile: builder.mutation({
+      query: ({ id, fileId }) => ({
+        url: `/vehicles/${id}/${fileId}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Vehicle', id: arg.id }
+      ]
+    }),
+    renameFile: builder.mutation({
+      query: ({ id, fileId, oldName, newName }) => ({
+        url: `/vehicles/${id}/${fileId}`,
+        method: 'PATCH',
+        body: { oldName, newName }
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Vehicle', id: arg.id }
+      ]
     })
   })
 })
@@ -72,7 +91,9 @@ export const {
   useGetVehicleByIdQuery,
   useAddNewVehicleMutation,
   useUpdateVehicleMutation,
-  useDeleteVehicleMutation
+  useDeleteVehicleMutation,
+  useDeleteFileMutation,
+  useRenameFileMutation
 } = vehiclesApiSlice
 
 export const { selectById: selectVehicleById } = vehiclesAdapter.getSelectors(

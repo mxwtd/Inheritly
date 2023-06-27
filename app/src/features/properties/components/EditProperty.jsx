@@ -17,8 +17,7 @@ const EditProperty = () => {
   })
 
   const [
-    deletePropertyFile,
-    { isSuccess: deleteFileSuccess, isError: deleteFileError }
+    deletePropertyFile
   ] = useDeleteFileMutation()
 
   const [
@@ -32,14 +31,6 @@ const EditProperty = () => {
   }] = useUpdatePropertyMutation()
 
   const navigate = useNavigate()
-
-  if (deleteFileSuccess) {
-    console.log('delete file success')
-  }
-
-  if (deleteFileError) {
-    console.log('delete file error')
-  }
 
   const formatDate = (date) => {
     const year = date.getFullYear()

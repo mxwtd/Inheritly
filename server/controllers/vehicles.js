@@ -1,6 +1,7 @@
+/* eslint-disable dot-notation */
 const Vehicle = require('../models/InvestmentTypes/Vehicle')
 const User = require('../models/User')
-const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFolderFromGCS, updateFileFromGCS } = require('../middleware/googleCloud')
+const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFolderFromGCS, updateFileFromGCS, deleteFileFromGCS, moveGCSFile } = require('../middleware/googleCloud')
 
 const createVehicle = async (req, res, next) => {
   try {
@@ -24,24 +25,31 @@ const createVehicle = async (req, res, next) => {
     } = req.body
 
     let photoFile = null
-    let propertyFiles = null
+    let vehicleFiles = null
+
+    console.log('req.files: ', req.files)
 
     if (req.files) {
-      photoFile = req.files.photo ? req.files.photo[0] : null
-      propertyFiles = req.files.files ? req.files.files : null
+      photoFile = req.files['photo'] ? req.files['photo'][0] : null
+      vehicleFiles = req.files['files'] ? req.files['files'] : null
     }
 
     let photo = null
     let files = null
 
     if (photoFile) {
-      photo = await uploadPhotoToGCS(photoFile, userId, name, 'vehicles')
+      photo = {
+        url: null,
+        folder: await uploadPhotoToGCS(photoFile, userId, name, 'vehicles')
+      }
     }
 
-    if (propertyFiles) {
-      // files = propertyFiles ? await uploadFilesToGCS(propertyFiles, userId, name) : null
-      files = await Promise.all(propertyFiles.map(async (file) => {
-        return await uploadFilesToGCS(file, userId, name)
+    if (vehicleFiles) {
+      files = await Promise.all(vehicleFiles.map(async (file) => {
+        return {
+          url: null,
+          folder: await uploadFilesToGCS(file, userId, name, 'vehicles')
+        }
       }))
     }
 
@@ -70,6 +78,8 @@ const createVehicle = async (req, res, next) => {
       files
     }
 
+    console.log('Vehicle to save: ', vehicle)
+
     const newVehicle = new Vehicle({
       ...vehicle,
       user: user._id
@@ -94,16 +104,27 @@ const getAllUserVehicles = async (req, res, next) => {
     const vehicles = await Vehicle.find({ user: userId })
 
     const changePhotoPromises = vehicles.map(async (vehicle) => {
-      if (vehicle.photo) {
-        vehicle.photo = await loadFileFromGCS(vehicle.photo)
+      if (vehicle.photo.folder) {
+        vehicle.photo = {
+          ...vehicle.photo,
+          url: await loadFileFromGCS(vehicle.photo.folder)
+        }
       } else {
-        vehicle.photo = 'https://i.pinimg.com/564x/91/ed/eb/91edebb64768d1f00ca34807a6b74d73.jpg'
+        vehicle.photo = {
+          ...vehicle.photo,
+          url: 'https://i.pinimg.com/564x/91/ed/eb/91edebb64768d1f00ca34807a6b74d73.jpg'
+        }
       }
 
-      if (vehicle.files) {
-        vehicle.files = await Promise.all(vehicle.files.map(async (file) => {
-          return await loadFileFromGCS(file)
-        }))
+      if (vehicle.files.folder) {
+        vehicle.files = await Promise.all(
+          vehicle.files.map(async (file) => {
+            return {
+              ...file,
+              url: await loadFileFromGCS(file.folder)
+            }
+          })
+        )
       }
     })
 
@@ -121,18 +142,30 @@ const getVehicleById = async (req, res, next) => {
 
   try {
     const vehicle = await Vehicle.findById(id)
-
+    // }
     const changePhotoPromise = async () => {
-      if (vehicle.photo) {
-        vehicle.photo = await loadFileFromGCS(vehicle.photo)
+      if (vehicle.photo.folder) {
+        vehicle.photo = {
+          ...vehicle.photo,
+          url: await loadFileFromGCS(vehicle.photo.folder)
+        }
       } else {
-        vehicle.photo = 'https://i.pinimg.com/564x/91/ed/eb/91edebb64768d1f00ca34807a6b74d73.jpg'
+        vehicle.photo = {
+          ...vehicle.photo,
+          url: 'https://i.pinimg.com/564x/91/ed/eb/91edebb64768d1f00ca34807a6b74d73.jpg'
+        }
       }
 
       if (vehicle.files) {
-        vehicle.files = await Promise.all(vehicle.files.map(async (file) => {
-          return await loadFileFromGCS(file)
-        }))
+        console.log('Set files')
+        vehicle.files = await Promise.all(
+          vehicle.files.map(async (file) => {
+            return {
+              ...file,
+              url: await loadFileFromGCS(file.folder)
+            }
+          })
+        )
       }
     }
 
@@ -151,8 +184,42 @@ const updateVehicle = async (req, res, next) => {
 
   try {
     const vehicleToUpdate = await Vehicle.findById(id)
+    const { userId } = req
 
-    const photo = req.file ? await updateFileFromGCS(req.file, vehicleToUpdate.photo) : null
+    const { name } = vehicleToUpdate
+    let { files } = vehicleToUpdate
+
+    console.log('Files before: ', files)
+
+    let photoFile = null
+    let vehicleFiles = null
+
+    if (req.files) {
+      photoFile = req.files['photo'] ? req.files['photo'][0] : null
+      vehicleFiles = req.files['files'] ? req.files['files'] : null
+    }
+
+    // console.log('photo file: ', photoFile)
+    console.log('vehicle files: ', vehicleFiles)
+
+    let photoPath = null
+
+    if (photoFile) {
+      // console.log('get photo file')
+      photoPath = await updateFileFromGCS(photoFile, vehicleToUpdate.photo.folder)
+    }
+
+    if (vehicleFiles) {
+      console.log('Set files')
+      const newFiles = await Promise.all(vehicleFiles.map(async (file) => {
+        return {
+          url: null,
+          folder: await uploadFilesToGCS(file, userId, name, 'vehicles')
+        }
+      }))
+
+      files = files.concat(newFiles)
+    }
 
     // Check for empty values in updates
     const hasEmptyValues = Object.values(updates).some((value) => {
@@ -166,9 +233,20 @@ const updateVehicle = async (req, res, next) => {
       return res.status(400).json({ error: 'Empty values are not allowed' })
     }
 
-    if (photo) {
-      updates.photo = photo
+    // add photo to updates if it exists
+    if (photoPath) {
+      updates.photo = {
+        ...updates.photo,
+        folder: photoPath
+      }
     }
+
+    // add files to updates if it exists
+    if (files) {
+      updates.files = files
+    }
+
+    // console.log('updates photo: ', updates.photo)
 
     // Confirm note exists to update
     const updatedVehicle = await Vehicle.findByIdAndUpdate(
@@ -176,8 +254,6 @@ const updateVehicle = async (req, res, next) => {
       updates,
       { new: true }
     ).exec()
-
-    // const updatedVehicle = await vehicle.save()
 
     res.json(updatedVehicle)
   } catch (error) {
@@ -198,11 +274,6 @@ const deleteVehicle = async (req, res, next) => {
       await deleteFolderFromGCS(folderPath)
     }
 
-    console.log('assets before: ', user.assets)
-
-    console.log('property id: ', id)
-    console.log('property id type: ', typeof id)
-
     const updatedAssets = user.assets.filter(asset => asset.toString() !== id)
     user.assets = updatedAssets
     await user.save()
@@ -215,10 +286,79 @@ const deleteVehicle = async (req, res, next) => {
   }
 }
 
+const deleteFile = async (req, res, next) => {
+  const { id, fileId } = req.params
+
+  try {
+    const vehicle = await Vehicle.findById(id)
+
+    if (vehicle && vehicle.files) {
+      const fileToDelete = vehicle.files.find(file => file._id.toString() === fileId)
+
+      if (fileToDelete) {
+        await deleteFileFromGCS(fileToDelete.folder)
+
+        const updatedFiles = vehicle.files.filter(file => file._id.toString() !== fileId)
+        vehicle.files = updatedFiles
+
+        await Vehicle.findByIdAndUpdate(
+          id,
+          vehicle,
+          { new: true }
+        ).exec()
+
+        res.status(204).end()
+      }
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+const renameFile = async (req, res, next) => {
+  const { id, fileId } = req.params
+
+  try {
+    const vehicle = await Vehicle.findById(id)
+
+    if (vehicle && vehicle.files) {
+      const fileToRename = vehicle.files.find(file => file._id.toString() === fileId)
+
+      if (fileToRename) {
+        const { oldName, newName } = req.body
+
+        const oldPath = fileToRename.folder
+        const newPath = oldPath.replace(oldName, newName)
+
+        await moveGCSFile(oldPath, newPath)
+
+        fileToRename.folder = newPath
+
+        const fileIndex = vehicle.files.findIndex(file => file._id.toString() === fileId)
+        vehicle.files[fileIndex] = fileToRename
+
+        await Vehicle.findByIdAndUpdate(
+          id,
+          vehicle,
+          { new: true }
+        ).exec()
+
+        console.log('Vehicle files: ', vehicle.files)
+
+        res.status(204).end()
+      }
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   createVehicle,
   getAllUserVehicles,
   getVehicleById,
   updateVehicle,
-  deleteVehicle
+  deleteVehicle,
+  deleteFile,
+  renameFile
 }

@@ -227,9 +227,6 @@ const updateProperty = async (req, res, next) => {
       files = files.concat(newFiles)
     }
 
-    // console.log('photo path folder', photoPath)
-    // console.log('files path folder', files)
-
     // Check for empty values in updates
     const hasEmptyValues = Object.values(updates).some((value) => {
       if (typeof value === 'string') {
@@ -264,8 +261,6 @@ const updateProperty = async (req, res, next) => {
       { new: true }
     ).exec()
 
-    // const updatedProperty = await property.save()
-
     res.json(updatedProperty)
   } catch (error) {
     (isNaN(id)) ? next(error) : res.status(404).end()
@@ -298,10 +293,6 @@ const deleteProperty = async (req, res, next) => {
 const deleteFile = async (req, res, next) => {
   const { id, fileId } = req.params
 
-  console.log('delete File')
-  console.log('id: ', id)
-  console.log('fileId: ', fileId)
-
   try {
     const property = await Property.findById(id)
 
@@ -331,10 +322,6 @@ const deleteFile = async (req, res, next) => {
 const renameFile = async (req, res, next) => {
   const { id, fileId } = req.params
 
-  console.log('rename File')
-  console.log('id: ', id)
-  console.log('fileId: ', fileId)
-
   try {
     const property = await Property.findById(id)
 
@@ -344,20 +331,13 @@ const renameFile = async (req, res, next) => {
       if (fileToRename) {
         const { oldName, newName } = req.body
 
-        console.log('Old name: ', oldName)
-        console.log('New name: ', newName)
-
         const oldPath = fileToRename.folder
         const newPath = oldPath.replace(oldName, newName)
-
-        console.log('oldPath: ', oldPath)
-        console.log('newPath: ', newPath)
 
         await moveGCSFile(oldPath, newPath)
 
         fileToRename.folder = newPath
 
-        // find the index of the file to rename in the properties and set the fileToRename to the new file
         const fileIndex = property.files.findIndex(file => file._id.toString() === fileId)
         property.files[fileIndex] = fileToRename
 

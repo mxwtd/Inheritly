@@ -118,7 +118,7 @@ const Vehicle = () => {
             <div className='relative bg-slate-50 dark:bg-slate-800 p-4 rounded-xl aspect-w-1 aspect-h-1'>
               <div className='mb-3 h-full w-full rounded-lg overflow-hidden'>
                 <img
-                  src={vehicle?.photo}
+                  src={vehicle?.photo.url}
                   className='object-cover w-full h-full transform transition-all duration-500 hover:scale-110'
                 />
               </div>
@@ -159,7 +159,7 @@ const Vehicle = () => {
                           {files?.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage).map((file, index) => (
                             <tr key={index} className={(index + currentPage * itemsPerPage) % 2 === 0 ? 'cursor-pointer bg-white border-b dark:bg-slate-800 dark:border-slate-700' : 'cursor-pointer border-b bg-slate-50 dark:bg-slate-800 dark:border-slate-700'}>
                               <th onClick={() => handleDownload(file)} scope='row' className='px-6 py-4 font-medium text-slate-900 whitespace-nowrap dark:text-white'>
-                                {getFileNameFromUrl(file)}
+                                {getFileNameFromUrl(file.url)}
                               </th>
                             </tr>
                           ))}
@@ -188,11 +188,10 @@ const Vehicle = () => {
             </div>
             <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
               <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg h-full flex flex-col justify-center'>
-                <p className='text-xl lg:text-2xl px-4 mb-2'>Address</p>
-                <p className='text-md lg:text-lg px-4'>{vehicle?.address}</p>
-                <p className='text-md lg:text-lg px-4'>{vehicle?.city}</p>
-                <p className='text-md lg:text-lg px-4'>{vehicle?.zip}</p>
-                <p className='text-md lg:text-lg px-4'>{vehicle?.country}</p>
+                <p className='text-xl lg:text-2xl px-4 mb-2'>Car information</p>
+                <p className='text-md lg:text-lg px-4'>Brand: {vehicle?.brand}</p>
+                <p className='text-md lg:text-lg px-4'>Model: {vehicle?.model}</p>
+                <p className='text-md lg:text-lg px-4'>year: {vehicle?.year}</p>
               </div>
             </div>
             <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
