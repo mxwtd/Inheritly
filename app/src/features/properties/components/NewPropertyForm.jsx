@@ -213,6 +213,15 @@ const NewPropertyForm = () => {
     setOpenedDropdown(-1)
   }
 
+  /// ///////////////////////////////////////////////////////////
+  // The following handles the conatct details switch //////////
+  /// /////////////////////////////////////////////////////////
+  const [isPrivate, setIsPrivate] = useState(true)
+
+  const handleToggle = () => {
+    setIsPrivate(prevIsPrivate => !prevIsPrivate)
+  }
+
   const content = (
     <Properties backTo='/investments/properties'>
       <div className='bg-white backdrop-blur-md rounded-3xl shadow-xl dark:border md:mt-0 p-6 dark:bg-slate-800 dark:border-slate-700'>
@@ -398,64 +407,73 @@ const NewPropertyForm = () => {
             </div>
           </div>
           <div className='bg-slate-100 dark:bg-slate-900 rounded-2xl p-5'>
-            <h3 className='text-xl font-semibold text-slate-800 dark:text-slate-100 text-left mb-2'>Contact Information</h3>
-            <div className='md:flex md:justify-between items-center'>
-              <div className='md:w-1/2 md:pr-2'>
-                <div className='mb-3'>
-                  <label htmlFor='accountNumber' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Account number</label>
-                  <input
-                    type='text'
-                    value={accountNumber}
-                    name='accountNumber'
-                    id='accountNumber'
-                    className={`bg-slate-200 border ${errors.accountNumber ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.accountNumber ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
-                    placeholder='E.g. xxxxxxx99'
-                    onChange={onAccountNumberChanged}
-                    required=''
-                  />
-                </div>
-                <div>
-                  <label htmlFor='email' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Email</label>
-                  <input
-                    type='email'
-                    value={email}
-                    name='email'
-                    id='email'
-                    className={`bg-slate-200 border ${errors.email ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.email ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
-                    placeholder='E.g. example@inheritly.com'
-                    onChange={onEmailChanged}
-                    required=''
-                  />
-                </div>
+            <div>
+              <div className='flex flex-row justify-start items-center'>
+                <label className='relative inline-flex items-center cursor-pointer'>
+                  <input type='checkbox' value='' className='sr-only peer' onChange={handleToggle} />
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
+                </label>
+                <h2 className='ml-3 text-lg font-medium text-gray-900 dark:text-gray-300'>Owned by a Company?</h2>
               </div>
-              <div className='md:w-1/2 md:pl-2'>
-                <div className='mb-3'>
-                  <label htmlFor='phone' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Phone</label>
-                  <input
-                    type='text'
-                    value={phone}
-                    name='phone'
-                    id='phone'
-                    placeholder='E.g. +44 1234 567890'
-                    className={`bg-slate-200 border ${errors.phone ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.phone ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
-                    onChange={onPhoneChanged}
-                    required=''
-                  />
-                </div>
-                <div>
-                  <label htmlFor='companyAddress' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Company Address</label>
-                  <input
-                    type='companyAddress'
-                    value={companyAddress}
-                    name='companyAddress'
-                    id='companyAddress'
-                    className={`bg-slate-200 border ${errors.companyAddress ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.companyAddress ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
-                    placeholder='Company Address'
-                    onChange={onCompanyAddressChanged}
-                    required=''
-                  />
-                </div>
-              </div>
+              {!isPrivate && (
+                <>
+                  <h3 className='text-xl font-semibold text-slate-800 dark:text-slate-100 text-left my-6'>Company Information</h3>
+                  <div className='md:flex md:justify-between items-center'>
+                    <div className='md:w-1/2 md:pr-2'>
+                      <div className='mb-3'>
+                        <label htmlFor='accountNumber' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Account number</label>
+                        <input
+                          type='text'
+                          value={accountNumber}
+                          name='accountNumber'
+                          id='accountNumber'
+                          className={`bg-slate-200 border ${errors.accountNumber ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.accountNumber ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                          placeholder='E.g. xxxxxxx99'
+                          onChange={onAccountNumberChanged}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor='email' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Email</label>
+                        <input
+                          type='email'
+                          value={email}
+                          name='email'
+                          id='email'
+                          className={`bg-slate-200 border ${errors.email ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.email ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                          placeholder='E.g. example@inheritly.com'
+                          onChange={onEmailChanged}
+                        />
+                      </div>
+                    </div>
+                    <div className='md:w-1/2 md:pl-2'>
+                      <div className='mb-3'>
+                        <label htmlFor='phone' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Phone</label>
+                        <input
+                          type='text'
+                          value={phone}
+                          name='phone'
+                          id='phone'
+                          placeholder='E.g. +44 1234 567890'
+                          className={`bg-slate-200 border ${errors.phone ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.phone ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                          onChange={onPhoneChanged}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor='companyAddress' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Company Address</label>
+                        <input
+                          type='companyAddress'
+                          value={companyAddress}
+                          name='companyAddress'
+                          id='companyAddress'
+                          className={`bg-slate-200 border ${errors.companyAddress ? 'border-red-500' : 'border-slate-500'} text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:${errors.companyAddress ? 'border-red-500' : 'border-slate-600'} dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                          placeholder='Company Address'
+                          onChange={onCompanyAddressChanged}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
           {files.length > 0
