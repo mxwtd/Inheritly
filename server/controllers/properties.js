@@ -1,7 +1,7 @@
 /* eslint-disable dot-notation */
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
-const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFolderFromGCS, updateFileFromGCS } = require('../middleware/googleCloud')
+const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFolderFromGCS, updateFileFromGCS, deleteFileFromGCS } = require('../middleware/googleCloud')
 
 const createProperty = async (req, res, next) => {
   try {
@@ -40,7 +40,7 @@ const createProperty = async (req, res, next) => {
     if (photoFile) {
       photo = {
         url: null,
-        folder: await uploadPhotoToGCS(photoFile, userId, name)
+        folder: await uploadPhotoToGCS(photoFile, userId, name, 'properties')
       }
     }
 
@@ -166,7 +166,6 @@ const getPropertyById = async (req, res, next) => {
         console.log('Set files')
         property.files = await Promise.all(
           property.files.map(async (file) => {
-            console.log('setFile: ', file)
             return {
               ...file,
               url: await loadFileFromGCS(file.folder)
@@ -281,25 +280,51 @@ const deleteProperty = async (req, res, next) => {
     const user = await User.findById(userId)
     const propertyToDelete = await Property.findByIdAndDelete(id)
 
-    if (propertyToDelete.photo) {
+    if (propertyToDelete.photo || propertyToDelete.files) {
       const folderPath = `${userId}/properties/${propertyToDelete.name}/`
       await deleteFolderFromGCS(folderPath)
     }
-
-    console.log('assets before: ', user.assets)
-
-    console.log('property id: ', id)
-    console.log('property id type: ', typeof id)
 
     const updatedAssets = user.assets.filter(asset => asset.toString() !== id)
     user.assets = updatedAssets
     await user.save()
 
-    console.log('assets after: ', user.assets)
-
     res.status(204).end()
   } catch (error) {
     (isNaN(id)) ? next(error) : res.status(404).end()
+  }
+}
+
+const deleteFile = async (req, res, next) => {
+  const { id, fileId } = req.params
+
+  console.log('delete File')
+  console.log('id: ', id)
+  console.log('fileId: ', fileId)
+
+  try {
+    const property = await Property.findById(id)
+
+    if (property && property.files) {
+      const fileToDelete = property.files.find(file => file._id.toString() === fileId)
+
+      if (fileToDelete) {
+        await deleteFileFromGCS(fileToDelete.folder)
+
+        const updatedFiles = property.files.filter(file => file._id.toString() !== fileId)
+        property.files = updatedFiles
+
+        await Property.findByIdAndUpdate(
+          id,
+          property,
+          { new: true }
+        ).exec()
+
+        res.status(204).end()
+      }
+    }
+  } catch (error) {
+    next(error)
   }
 }
 
@@ -308,5 +333,6 @@ module.exports = {
   getAllUserProperties,
   getPropertyById,
   updateProperty,
-  deleteProperty
+  deleteProperty,
+  deleteFile
 }

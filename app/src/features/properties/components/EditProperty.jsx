@@ -2,7 +2,7 @@ import Properties from '../index'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { useUpdatePropertyMutation, useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
+import { useUpdatePropertyMutation, useGetPropertyByIdQuery, useDeleteFileMutation } from '../services/propertiesApiSlice'
 import { getFileNameFromUrl } from '../../../hook/getFileNameFromUrl.js'
 
 const EditProperty = () => {
@@ -16,6 +16,11 @@ const EditProperty = () => {
     pollingInterval: 20000
   })
 
+  const [
+    deletePropertyFile,
+    { isSuccess: deleteFileSuccess, isError: deleteFileError }
+  ] = useDeleteFileMutation()
+
   const [updateProperty, {
     isSuccess,
     isError,
@@ -23,6 +28,14 @@ const EditProperty = () => {
   }] = useUpdatePropertyMutation()
 
   const navigate = useNavigate()
+
+  if (deleteFileSuccess) {
+    console.log('delete file success')
+  }
+
+  if (deleteFileError) {
+    console.log('delete file error')
+  }
 
   const formatDate = (date) => {
     const year = date.getFullYear()
@@ -142,25 +155,26 @@ const EditProperty = () => {
     await updateProperty({ id, propertyData })
   }
 
-  const handleRenameFile = (index) => {
-    // const newFileName = window.prompt('Enter new name for the file:', files[index].name)
-    // if (newFileName) {
-    //   const newFiles = [...files]
-    //   newFiles[index] = { ...newFiles[index], name: newFileName }
-    //   setFiles(newFiles)
-    // }
-
-    console.log('Rename file: ', index)
+  const handleRenameFile = (file, index) => {
+    const newFileName = window.prompt('Enter new name for the file:', files[index].name)
+    if (newFileName) {
+      const newFiles = [...files]
+      newFiles[index] = { ...newFiles[index], name: newFileName }
+      setFiles(newFiles)
+    }
   }
 
-  const handleDeleteFile = (index) => {
-    // const confirmation = window.confirm('Are you sure you want to delete this file?')
-    // if (confirmation) {
-    //   const newFiles = [...files]
-    //   newFiles.splice(index, 1)
-    //   setFiles(newFiles)
-    // }
-    console.log('Delete file: ', index)
+  const handleDeleteFile = async (file, index) => {
+    const confirmation = window.confirm('Are you sure you want to delete this file?')
+    if (confirmation) {
+      const newFiles = [...files]
+      newFiles.splice(index, 1)
+      setFiles(newFiles)
+
+      if (file._id) {
+        await deletePropertyFile({ id, fileId: file._id })
+      }
+    }
   }
 
   /// ////////////////////////////////////////////////////////////////////////
@@ -171,10 +185,12 @@ const EditProperty = () => {
   const itemsPerPage = 4 // items per page
 
   const handleNext = () => {
+    console.log('handle next')
     setCurrentPage((currentPage) => currentPage + 1)
   }
 
   const handlePrevious = () => {
+    console.log('handle previous')
     setCurrentPage((currentPage) => currentPage - 1)
   }
 
@@ -487,12 +503,20 @@ const EditProperty = () => {
                                   <div id='dropdownDotsHorizontal' className='absolute z-50 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600'>
                                     <ul className='py-2 text-sm text-gray-700 dark:text-gray-200' aria-labelledby='dropdownMenuIconHorizontalButton'>
                                       <li>
-                                        <button className='block px-4 py-2 min-w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-left' onClick={() => handleRenameFile(file)}>
+                                        <button
+                                          type='button'
+                                          className='block px-4 py-2 min-w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-left'
+                                          onClick={() => handleRenameFile(file, index)}
+                                        >
                                           Rename
                                         </button>
                                       </li>
                                       <li>
-                                        <button className='block px-4 py-2 min-w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-left' onClick={() => handleDeleteFile(file)}>
+                                        <button
+                                          type='button'
+                                          className='block px-4 py-2 min-w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-left'
+                                          onClick={() => handleDeleteFile(file, index)}
+                                        >
                                           Delete
                                         </button>
                                       </li>
@@ -531,7 +555,12 @@ const EditProperty = () => {
               />
             </label>
           </div>
-          <button className='w-full py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 bg-blue-600 hover:bg-blue-700 focus:ring-offset-blue-200 focus:ring-blue-500'>Update</button>
+          <button
+            type='submit'
+            className='w-full py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 bg-blue-600 hover:bg-blue-700 focus:ring-offset-blue-200 focus:ring-blue-500'
+          >
+            Update
+          </button>
         </form>
       </div>
     </Properties>
