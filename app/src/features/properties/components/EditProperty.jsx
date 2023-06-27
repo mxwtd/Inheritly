@@ -2,7 +2,7 @@ import Properties from '../index'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { useUpdatePropertyMutation, useGetPropertyByIdQuery, useDeleteFileMutation } from '../services/propertiesApiSlice'
+import { useUpdatePropertyMutation, useGetPropertyByIdQuery, useDeleteFileMutation, useRenameFileMutation } from '../services/propertiesApiSlice'
 import { getFileNameFromUrl } from '../../../hook/getFileNameFromUrl.js'
 
 const EditProperty = () => {
@@ -20,6 +20,10 @@ const EditProperty = () => {
     deletePropertyFile,
     { isSuccess: deleteFileSuccess, isError: deleteFileError }
   ] = useDeleteFileMutation()
+
+  const [
+    renamePropertyFile
+  ] = useRenameFileMutation()
 
   const [updateProperty, {
     isSuccess,
@@ -155,12 +159,20 @@ const EditProperty = () => {
     await updateProperty({ id, propertyData })
   }
 
-  const handleRenameFile = (file, index) => {
+  const handleRenameFile = async (file, index) => {
     const newFileName = window.prompt('Enter new name for the file:', files[index].name)
     if (newFileName) {
+      const oldName = getFileNameFromUrl(file.url)
       const newFiles = [...files]
       newFiles[index] = { ...newFiles[index], name: newFileName }
       setFiles(newFiles)
+
+      console.log('old name: ', oldName)
+      console.log('new name: ', newFileName)
+
+      if (file._id) {
+        renamePropertyFile({ id, fileId: file._id, oldName, newName: newFileName })
+      }
     }
   }
 

@@ -1,7 +1,7 @@
 /* eslint-disable dot-notation */
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
-const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFolderFromGCS, updateFileFromGCS, deleteFileFromGCS } = require('../middleware/googleCloud')
+const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFolderFromGCS, updateFileFromGCS, deleteFileFromGCS, moveGCSFile } = require('../middleware/googleCloud')
 
 const createProperty = async (req, res, next) => {
   try {
@@ -328,11 +328,61 @@ const deleteFile = async (req, res, next) => {
   }
 }
 
+const renameFile = async (req, res, next) => {
+  const { id, fileId } = req.params
+
+  console.log('rename File')
+  console.log('id: ', id)
+  console.log('fileId: ', fileId)
+
+  try {
+    const property = await Property.findById(id)
+
+    if (property && property.files) {
+      const fileToRename = property.files.find(file => file._id.toString() === fileId)
+
+      if (fileToRename) {
+        const { oldName, newName } = req.body
+
+        console.log('Old name: ', oldName)
+        console.log('New name: ', newName)
+
+        const oldPath = fileToRename.folder
+        const newPath = oldPath.replace(oldName, newName)
+
+        console.log('oldPath: ', oldPath)
+        console.log('newPath: ', newPath)
+
+        await moveGCSFile(oldPath, newPath)
+
+        fileToRename.folder = newPath
+
+        // find the index of the file to rename in the properties and set the fileToRename to the new file
+        const fileIndex = property.files.findIndex(file => file._id.toString() === fileId)
+        property.files[fileIndex] = fileToRename
+
+        await Property.findByIdAndUpdate(
+          id,
+          property,
+          { new: true }
+        ).exec()
+
+        console.log('Property files: ', property.files)
+
+        res.status(204).end()
+      }
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   createProperty,
   getAllUserProperties,
   getPropertyById,
   updateProperty,
   deleteProperty,
-  deleteFile
+  deleteFile,
+  renameFile
 }

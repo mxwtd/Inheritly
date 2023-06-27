@@ -18,5 +18,6 @@ propertyRouter.route('/api/properties/:id')
 
 propertyRouter.route('/api/properties/:id/:fileId')
   .delete(propertiesController.deleteFile)
+  .patch(propertiesController.renameFile)
 
 module.exports = propertyRouter

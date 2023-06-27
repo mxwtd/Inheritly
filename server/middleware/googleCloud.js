@@ -106,6 +106,19 @@ const deleteFolderFromGCS = async (folderPath) => {
   return storage.bucket(bucketName).deleteFiles({ prefix: folderPath })
 }
 
+const moveGCSFile = async (oldPath, newPath) => {
+  // const [files] = await storage.bucket(bucketName).getFiles({ prefix: oldPath })
+  // const newFileName = oldPath.replace(oldName, newName)
+
+  // const movePromises = files.map((file) => {
+  //   return file.move(newFileName)
+  // })
+
+  // await Promise.all(newFileName)
+
+  return await storage.bucket(bucketName).file(oldPath).move(newPath)
+}
+
 module.exports = {
   multer,
   uploadPhotoToGCS,
@@ -113,5 +126,6 @@ module.exports = {
   loadFileFromGCS,
   updateFileFromGCS,
   deleteFileFromGCS,
-  deleteFolderFromGCS
+  deleteFolderFromGCS,
+  moveGCSFile
 }
