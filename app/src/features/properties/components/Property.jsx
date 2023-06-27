@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
 import MapChart from '../../../components/HoverMap.jsx'
 import { useState, useEffect } from 'react'
-import DeleteModal from './DeleteModal.jsx'
+import DeleteModal from '../../../components/DeleteModal.jsx'
 
 import { getFileNameFromUrl } from '../../../hook/getFileNameFromUrl.js'
 
@@ -214,7 +214,7 @@ const Property = () => {
     return (
       <>
         {content}
-        {showDeleteModal && <DeleteModal onClose={handleCloseDelete} property={property} />}
+        {showDeleteModal && <DeleteModal onClose={handleCloseDelete} investmentType={property} />}
       </>
     )
   }

@@ -4,6 +4,10 @@ import { useGetVehicleByIdQuery } from '../services/vehiclesApiSlice.js'
 import MapChart from '../../../components/HoverMap.jsx'
 import { useState, useEffect } from 'react'
 
+import DeleteModal from '../../../components/DeleteModal.jsx'
+
+import { getFileNameFromUrl } from '../../../hook/getFileNameFromUrl.js'
+
 const Vehicle = () => {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -24,6 +28,7 @@ const Vehicle = () => {
   const [currentPage, setCurrentPage] = useState(0) // page state
   const [downloadUrl, setDownloadUrl] = useState(null)
   const itemsPerPage = 2 // items per page
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   let content
 
@@ -85,17 +90,16 @@ const Vehicle = () => {
       setCurrentPage((currentPage) => currentPage - 1)
     }
 
-    const getFileNameFromUrl = (url) => {
-      const decodedUrl = decodeURIComponent(url)
-      const fileNameRegex = /\/\d+-([^/]+)(?=\?)/
-      const matches = decodedUrl.match(fileNameRegex)
-      const fileName = matches[1]
-      return fileName
+    const handleDelete = () => {
+      setShowDeleteModal(true)
+    }
+
+    const handleCloseDelete = () => {
+      setShowDeleteModal(false)
     }
 
     if (vehicle) {
       const handleEdit = () => navigate('./edit')
-      const handleDelete = () => navigate('./delete')
 
       content = (
         <Vehicles backTo='/investments/vehicles'>
@@ -207,9 +211,14 @@ const Vehicle = () => {
         </Vehicles>
       )
     }
-  }
 
-  return content
+    return (
+      <>
+        {content}
+        {showDeleteModal && <DeleteModal onClose={handleCloseDelete} investmentType={vehicle} />}
+      </>
+    )
+  }
 }
 
 export default Vehicle
