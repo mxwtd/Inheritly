@@ -205,9 +205,6 @@ const updateProperty = async (req, res, next) => {
       propertyFiles = req.files['files'] ? req.files['files'] : null
     }
 
-    // console.log('photo file: ', photoFile)
-    console.log('property files: ', propertyFiles)
-
     let photoPath = null
 
     if (photoFile) {

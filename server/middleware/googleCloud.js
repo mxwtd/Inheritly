@@ -67,10 +67,6 @@ const loadFileFromGCS = async (fileName) => {
 }
 
 const updateFileFromGCS = async (file, fileName) => {
-  console.log('from update file')
-  console.log('file: ', file)
-  console.log('fileName: ', fileName)
-
   return new Promise((resolve, reject) => {
     const blob = bucket.file(fileName)
     const blobStream = blob.createWriteStream()

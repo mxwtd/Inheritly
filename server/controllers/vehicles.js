@@ -199,7 +199,6 @@ const updateVehicle = async (req, res, next) => {
       vehicleFiles = req.files['files'] ? req.files['files'] : null
     }
 
-    // console.log('photo file: ', photoFile)
     console.log('vehicle files: ', vehicleFiles)
 
     let photoPath = null

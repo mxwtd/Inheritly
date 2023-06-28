@@ -20,50 +20,6 @@ const FilesList = ({ id, files, setFiles }) => {
 
   const [openedDropdown, setOpenedDropdown] = useState(-1)
 
-  /// /////////////////////////////////////////////////////////
-  // The following handles the file rename on the file list //
-  /// ////////////////////////////////////////////////////////
-
-  // const handleRenameFile = (index) => {
-  //   const newFileName = window.prompt('Please enter a new file name')
-  //   if (newFileName === null) {
-  //     return
-  //   }
-
-  //   setFiles(prevFiles => {
-  //     const newFiles = [...prevFiles]
-  //     const oldFile = newFiles[index]
-  //     const newFile = new File([oldFile], newFileName, {
-  //       type: oldFile.type,
-  //       lastModified: oldFile.lastModified
-  //     })
-  //     newFiles[index] = newFile
-  //     return newFiles
-  //   })
-
-  //   // Close the dropdown
-  //   setOpenedDropdown(-1)
-  // }
-
-  /// ///////////////////////////////////////////////////////////
-  // The following handles the file deletion on the file list //
-  /// /////////////////////////////////////////////////////////
-
-  // const handleDeleteFile = (index) => {
-  //   setFiles(prevFiles => {
-  //     const newFiles = [...prevFiles]
-  //     newFiles.splice(index, 1)
-  //     return newFiles
-  //   })
-
-  //   // Close the dropdown
-  //   setOpenedDropdown(-1)
-  // }
-
-  /// /////////////////////////////////////////////////////////
-  // The following closes the edit modal on the file list ///
-  /// ////////////////////////////////////////////////////////
-
   const [
     deletePropertyFile
   ] = useDeleteFileMutation()
@@ -97,13 +53,8 @@ const FilesList = ({ id, files, setFiles }) => {
         newFiles[index] = { ...newFiles[index], name: newFileName }
         setFiles(newFiles)
 
-        console.log('old name: ', oldName)
-        console.log('new name: ', newFileName)
-
         await renamePropertyFile({ id, fileId: file._id, oldName, newName: newFileName })
       } else {
-        console.log('file: ', file)
-        console.log('index: ', index)
         setFiles(prevFiles => {
           const newFiles = [...prevFiles]
           const oldFile = newFiles[index]
