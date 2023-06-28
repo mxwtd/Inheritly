@@ -15,6 +15,7 @@ const ContactInformation = ({ errors }) => {
 
   const handleToggle = () => {
     setIsPrivate(prevIsPrivate => !prevIsPrivate)
+    console.log(isPrivate)
   }
 
   return (
@@ -33,18 +34,18 @@ const ContactInformation = ({ errors }) => {
             <div className='md:flex md:justify-between items-center'>
               <div className='md:w-1/2 md:pr-2'>
                 <div className='mb-3'>
-                  <FieldInput label='Account number' value={accountNumber} onChange={onAccountNumberChanged} name='accountNumber' type='text' placeholder='E.g. xxxxxxx99' errors={errors} />
+                  <FieldInput label='Account number' value={accountNumber} onChange={onAccountNumberChanged} name='accountNumber' type='text' placeholder='E.g. xxxxxxx99' errors={errors} isRequire={isPrivate} />
                 </div>
                 <div>
-                  <FieldInput label='Email' value={email} onChange={onEmailChanged} name='email' type='email' placeholder='E.g. example@inheritly.com' errors={errors} />
+                  <FieldInput label='Email' value={email} onChange={onEmailChanged} name='email' type='email' placeholder='E.g. example@inheritly.com' errors={errors} isRequire={isPrivate} />
                 </div>
               </div>
               <div className='md:w-1/2 md:pl-2'>
                 <div className='mb-3'>
-                  <FieldInput label='Phone' value={phone} onChange={onPhoneChanged} name='phone' type='text' placeholder='E.g. +44 1234 567890' errors={errors} />
+                  <FieldInput label='Phone' value={phone} onChange={onPhoneChanged} name='phone' type='text' placeholder='E.g. +44 1234 567890' errors={errors} isRequire={isPrivate} />
                 </div>
                 <div>
-                  <FieldInput label='Company Address' value={companyAddress} onChange={onCompanyAddressChanged} name='companyAddress' type='text' placeholder='Company Address' errors={errors} />
+                  <FieldInput label='Company Address' value={companyAddress} onChange={onCompanyAddressChanged} name='companyAddress' type='text' placeholder='Company Address' errors={errors} isRequire={isPrivate} />
                 </div>
               </div>
             </div>

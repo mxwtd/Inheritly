@@ -17,7 +17,6 @@ const multer = Multer({
 const uploadPhotoToGCS = async (file, userId, propertyName, type) => {
   return new Promise((resolve, reject) => {
     const folderPath = `${userId}/${type}/${propertyName}/photos/`
-    console.log('upload photo', folderPath)
     const newFileName = `${folderPath}${Date.now()}-${file.originalname}`
     const blob = bucket.file(newFileName)
     const blobStream = blob.createWriteStream()
@@ -32,9 +31,9 @@ const uploadPhotoToGCS = async (file, userId, propertyName, type) => {
   })
 }
 
-const uploadFilesToGCS = async (file, userId, propertyName) => {
+const uploadFilesToGCS = async (file, userId, propertyName, type) => {
   return new Promise((resolve, reject) => {
-    const folderPath = `${userId}/properties/${propertyName}/files/`
+    const folderPath = `${userId}/${type}/${propertyName}/files/`
     const newFileName = `${folderPath}${Date.now()}-${file.originalname}`
     const blob = bucket.file(newFileName)
     const blobStream = blob.createWriteStream()

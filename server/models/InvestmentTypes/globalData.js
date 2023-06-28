@@ -6,7 +6,7 @@ const defaultData = {
     ref: 'User',
     required: true
   },
-  type: { type: String, required: true, enum: ['Property', 'Vehicle'] },
+  type: { type: String, required: true, enum: ['Property', 'Vehicle', 'Jewelry', ''] },
   name: { type: String, required: true },
   currency: String,
   date: Date,
@@ -25,10 +25,10 @@ const defaultData = {
   }],
   // Add contact info
   contactInformation: {
-    accountNumber: { type: String, required: true },
-    email: { type: String, required: true },
-    phone: { type: String, required: true },
-    companyAddress: { type: String, required: true }
+    accountNumber: { type: String },
+    email: { type: String },
+    phone: { type: String },
+    companyAddress: { type: String }
   }
 }
 

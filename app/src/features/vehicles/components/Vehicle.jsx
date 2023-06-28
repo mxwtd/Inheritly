@@ -198,15 +198,21 @@ const Vehicle = () => {
                 <p className='text-md lg:text-lg px-4'>year: {vehicle?.year}</p>
               </div>
             </div>
-            <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
-              <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg h-full flex flex-col justify-center'>
-                <p className='text-xl lg:text-2xl px-4 mb-2'>Contact</p>
-                <p className='text-md lg:text-lg px-4'>Account Number: {vehicle?.contactInformation.accountNumber}</p>
-                <p className='text-md lg:text-lg px-4'>Email: {vehicle?.contactInformation.email}</p>
-                <p className='text-md lg:text-lg px-4'>Phone: {vehicle?.contactInformation.phone}</p>
-                <p className='text-md lg:text-lg px-4'>Company Address: {vehicle?.contactInformation.companyAddress}</p>
-              </div>
-            </div>
+            {
+              vehicle?.contactInformation
+                ? (
+                  <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
+                    <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg h-full flex flex-col justify-center'>
+                      <p className='text-xl lg:text-2xl px-4 mb-2'>Contact</p>
+                      <p className='text-md lg:text-lg px-4'>Account Number: {vehicle?.contactInformation.accountNumber}</p>
+                      <p className='text-md lg:text-lg px-4'>Email: {vehicle?.contactInformation.email}</p>
+                      <p className='text-md lg:text-lg px-4'>Phone: {vehicle?.contactInformation.phone}</p>
+                      <p className='text-md lg:text-lg px-4'>Company Address: {vehicle?.contactInformation.companyAddress}</p>
+                    </div>
+                  </div>
+                  )
+                : null
+            }
           </div>
         </Vehicles>
       )

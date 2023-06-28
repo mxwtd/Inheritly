@@ -119,7 +119,7 @@ const getAllUserProperties = async (req, res, next) => {
         }
       }
 
-      if (property.files.folder) {
+      if (property.files) {
         property.files = await Promise.all(
           property.files.map(async (file) => {
             return {

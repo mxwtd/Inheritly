@@ -111,7 +111,9 @@ const getAllUserVehicles = async (req, res, next) => {
         }
       }
 
-      if (vehicle.files.folder) {
+      if (vehicle.files) {
+        console.log('Set files')
+        console.log('vehicles files folder: ', vehicle.files.folder)
         vehicle.files = await Promise.all(
           vehicle.files.map(async (file) => {
             return {
@@ -176,6 +178,8 @@ const getVehicleById = async (req, res, next) => {
 const updateVehicle = async (req, res, next) => {
   const { id } = req.params
   const updates = req.body
+
+  console.log('updates: ', updates)
 
   try {
     const vehicleToUpdate = await Vehicle.findById(id)
