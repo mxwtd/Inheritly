@@ -5,6 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useUpdatePropertyMutation, useGetPropertyByIdQuery, useDeleteFileMutation, useRenameFileMutation } from '../services/propertiesApiSlice'
 import { getFileNameFromUrl } from '../../../hook/getFileNameFromUrl.js'
 
+import FieldInput from '../../../components/ui/FieldInput'
+
 const EditProperty = () => {
   const { id } = useParams()
 
@@ -62,6 +64,8 @@ const EditProperty = () => {
 
   const [photo, setPhoto] = useState(property?.photo || null)
   const [files, setFiles] = useState(property?.files || [])
+
+  const [errors] = useState({ name: false, type: false, photo: false })
 
   useEffect(() => {
     if (property) {
@@ -273,58 +277,18 @@ const EditProperty = () => {
             </div>
             <div className='md:w-1/2 md:pr-2'>
               <div className='mb-3'>
-                <label htmlFor='name' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Property name</label>
-                <input
-                  type='text'
-                  value={name}
-                  name='name'
-                  id='name'
-                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  placeholder='Property name'
-                  onChange={onNameChanged}
-                  required=''
-                />
+                <FieldInput label='Property name' value={name} onChange={onNameChanged} name='name' type='text' placeholder='Property name' errors={errors} isRequire />
               </div>
               <div>
-                <label htmlFor='type' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Type</label>
-                <input
-                  type='type'
-                  value={type}
-                  name='type'
-                  id='type'
-                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  placeholder='E.g. House, Apartment, etc.'
-                  onChange={onTypeChanged}
-                  required=''
-                />
+                <FieldInput label='Type' value={type} onChange={onTypeChanged} name='type' type='text' placeholder='E.g. House, Apartment, etc.' errors={errors} isRequire />
               </div>
             </div>
             <div className='md:w-1/2 md:pl-2'>
               <div className='mb-3'>
-                <label htmlFor='currency' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Currency</label>
-                <input
-                  type='text'
-                  value={currency}
-                  name='currency'
-                  id='currency'
-                  placeholder='E.g. USD'
-                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  onChange={onCurrencyChanged}
-                  required=''
-                />
+                <FieldInput label='Currency' value={currency} onChange={onCurrencyChanged} name='currency' type='text' placeholder='E.g. USD' errors={errors} isRequire />
               </div>
               <div>
-                <label htmlFor='value' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Value</label>
-                <input
-                  type='value'
-                  value={value}
-                  name='value'
-                  id='value'
-                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  placeholder='Property Value'
-                  onChange={onValueChanged}
-                  required=''
-                />
+                <FieldInput label='Value' value={value} onChange={onValueChanged} name='value' type='text' placeholder='Property Value' errors={errors} isRequire />
               </div>
             </div>
           </div>
@@ -332,86 +296,27 @@ const EditProperty = () => {
             <h3 className='text-xl font-semibold text-slate-800 dark:text-slate-100 text-left mb-2'>Property Information</h3>
             <div className='md:flex md:justify-between'>
               <div className='md:w-1/2 md:pr-2 mt-2'>
-                <label htmlFor='date' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Date Of Purchase</label>
-                <input
-                  type='date'
-                  value={date}
-                  name='date'
-                  id='date'
-                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  onChange={onDateChanged}
-                  required=''
-                />
+                <FieldInput label='Date Of Purchase' value={date} onChange={onDateChanged} name='date' type='date' placeholder='Date Of Purchase' errors={errors} isRequire />
               </div>
               <div className='md:w-1/2 md:pl-2 mt-2'>
-                <label htmlFor='taxStatus' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Tax Status</label>
-                <input
-                  type='taxStatus'
-                  value={taxStatus}
-                  name='taxStatus'
-                  id='taxStatus'
-                  className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  placeholder='E.g. Taxable, Tax Free, etc.'
-                  onChange={onTaxStatusChanged}
-                  required=''
-                />
+                <FieldInput label='Tax Status' value={taxStatus} onChange={onTaxStatusChanged} name='taxStatus' type='text' placeholder='E.g. Taxable, Tax Free, etc.' errors={errors} isRequire />
               </div>
             </div>
             <div className='md:flex md:justify-between'>
               <div className='md:w-1/2 md:pr-2 my-4'>
                 <div className='mb-2'>
-                  <label htmlFor='address' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Address</label>
-                  <input
-                    type='address'
-                    value={address}
-                    name='address'
-                    id='address'
-                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                    placeholder='Street Address'
-                    onChange={onAddressChanged}
-                    required=''
-                  />
+                  <FieldInput label='Address' value={address} onChange={onAddressChanged} name='address' type='text' placeholder='Street Address' errors={errors} isRequire />
                 </div>
                 <div className='mt-3'>
-                  <label htmlFor='city' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>City</label>
-                  <input
-                    type='city'
-                    value={city}
-                    name='city'
-                    id='city'
-                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                    placeholder='City Name'
-                    onChange={onCityChanged}
-                    required=''
-                  />
+                  <FieldInput label='City' value={city} onChange={onCityChanged} name='city' type='text' placeholder='City Name' errors={errors} isRequire />
                 </div>
               </div>
               <div className='md:w-1/2 md:pl-2 my-4'>
                 <div className='mb-2'>
-                  <label htmlFor='zip' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Postcode / Zip</label>
-                  <input
-                    type='zip'
-                    value={zip}
-                    name='zip'
-                    id='zip'
-                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                    placeholder='Postcode / Zip Code'
-                    onChange={onZipChanged}
-                    required=''
-                  />
+                  <FieldInput label='Postcode / Zip' value={zip} onChange={onZipChanged} name='zip' type='text' placeholder='Postcode / Zip Code' errors={errors} isRequire />
                 </div>
                 <div className='mt-3'>
-                  <label htmlFor='country' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Country</label>
-                  <input
-                    type='text'
-                    value={country}
-                    name='country'
-                    id='country'
-                    placeholder='Country Name'
-                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                    onChange={onCountryChanged}
-                    required=''
-                  />
+                  <FieldInput label='Country' value={country} onChange={onCountryChanged} name='country' type='text' placeholder='Country Name' errors={errors} isRequire />
                 </div>
               </div>
             </div>
@@ -421,58 +326,18 @@ const EditProperty = () => {
             <div className='md:flex md:justify-between items-center'>
               <div className='md:w-1/2 md:pr-2'>
                 <div className='mb-3'>
-                  <label htmlFor='accountNumber' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Account number</label>
-                  <input
-                    type='text'
-                    value={contactInformation.accountNumber}
-                    name='accountNumber'
-                    id='accountNumber'
-                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                    placeholder='E.g. xxxxxxx99'
-                    onChange={onContactInformationChanged}
-                    required=''
-                  />
+                  <FieldInput label='Account number' value={contactInformation.accountNumber} onChange={onContactInformationChanged} name='accountNumber' type='text' placeholder='E.g. xxxxxxx99' errors={errors} isRequire />
                 </div>
                 <div>
-                  <label htmlFor='email' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Email</label>
-                  <input
-                    type='email'
-                    value={contactInformation.email}
-                    name='email'
-                    id='email'
-                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                    placeholder='E.g. example@inheritly.com'
-                    onChange={onContactInformationChanged}
-                    required=''
-                  />
+                  <FieldInput label='Email' value={contactInformation.email} onChange={onContactInformationChanged} name='email' type='email' placeholder='E.g.example@inheritly.com' errors={errors} isRequire />
                 </div>
               </div>
               <div className='md:w-1/2 md:pl-2'>
                 <div className='mb-3'>
-                  <label htmlFor='phone' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Phone</label>
-                  <input
-                    type='text'
-                    value={contactInformation.phone}
-                    name='phone'
-                    id='phone'
-                    placeholder='E.g. +44 1234 567890'
-                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                    onChange={onContactInformationChanged}
-                    required=''
-                  />
+                  <FieldInput label='Phone' value={contactInformation.phone} onChange={onContactInformationChanged} name='phone' type='text' placeholder='E.g. +44 1234 567890' errors={errors} isRequire />
                 </div>
                 <div>
-                  <label htmlFor='companyAddress' className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>Company Address</label>
-                  <input
-                    type='companyAddress'
-                    value={contactInformation.companyAddress}
-                    name='companyAddress'
-                    id='companyAddress'
-                    className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                    placeholder='Company Address'
-                    onChange={onContactInformationChanged}
-                    required=''
-                  />
+                  <FieldInput label='Company Address' value={contactInformation.companyAddress} onChange={onContactInformationChanged} name='companyAddress' type='text' placeholder='Company Address' errors={errors} isRequire />
                 </div>
               </div>
             </div>
