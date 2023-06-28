@@ -2,10 +2,10 @@ import Properties from '../index'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { useUpdatePropertyMutation, useGetPropertyByIdQuery, useDeleteFileMutation, useRenameFileMutation } from '../services/propertiesApiSlice'
-import { getFileNameFromUrl } from '../../../hook/getFileNameFromUrl.js'
+import { useUpdatePropertyMutation, useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
 
 import FieldInput from '../../../components/ui/FieldInput'
+import FilesList from '../../../components/form/InvestmentType/FilesList'
 
 const EditProperty = () => {
   const { id } = useParams()
@@ -15,16 +15,8 @@ const EditProperty = () => {
   } = useGetPropertyByIdQuery(id, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
-    pollingInterval: 20000
+    pollingInterval: 900000
   })
-
-  const [
-    deletePropertyFile
-  ] = useDeleteFileMutation()
-
-  const [
-    renamePropertyFile
-  ] = useRenameFileMutation()
 
   const [updateProperty, {
     isSuccess,
@@ -59,7 +51,7 @@ const EditProperty = () => {
     accountNumber: property?.contactInformation.accountNumber || '',
     email: property?.contactInformation.email || '',
     phone: property?.contactInformation.phone || '',
-    companyAddress: property?.contactInformation.companyAddress || ''
+    companyAddress: property?.contactInformation?.companyAddress || ''
   } || {})
 
   const [photo, setPhoto] = useState(property?.photo || null)
@@ -68,6 +60,7 @@ const EditProperty = () => {
   const [errors] = useState({ name: false, type: false, photo: false })
 
   useEffect(() => {
+    console.log('property change')
     if (property) {
       setName(property.name)
       setCountry(property.country)
@@ -153,77 +146,6 @@ const EditProperty = () => {
 
     await updateProperty({ id, propertyData })
   }
-
-  const handleRenameFile = async (file, index) => {
-    const newFileName = window.prompt('Enter new name for the file:', files[index].name)
-    if (newFileName) {
-      const oldName = getFileNameFromUrl(file.url)
-      const newFiles = [...files]
-      newFiles[index] = { ...newFiles[index], name: newFileName }
-      setFiles(newFiles)
-
-      console.log('old name: ', oldName)
-      console.log('new name: ', newFileName)
-
-      if (file._id) {
-        renamePropertyFile({ id, fileId: file._id, oldName, newName: newFileName })
-      }
-    }
-  }
-
-  const handleDeleteFile = async (file, index) => {
-    const confirmation = window.confirm('Are you sure you want to delete this file?')
-    if (confirmation) {
-      const newFiles = [...files]
-      newFiles.splice(index, 1)
-      setFiles(newFiles)
-
-      if (file._id) {
-        await deletePropertyFile({ id, fileId: file._id })
-      }
-    }
-  }
-
-  /// ////////////////////////////////////////////////////////////////////////
-  // The following handles the amount of file on one page of the file list ///
-  /// ////////////////////////////////////////////////////////////////////////
-
-  const [currentPage, setCurrentPage] = useState(0) // page state
-  const itemsPerPage = 4 // items per page
-
-  const handleNext = () => {
-    console.log('handle next')
-    setCurrentPage((currentPage) => currentPage + 1)
-  }
-
-  const handlePrevious = () => {
-    console.log('handle previous')
-    setCurrentPage((currentPage) => currentPage - 1)
-  }
-
-  /// /////////////////////////////////////////////////////////
-  // The following closes the edit modal on the file list ///
-  /// ////////////////////////////////////////////////////////
-
-  useEffect(() => {
-    const closeDropdown = (e) => {
-      if (!e.target.closest('#dropdownDotsHorizontal') && e.target.id !== 'dropdownMenuIconButton') {
-        setOpenedDropdown(-1)
-      }
-    }
-
-    document.body.addEventListener('click', closeDropdown)
-
-    // Cleanup function to remove the event listener when the component unmounts
-    return () => {
-      document.body.removeEventListener('click', closeDropdown)
-    }
-  }, [])
-
-  // const validNameClass = !name ? 'form__input--incomplete' : ''
-  // const validCountryClass = !country ? 'form__input--incomplete' : ''
-
-  const [openedDropdown, setOpenedDropdown] = useState(-1)
 
   const errClass = isError ? 'errorMsg text-red-500' : 'offscreen'
 
@@ -344,64 +266,7 @@ const EditProperty = () => {
           </div>
           {files?.length > 0
             ? (
-              <div className='py-2 px-4 mt-4 xl:mt-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg pb-6'>
-                <h1 className='py-2 text-md md:text-lg font-semibold pb-4'>Files</h1>
-                <div className='relative shadow-md sm:rounded-lg'>
-                  <table className='w-full text-sm text-left text-slate-500 dark:text-slate-400'>
-                    <thead className='text-xs text-slate-700 uppercase bg-slate-50 dark:bg-slate-700 dark:text-slate-400'>
-                      <tr>
-                        <th scope='col' className='px-6 py-4'>
-                          Name
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {files?.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage).map((file, index) => (
-                        <tr key={index} className={(index + currentPage * itemsPerPage) % 2 === 0 ? 'bg-white border-b dark:bg-slate-800 dark:border-slate-700' : 'bg-slate-50 dark:bg-slate-900'}>
-                          <td className='px-6 py-4'>
-                            <div className='flex justify-between items-center'>
-                              {
-                                (file.name) ? file.name : getFileNameFromUrl(file.url)
-                              }
-                              <div className='relative'>
-                                <button id='dropdownMenuIconButton' data-dropdown-toggle='dropdownDots' className=' inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600' type='button' onClick={() => setOpenedDropdown(index + currentPage * itemsPerPage)}>
-                                  <svg className='w-6 h-6' aria-hidden='true' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg' style={{ pointerEvents: 'none' }}><path d='M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z' /></svg>
-                                </button>
-                                {openedDropdown === index + currentPage * itemsPerPage && (
-                                  <div id='dropdownDotsHorizontal' className='absolute z-50 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600'>
-                                    <ul className='py-2 text-sm text-gray-700 dark:text-gray-200' aria-labelledby='dropdownMenuIconHorizontalButton'>
-                                      <li>
-                                        <button
-                                          type='button'
-                                          className='block px-4 py-2 min-w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-left'
-                                          onClick={() => handleRenameFile(file, index)}
-                                        >
-                                          Rename
-                                        </button>
-                                      </li>
-                                      <li>
-                                        <button
-                                          type='button'
-                                          className='block px-4 py-2 min-w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-left'
-                                          onClick={() => handleDeleteFile(file, index)}
-                                        >
-                                          Delete
-                                        </button>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                {currentPage !== 0 && <button onClick={handlePrevious}>Previous</button>}
-                {(currentPage + 1) * itemsPerPage < files.length && <button onClick={handleNext}>Next</button>}
-              </div>
+              <FilesList id={id} files={files} setFiles={setFiles} />
               )
             : null}
           <div>

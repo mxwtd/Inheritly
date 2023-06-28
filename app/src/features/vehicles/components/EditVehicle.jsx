@@ -13,7 +13,7 @@ const EditVehicle = () => {
   } = useGetVehicleByIdQuery(id, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
-    pollingInterval: 20000
+    pollingInterval: 900000
   })
 
   const [

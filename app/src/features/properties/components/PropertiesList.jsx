@@ -17,7 +17,7 @@ const PropertiesList = () => {
   } = useGetPropertiesQuery('propertiesList', {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
-    pollingInterval: 20000
+    pollingInterval: 300000
   })
 
   let content

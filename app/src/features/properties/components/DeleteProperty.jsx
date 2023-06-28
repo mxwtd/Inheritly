@@ -12,7 +12,7 @@ const DeleteProperty = () => {
   } = useGetPropertyByIdQuery(id, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
-    pollingInterval: 20000
+    pollingInterval: 300000
   })
 
   const [deleteProperty, {

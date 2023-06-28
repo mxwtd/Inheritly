@@ -21,7 +21,7 @@ const Vehicle = () => {
   } = useGetVehicleByIdQuery(id, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
-    pollingInterval: 20000
+    pollingInterval: 300000
   })
 
   const [files, setFiles] = useState([])
