@@ -15,8 +15,6 @@ const FileInput = ({ onFilesChanged }) => {
           id='files'
           className='hidden'
           multiple
-          onMouseLeave={onFilesChanged}
-          onDragEnterCapture={onFilesChanged}
           onChange={onFilesChanged}
         />
       </label>

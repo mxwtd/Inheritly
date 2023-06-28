@@ -27,8 +27,6 @@ const createVehicle = async (req, res, next) => {
     let photoFile = null
     let vehicleFiles = null
 
-    console.log('req.files: ', req.files)
-
     if (req.files) {
       photoFile = req.files['photo'] ? req.files['photo'][0] : null
       vehicleFiles = req.files['files'] ? req.files['files'] : null
@@ -52,9 +50,6 @@ const createVehicle = async (req, res, next) => {
         }
       }))
     }
-
-    console.log('photo path folder', photo)
-    console.log('files path folder', files)
 
     const contactInformation = {
       accountNumber,
