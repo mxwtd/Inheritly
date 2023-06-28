@@ -102,6 +102,8 @@ const FilesList = ({ id, files, setFiles }) => {
 
         await renamePropertyFile({ id, fileId: file._id, oldName, newName: newFileName })
       } else {
+        console.log('file: ', file)
+        console.log('index: ', index)
         setFiles(prevFiles => {
           const newFiles = [...prevFiles]
           const oldFile = newFiles[index]
@@ -163,7 +165,7 @@ const FilesList = ({ id, files, setFiles }) => {
                               <button
                                 type='button'
                                 className='block px-4 py-2 min-w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-left'
-                                onClick={() => handleRenameFile(file, index)}
+                                onClick={() => handleRenameFile(file, (index + currentPage * itemsPerPage))}
                               >
                                 Rename
                               </button>
@@ -172,7 +174,7 @@ const FilesList = ({ id, files, setFiles }) => {
                               <button
                                 type='button'
                                 className='block px-4 py-2 min-w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-left'
-                                onClick={() => handleDeleteFile(file, index)}
+                                onClick={() => handleDeleteFile(file, (index + currentPage * itemsPerPage))}
                               >
                                 Delete
                               </button>

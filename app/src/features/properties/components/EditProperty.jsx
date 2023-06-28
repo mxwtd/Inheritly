@@ -140,9 +140,18 @@ const EditProperty = () => {
     const propertyData = new FormData(e.target)
 
     console.log('PropertyData name: ', propertyData.get('name'))
-    console.log('PropertyData photo: ', propertyData.get('photo'))
 
     console.log('')
+
+    if (files) {
+      propertyData.delete('files')
+      files.forEach(file => {
+        if (file instanceof File) {
+          propertyData.append('files', file)
+          console.log('file: ', file)
+        }
+      })
+    }
 
     await updateProperty({ id, propertyData })
   }
