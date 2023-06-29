@@ -1,4 +1,5 @@
 const FieldInput = ({ label, value, onChange, name, type, placeholder, errors, isRequire }) => {
+  console.log(`id: ${name} value: ${value} isRequire: ${isRequire}`)
   return (
     <>
       <label htmlFor={name} className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>{label}</label>
