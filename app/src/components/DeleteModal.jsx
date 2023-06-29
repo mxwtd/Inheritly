@@ -1,35 +1,61 @@
 import { useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
-import { useDeletePropertyMutation, useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
+import { useDeletePropertyMutation } from '../features/properties/services/propertiesApiSlice'
+import { useDeleteVehicleMutation } from '../features/vehicles/services/vehiclesApiSlice'
 
-const DeleteModal = ({ onClose }) => {
+const DeleteModal = ({ onClose, investmentType }) => {
+  const investmentsTypes = [
+    {
+      type: 'property',
+      pluralName: 'properties',
+      getMutation: useDeletePropertyMutation()
+    },
+    {
+      type: 'vehicle',
+      pluralName: 'vehicles',
+      getMutation: useDeleteVehicleMutation()
+    }
+  ]
+
+  const {
+    getMutation: deleteMutation
+  } = investmentsTypes.find(
+    investment => investment.type === investmentType?.type.toLowerCase()
+  )
+
+  const [
+    deleteInvestment,
+    {
+      isSuccess,
+      isError
+    }
+  ] = deleteMutation
+
+  const { pluralName } = investmentsTypes.find(
+    investment => investment.type === investmentType?.type.toLowerCase()
+  )
+
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const {
-    data: property
-  } = useGetPropertyByIdQuery(id)
-
-  const [deleteProperty, { isSuccess, isError }] = useDeletePropertyMutation()
-
   const handleConfirm = async () => {
     try {
-      await deleteProperty({ id })
+      await deleteInvestment({ id })
       if (isSuccess) {
         onClose()
-        navigate('/investments/properties/')
+        navigate(`/investments/${pluralName}/`)
       }
     } catch (error) {
-      console.error('Failed to delete property:', error)
+      console.error(`Failed to delete ${pluralName}:`, error)
     }
   }
 
   useEffect(() => {
     if (isSuccess) {
       onClose()
-      navigate('/investments/properties/')
+      navigate(`/investments/${pluralName}/`)
     }
-  }, [isSuccess, onClose, navigate])
+  }, [isSuccess, onClose, navigate, pluralName])
 
   return (
     <div className='fixed inset-0 z-50 flex justify-center items-center'>
@@ -38,15 +64,15 @@ const DeleteModal = ({ onClose }) => {
         <div className='flex flex-col items-center'>
           <div className='my-8 text-center'>
             <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Delete</h1>
-            <h2 className='text-2xl font-bold text-slate-800 dark:text-white mt-3'>{property?.name}?</h2>
+            <h2 className='text-2xl font-bold text-slate-800 dark:text-white mt-3'>{investmentType?.name}?</h2>
             {isError && <p className='text-red-500'>There was an error deleting the property.</p>}
           </div>
           <div className='relative w-full rounded-2xl' style={{ aspectRatio: '1/1' }}>
             <div className='bg-slate-200 dark:bg-slate-700 p-4 rounded-2xl'>
               <div className='relative w-full h-full overflow-hidden rounded-2xl'>
                 <img
-                  src={property?.photo}
-                  alt={property?.name}
+                  src={investmentType?.photo.url}
+                  alt={investmentType?.name}
                   className='object-cover w-full h-full transform transition-all duration-500 hover:scale-110'
                   style={{ aspectRatio: '1/1' }}
                 />

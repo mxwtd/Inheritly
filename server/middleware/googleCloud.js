@@ -31,9 +31,9 @@ const uploadPhotoToGCS = async (file, userId, propertyName, type) => {
   })
 }
 
-const uploadFilesToGCS = async (file, userId, propertyName) => {
+const uploadFilesToGCS = async (file, userId, propertyName, type) => {
   return new Promise((resolve, reject) => {
-    const folderPath = `${userId}/properties/${propertyName}/files/`
+    const folderPath = `${userId}/${type}/${propertyName}/files/`
     const newFileName = `${folderPath}${Date.now()}-${file.originalname}`
     const blob = bucket.file(newFileName)
     const blobStream = blob.createWriteStream()
@@ -49,6 +49,7 @@ const uploadFilesToGCS = async (file, userId, propertyName) => {
 }
 
 const loadFileFromGCS = async (fileName) => {
+  console.log('load file')
   const options = {
     version: 'v4',
     action: 'read',
@@ -101,6 +102,10 @@ const deleteFolderFromGCS = async (folderPath) => {
   return storage.bucket(bucketName).deleteFiles({ prefix: folderPath })
 }
 
+const moveGCSFile = async (oldPath, newPath) => {
+  return await storage.bucket(bucketName).file(oldPath).move(newPath)
+}
+
 module.exports = {
   multer,
   uploadPhotoToGCS,
@@ -108,5 +113,6 @@ module.exports = {
   loadFileFromGCS,
   updateFileFromGCS,
   deleteFileFromGCS,
-  deleteFolderFromGCS
+  deleteFolderFromGCS,
+  moveGCSFile
 }
