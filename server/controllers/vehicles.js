@@ -179,7 +179,14 @@ const updateVehicle = async (req, res, next) => {
   const { id } = req.params
   const updates = req.body
 
-  console.log('updates: ', updates)
+  const contactInformation = {
+    accountNumber: updates.accountNumber || '',
+    email: updates.email || '',
+    phone: updates.phone || '',
+    companyAddress: updates.companyAddress || ''
+  }
+
+  updates.contactInformation = contactInformation
 
   try {
     const vehicleToUpdate = await Vehicle.findById(id)
@@ -260,15 +267,21 @@ const updateVehicle = async (req, res, next) => {
 }
 
 const deleteVehicle = async (req, res, next) => {
+  console.log('delete property')
   const { id } = req.params
+
+  console.log('id to delete', id)
 
   try {
     const { userId } = req
     const user = await User.findById(userId)
     const vehicleToDelete = await Vehicle.findByIdAndDelete(id)
 
+    console.log('vehicle to delete: ', vehicleToDelete)
+
     if (vehicleToDelete.photo) {
       const folderPath = `${userId}/vehicles/${vehicleToDelete.name}/`
+      console.log('path to delete: ', folderPath)
       await deleteFolderFromGCS(folderPath)
     }
 

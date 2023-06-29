@@ -7,7 +7,6 @@ const ContactInformation = ({ errors }) => {
   const [phone, setPhone] = useState('')
   const [companyAddress, setCompanyAddress] = useState('')
   const [isPrivate, setIsPrivate] = useState(true)
-  const [isRequire, setIsRequire] = useState(true)
 
   const onAccountNumberChanged = e => setAccountNumber(e.target.value)
   const onEmailChanged = e => setEmail(e.target.value)
@@ -16,8 +15,6 @@ const ContactInformation = ({ errors }) => {
 
   const handleToggle = () => {
     setIsPrivate(prevIsPrivate => !prevIsPrivate)
-    setIsRequire(prevIsRequire => !prevIsRequire)
-    console.log('isRequire', isRequire)
   }
 
   return (

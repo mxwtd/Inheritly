@@ -188,6 +188,17 @@ const updateProperty = async (req, res, next) => {
   const { id } = req.params
   const updates = req.body
 
+  const contactInformation = {
+    accountNumber: updates.accountNumber || '',
+    email: updates.email || '',
+    phone: updates.phone || '',
+    companyAddress: updates.companyAddress || ''
+  }
+
+  updates.contactInformation = contactInformation
+
+  console.log('updates: ', updates)
+
   try {
     const propertyToUpdate = await Property.findById(id)
     const { userId } = req
