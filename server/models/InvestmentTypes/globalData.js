@@ -6,7 +6,7 @@ const defaultData = {
     ref: 'User',
     required: true
   },
-  type: { type: String, required: true, enum: ['Property', 'Vehicle'] },
+  type: { type: String, required: true, enum: ['Property', 'Vehicle', 'Jewelry', ''] },
   name: { type: String, required: true },
   currency: String,
   date: Date,
@@ -14,15 +14,21 @@ const defaultData = {
   purchaseDate: Date,
   taxStatus: String,
   description: String,
-  photo: String,
+  photo: {
+    url: { type: String },
+    folder: { type: String }
+  },
   beneficiaryGroup: { type: Schema.Types.ObjectId, ref: 'BeneficiaryGroup' },
-  files: [{ type: String }],
+  files: [{
+    url: { type: String },
+    folder: { type: String }
+  }],
   // Add contact info
   contactInformation: {
-    accountNumber: { type: String, required: true },
-    email: { type: String, required: true },
-    phone: { type: String, required: true },
-    companyAddress: { type: String, required: true }
+    accountNumber: { type: String },
+    email: { type: String },
+    phone: { type: String },
+    companyAddress: { type: String }
   }
 }
 

@@ -13,7 +13,11 @@ propertyRouter.route('/api/properties')
 
 propertyRouter.route('/api/properties/:id')
   .get(propertiesController.getPropertyById)
-  .patch(propertiesController.updateProperty)
+  .patch(multer.fields([{ name: 'photo', maxCount: 1 }, { name: 'files', maxCount: 10 }]), propertiesController.updateProperty)
   .delete(propertiesController.deleteProperty)
+
+propertyRouter.route('/api/properties/:id/:fileId')
+  .delete(propertiesController.deleteFile)
+  .patch(propertiesController.renameFile)
 
 module.exports = propertyRouter

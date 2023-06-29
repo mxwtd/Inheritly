@@ -1,7 +1,7 @@
 /* eslint-disable dot-notation */
 const Property = require('../models/InvestmentTypes/Property')
 const User = require('../models/User')
-const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFolderFromGCS, updateFileFromGCS } = require('../middleware/googleCloud')
+const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFolderFromGCS, updateFileFromGCS, deleteFileFromGCS, moveGCSFile } = require('../middleware/googleCloud')
 
 const createProperty = async (req, res, next) => {
   try {
@@ -38,18 +38,24 @@ const createProperty = async (req, res, next) => {
     let files = null
 
     if (photoFile) {
-      photo = await uploadPhotoToGCS(photoFile, userId, name, 'properties')
+      photo = {
+        url: null,
+        folder: await uploadPhotoToGCS(photoFile, userId, name, 'properties')
+      }
     }
 
     if (propertyFiles) {
       // files = propertyFiles ? await uploadFilesToGCS(propertyFiles, userId, name) : null
       files = await Promise.all(propertyFiles.map(async (file) => {
-        return await uploadFilesToGCS(file, userId, name)
+        return {
+          url: null,
+          folder: await uploadFilesToGCS(file, userId, name, 'properties')
+        }
       }))
     }
 
-    console.log('photo path folder', photo)
-    console.log('files path folder', files)
+    console.log('photo ', photo)
+    console.log('files ', files)
 
     const contactInformation = {
       accountNumber,
@@ -101,21 +107,34 @@ const getAllUserProperties = async (req, res, next) => {
 
     // Create an array of promises for changing the photo URLs
     const changePhotoPromises = properties.map(async (property) => {
-      if (property.photo) {
-        property.photo = await loadFileFromGCS(property.photo)
+      if (property.photo.folder) {
+        property.photo = {
+          ...property.photo,
+          url: await loadFileFromGCS(property.photo.folder)
+        }
       } else {
-        property.photo = 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+        property.photo = {
+          ...property.photo,
+          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+        }
       }
 
       if (property.files) {
-        property.files = await Promise.all(property.files.map(async (file) => {
-          return await loadFileFromGCS(file)
-        }))
+        property.files = await Promise.all(
+          property.files.map(async (file) => {
+            return {
+              ...file,
+              url: await loadFileFromGCS(file.folder)
+            }
+          })
+        )
       }
     })
 
     // Wait for all the promises to complete
     await Promise.all(changePhotoPromises)
+
+    // console.log('properties: ', properties)
 
     res.json(properties)
   } catch (error) {
@@ -131,16 +150,28 @@ const getPropertyById = async (req, res, next) => {
 
     // Create a promises for changing the photo URL
     const changePhotoPromise = async () => {
-      if (property.photo) {
-        property.photo = await loadFileFromGCS(property.photo)
+      if (property.photo.folder) {
+        property.photo = {
+          ...property.photo,
+          url: await loadFileFromGCS(property.photo.folder)
+        }
       } else {
-        property.photo = 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+        property.photo = {
+          ...property.photo,
+          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+        }
       }
 
       if (property.files) {
-        property.files = await Promise.all(property.files.map(async (file) => {
-          return await loadFileFromGCS(file)
-        }))
+        console.log('Set files')
+        property.files = await Promise.all(
+          property.files.map(async (file) => {
+            return {
+              ...file,
+              url: await loadFileFromGCS(file.folder)
+            }
+          })
+        )
       }
     }
 
@@ -159,8 +190,39 @@ const updateProperty = async (req, res, next) => {
 
   try {
     const propertyToUpdate = await Property.findById(id)
+    const { userId } = req
 
-    const photo = req.file ? await updateFileFromGCS(req.file, propertyToUpdate.photo) : null
+    const { name } = propertyToUpdate
+    let { files } = propertyToUpdate
+
+    console.log('Files before: ', files)
+
+    let photoFile = null
+    let propertyFiles = null
+
+    if (req.files) {
+      photoFile = req.files['photo'] ? req.files['photo'][0] : null
+      propertyFiles = req.files['files'] ? req.files['files'] : null
+    }
+
+    let photoPath = null
+
+    if (photoFile) {
+      // console.log('get photo file')
+      photoPath = await updateFileFromGCS(photoFile, propertyToUpdate.photo.folder)
+    }
+
+    if (propertyFiles) {
+      console.log('Set files')
+      const newFiles = await Promise.all(propertyFiles.map(async (file) => {
+        return {
+          url: null,
+          folder: await uploadFilesToGCS(file, userId, name, 'properties')
+        }
+      }))
+
+      files = files.concat(newFiles)
+    }
 
     // Check for empty values in updates
     const hasEmptyValues = Object.values(updates).some((value) => {
@@ -175,9 +237,19 @@ const updateProperty = async (req, res, next) => {
     }
 
     // add photo to updates if it exists
-    if (photo) {
-      updates.photo = photo
+    if (photoPath) {
+      updates.photo = {
+        ...updates.photo,
+        folder: photoPath
+      }
     }
+
+    // add files to updates if it exists
+    if (files) {
+      updates.files = files
+    }
+
+    // console.log('updates photo: ', updates.photo)
 
     // Confirm note exists to update
     const updatedProperty = await Property.findByIdAndUpdate(
@@ -185,8 +257,6 @@ const updateProperty = async (req, res, next) => {
       updates,
       { new: true }
     ).exec()
-
-    // const updatedProperty = await property.save()
 
     res.json(updatedProperty)
   } catch (error) {
@@ -202,25 +272,85 @@ const deleteProperty = async (req, res, next) => {
     const user = await User.findById(userId)
     const propertyToDelete = await Property.findByIdAndDelete(id)
 
-    if (propertyToDelete.photo) {
+    if (propertyToDelete.photo || propertyToDelete.files) {
       const folderPath = `${userId}/properties/${propertyToDelete.name}/`
       await deleteFolderFromGCS(folderPath)
     }
-
-    console.log('assets before: ', user.assets)
-
-    console.log('property id: ', id)
-    console.log('property id type: ', typeof id)
 
     const updatedAssets = user.assets.filter(asset => asset.toString() !== id)
     user.assets = updatedAssets
     await user.save()
 
-    console.log('assets after: ', user.assets)
-
     res.status(204).end()
   } catch (error) {
     (isNaN(id)) ? next(error) : res.status(404).end()
+  }
+}
+
+const deleteFile = async (req, res, next) => {
+  const { id, fileId } = req.params
+
+  try {
+    const property = await Property.findById(id)
+
+    if (property && property.files) {
+      const fileToDelete = property.files.find(file => file._id.toString() === fileId)
+
+      if (fileToDelete) {
+        await deleteFileFromGCS(fileToDelete.folder)
+
+        const updatedFiles = property.files.filter(file => file._id.toString() !== fileId)
+        property.files = updatedFiles
+
+        await Property.findByIdAndUpdate(
+          id,
+          property,
+          { new: true }
+        ).exec()
+
+        res.status(204).end()
+      }
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+const renameFile = async (req, res, next) => {
+  const { id, fileId } = req.params
+
+  try {
+    const property = await Property.findById(id)
+
+    if (property && property.files) {
+      const fileToRename = property.files.find(file => file._id.toString() === fileId)
+
+      if (fileToRename) {
+        const { oldName, newName } = req.body
+
+        const oldPath = fileToRename.folder
+        const newPath = oldPath.replace(oldName, newName)
+
+        await moveGCSFile(oldPath, newPath)
+
+        fileToRename.folder = newPath
+
+        const fileIndex = property.files.findIndex(file => file._id.toString() === fileId)
+        property.files[fileIndex] = fileToRename
+
+        await Property.findByIdAndUpdate(
+          id,
+          property,
+          { new: true }
+        ).exec()
+
+        console.log('Property files: ', property.files)
+
+        res.status(204).end()
+      }
+    }
+  } catch (error) {
+    next(error)
   }
 }
 
@@ -229,5 +359,7 @@ module.exports = {
   getAllUserProperties,
   getPropertyById,
   updateProperty,
-  deleteProperty
+  deleteProperty,
+  deleteFile,
+  renameFile
 }

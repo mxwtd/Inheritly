@@ -3,7 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
 import MapChart from '../../../components/HoverMap.jsx'
 import { useState, useEffect } from 'react'
-import DeleteModal from './DeleteModal.jsx'
+import DeleteModal from '../../../components/DeleteModal.jsx'
+
+import { getFileNameFromUrl } from '../../../hook/getFileNameFromUrl.js'
 
 const Property = () => {
   const { id } = useParams()
@@ -18,7 +20,7 @@ const Property = () => {
   } = useGetPropertyByIdQuery(id, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
-    pollingInterval: 20000
+    pollingInterval: 300000
   })
 
   const [files, setFiles] = useState([])
@@ -87,14 +89,6 @@ const Property = () => {
       setCurrentPage((currentPage) => currentPage - 1)
     }
 
-    const getFileNameFromUrl = (url) => {
-      const decodedUrl = decodeURIComponent(url)
-      const fileNameRegex = /\/\d+-([^/]+)(?=\?)/
-      const matches = decodedUrl.match(fileNameRegex)
-      const fileName = matches[1]
-      return fileName
-    }
-
     const handleDelete = () => {
       setShowDeleteModal(true)
     }
@@ -127,7 +121,7 @@ const Property = () => {
             <div className='relative bg-slate-50 dark:bg-slate-800 p-4 rounded-xl aspect-w-1 aspect-h-1'>
               <div className='mb-3 h-full w-full rounded-lg overflow-hidden' style={{ aspectRatio: '1/1' }}>
                 <img
-                  src={property?.photo}
+                  src={property?.photo.url}
                   className='object-cover w-full h-full transform transition-all duration-500 hover:scale-110'
                 />
               </div>
@@ -167,8 +161,8 @@ const Property = () => {
                         <tbody>
                           {files?.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage).map((file, index) => (
                             <tr key={index} className={(index + currentPage * itemsPerPage) % 2 === 0 ? 'cursor-pointer bg-white border-b dark:bg-slate-800 dark:border-slate-700' : 'cursor-pointer border-b bg-slate-50 dark:bg-slate-800 dark:border-slate-700'}>
-                              <th onClick={() => handleDownload(file)} scope='row' className='px-6 py-4 font-medium text-slate-900 whitespace-nowrap dark:text-white'>
-                                {getFileNameFromUrl(file)}
+                              <th onClick={() => handleDownload(file.url)} scope='row' className='px-6 py-4 font-medium text-slate-900 whitespace-nowrap dark:text-white'>
+                                {getFileNameFromUrl(file.url)}
                               </th>
                             </tr>
                           ))}
@@ -204,15 +198,21 @@ const Property = () => {
                 <p className='text-md lg:text-lg px-4'>{property?.country}</p>
               </div>
             </div>
-            <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
-              <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg h-full flex flex-col justify-center'>
-                <p className='text-xl lg:text-2xl px-4 mb-2'>Contact</p>
-                <p className='text-md lg:text-lg px-4'>Account Number: {property?.contactInformation.accountNumber}</p>
-                <p className='text-md lg:text-lg px-4'>Email: {property?.contactInformation.email}</p>
-                <p className='text-md lg:text-lg px-4'>Phone: {property?.contactInformation.phone}</p>
-                <p className='text-md lg:text-lg px-4'>Company Address: {property?.contactInformation.companyAddress}</p>
-              </div>
-            </div>
+            {
+              property?.contactInformation
+                ? (
+                  <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
+                    <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg h-full flex flex-col justify-center'>
+                      <p className='text-xl lg:text-2xl px-4 mb-2'>Contact</p>
+                      <p className='text-md lg:text-lg px-4'>Account Number: {property?.contactInformation.accountNumber}</p>
+                      <p className='text-md lg:text-lg px-4'>Email: {property?.contactInformation.email}</p>
+                      <p className='text-md lg:text-lg px-4'>Phone: {property?.contactInformation.phone}</p>
+                      <p className='text-md lg:text-lg px-4'>Company Address: {property?.contactInformation.companyAddress}</p>
+                    </div>
+                  </div>
+                  )
+                : null
+            }
           </div>
         </Properties>
       )
@@ -220,7 +220,7 @@ const Property = () => {
     return (
       <>
         {content}
-        {showDeleteModal && <DeleteModal onClose={handleCloseDelete} property={property} />}
+        {showDeleteModal && <DeleteModal onClose={handleCloseDelete} investmentType={property} />}
       </>
     )
   }

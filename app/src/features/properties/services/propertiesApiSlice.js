@@ -63,6 +63,25 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: (result, error, arg) => [
         { type: 'Property', id: arg.id }
       ]
+    }),
+    deleteFile: builder.mutation({
+      query: ({ id, fileId }) => ({
+        url: `/properties/${id}/${fileId}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Property', id: arg.id }
+      ]
+    }),
+    renameFile: builder.mutation({
+      query: ({ id, fileId, oldName, newName }) => ({
+        url: `/properties/${id}/${fileId}`,
+        method: 'PATCH',
+        body: { oldName, newName }
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Property', id: arg.id }
+      ]
     })
   })
 })
@@ -72,7 +91,9 @@ export const {
   useGetPropertyByIdQuery,
   useAddNewPropertyMutation,
   useUpdatePropertyMutation,
-  useDeletePropertyMutation
+  useDeletePropertyMutation,
+  useDeleteFileMutation,
+  useRenameFileMutation
 } = propertiesApiSlice
 
 export const { selectById: selectPropertyById } = propertiesAdapter.getSelectors(
