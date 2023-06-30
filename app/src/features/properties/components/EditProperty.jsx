@@ -135,11 +135,7 @@ const EditProperty = () => {
   const onPhotoChanged = (event) => {
     console.log('Photo changed')
     if (event.target.files && event.target.files[0]) {
-      console.log('enter to conditional')
       const reader = new FileReader()
-
-      console.log('result: ', event.target.result)
-      console.log('old photo', photo)
 
       reader.onload = (e) => {
         setPhoto({
