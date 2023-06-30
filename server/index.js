@@ -16,6 +16,7 @@ const { logger } = require('./middleware/logger')
 const userRoutes = require('./routes/userRoutes')
 const propertyRoutes = require('./routes/propertyRoutes')
 const vehicleRoutes = require('./routes/vehicleRoutes')
+const jewelRoutes = require('./routes/jewelRoutes')
 const authRoutes = require('./routes/authRoutes')
 
 const app = express()
@@ -60,6 +61,8 @@ app.use(authRoutes)
 app.use(propertyRoutes)
 
 app.use(vehicleRoutes)
+
+app.use(jewelRoutes)
 
 app.use(notFound)
 

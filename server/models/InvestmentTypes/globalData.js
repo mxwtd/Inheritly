@@ -6,7 +6,7 @@ const defaultData = {
     ref: 'User',
     required: true
   },
-  type: { type: String, required: true, enum: ['Property', 'Vehicle', 'Jewelry', ''] },
+  type: { type: String, required: true, enum: ['Property', 'Vehicle', 'Jewel'] },
   name: { type: String, required: true },
   currency: String,
   date: Date,
