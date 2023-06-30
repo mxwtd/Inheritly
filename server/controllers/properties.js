@@ -197,8 +197,6 @@ const updateProperty = async (req, res, next) => {
 
   updates.contactInformation = contactInformation
 
-  console.log('updates: ', updates)
-
   try {
     const propertyToUpdate = await Property.findById(id)
     const { userId } = req
