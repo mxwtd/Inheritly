@@ -8,13 +8,13 @@ const { multer } = require('../middleware/googleCloud')
 jewelRouter.use(verifyJWT)
 
 jewelRouter.route('/api/jewels')
-  .get(jewelsController.getAllUserVehicles)
-  .post(multer.fields([{ name: 'photo', maxCount: 1 }, { name: 'files', maxCount: 10 }]), jewelsController.createVehicle)
+  .get(jewelsController.getAllUserJewels)
+  .post(multer.fields([{ name: 'photo', maxCount: 1 }, { name: 'files', maxCount: 10 }]), jewelsController.createJewel)
 
 jewelRouter.route('/api/jewels/:id')
-  .get(jewelsController.getVehicleById)
-  .patch(multer.fields([{ name: 'photo', maxCount: 1 }, { name: 'files', maxCount: 10 }]), jewelsController.updateVehicle)
-  .delete(jewelsController.deleteVehicle)
+  .get(jewelsController.getJewelById)
+  .patch(multer.fields([{ name: 'photo', maxCount: 1 }, { name: 'files', maxCount: 10 }]), jewelsController.updateJewel)
+  .delete(jewelsController.deleteJewel)
 
 jewelRouter.route('/api/jewels/:id/:fileId')
   .delete(jewelsController.deleteFile)

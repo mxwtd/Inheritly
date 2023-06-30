@@ -15,9 +15,11 @@ const createJewel = async (req, res, next) => {
       value,
       taxStatus,
       type,
-      brand,
-      model,
-      year,
+
+      description,
+      history,
+      condition,
+
       accountNumber,
       email,
       phone,
@@ -65,9 +67,9 @@ const createJewel = async (req, res, next) => {
       value,
       taxStatus,
       type,
-      brand,
-      model,
-      year,
+      description,
+      history,
+      condition,
       contactInformation,
       photo,
       files
@@ -87,6 +89,7 @@ const createJewel = async (req, res, next) => {
 
     res.status(201).json(savedJewels)
   } catch (error) {
+    console.log('Error: ', error)
     next(error)
   }
 }
