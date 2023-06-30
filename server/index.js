@@ -17,6 +17,7 @@ const userRoutes = require('./routes/userRoutes')
 const propertyRoutes = require('./routes/propertyRoutes')
 const vehicleRoutes = require('./routes/vehicleRoutes')
 const jewelRoutes = require('./routes/jewelRoutes')
+const stockRoutes = require('./routes/stockRoutes')
 const authRoutes = require('./routes/authRoutes')
 
 const app = express()
@@ -63,6 +64,8 @@ app.use(propertyRoutes)
 app.use(vehicleRoutes)
 
 app.use(jewelRoutes)
+
+app.use(stockRoutes)
 
 app.use(notFound)
 
