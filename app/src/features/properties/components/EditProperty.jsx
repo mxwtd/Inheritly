@@ -1,3 +1,4 @@
+
 import Properties from '../index'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -49,14 +50,22 @@ const EditProperty = () => {
   const [zip, setZip] = useState(property?.zip || '')
 
   const [contactInformation, setContactInformation] = useState({
-    accountNumber: property?.contactInformation.accountNumber || '',
-    email: property?.contactInformation.email || '',
-    phone: property?.contactInformation.phone || '',
+    accountNumber: property?.contactInformation?.accountNumber || '',
+    email: property?.contactInformation?.email || '',
+    phone: property?.contactInformation?.phone || '',
     companyAddress: property?.contactInformation?.companyAddress || ''
   } || {})
 
   const [photo, setPhoto] = useState(property?.photo || null)
   const [files, setFiles] = useState(property?.files || [])
+
+  const [isPrivate, setIsPrivate] = useState(() => {
+    if (property?.contactInformation) {
+      return false
+    } else {
+      return true
+    }
+  })
 
   const [errors] = useState({ name: false, type: false, photo: false })
 
@@ -75,11 +84,21 @@ const EditProperty = () => {
       setZip(property.zip)
       setPhoto(property.photo)
 
-      setContactInformation({
-        accountNumber: property.contactInformation.accountNumber,
-        email: property.contactInformation.email,
-        phone: property.contactInformation.phone,
-        companyAddress: property.contactInformation.companyAddress
+      if (property?.contactInformation) {
+        setContactInformation({
+          accountNumber: property?.contactInformation.accountNumber || '',
+          email: property?.contactInformation.email || '',
+          phone: property?.contactInformation.phone || '',
+          companyAddress: property?.contactInformation.companyAddress || ''
+        } || {})
+      }
+
+      setIsPrivate(() => {
+        if (property.contactInformation) {
+          return false
+        } else {
+          return true
+        }
       })
 
       setFiles(property.files)
@@ -109,14 +128,14 @@ const EditProperty = () => {
 
   const onContactInformationChanged = (e) => setContactInformation({ ...contactInformation, [e.target.name]: e.target.value })
 
+  const handleToggle = () => {
+    setIsPrivate(prevIsPrivate => !prevIsPrivate)
+  }
+
   const onPhotoChanged = (event) => {
     console.log('Photo changed')
     if (event.target.files && event.target.files[0]) {
-      console.log('enter to conditional')
       const reader = new FileReader()
-
-      console.log('result: ', event.target.result)
-      console.log('old photo', photo)
 
       reader.onload = (e) => {
         setPhoto({
@@ -253,24 +272,37 @@ const EditProperty = () => {
             </div>
           </div>
           <div className='bg-slate-100 dark:bg-slate-900 rounded-2xl p-5'>
-            <h3 className='text-xl font-semibold text-slate-800 dark:text-slate-100 text-left mb-2'>Contact Information</h3>
-            <div className='md:flex md:justify-between items-center'>
-              <div className='md:w-1/2 md:pr-2'>
-                <div className='mb-3'>
-                  <FieldInput label='Account number' value={contactInformation.accountNumber} onChange={onContactInformationChanged} name='accountNumber' type='text' placeholder='E.g. xxxxxxx99' errors={errors} isRequire />
-                </div>
-                <div>
-                  <FieldInput label='Email' value={contactInformation.email} onChange={onContactInformationChanged} name='email' type='email' placeholder='E.g.example@inheritly.com' errors={errors} isRequire />
-                </div>
+            <div>
+              <div className='flex flex-row justify-start items-center'>
+                <label className='relative inline-flex items-center cursor-pointer'>
+                  <input type='checkbox' value='' className='sr-only peer' onChange={handleToggle} />
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
+                </label>
+                <h2 className='ml-3 text-lg font-medium text-gray-900 dark:text-gray-300'>Owned by a Company?</h2>
               </div>
-              <div className='md:w-1/2 md:pl-2'>
-                <div className='mb-3'>
-                  <FieldInput label='Phone' value={contactInformation.phone} onChange={onContactInformationChanged} name='phone' type='text' placeholder='E.g. +44 1234 567890' errors={errors} isRequire />
-                </div>
-                <div>
-                  <FieldInput label='Company Address' value={contactInformation.companyAddress} onChange={onContactInformationChanged} name='companyAddress' type='text' placeholder='Company Address' errors={errors} isRequire />
-                </div>
-              </div>
+              {!isPrivate && (
+                <>
+                  <h3 className='text-xl font-semibold text-slate-800 dark:text-slate-100 text-left mb-2'>Contact Information</h3>
+                  <div className='md:flex md:justify-between items-center'>
+                    <div className='md:w-1/2 md:pr-2'>
+                      <div className='mb-3'>
+                        <FieldInput label='Account number' value={contactInformation.accountNumber} onChange={onContactInformationChanged} name='accountNumber' type='text' placeholder='E.g. xxxxxxx99' errors={errors} />
+                      </div>
+                      <div>
+                        <FieldInput label='Email' value={contactInformation.email} onChange={onContactInformationChanged} name='email' type='email' placeholder='E.g. example@inheritly.com' errors={errors} />
+                      </div>
+                    </div>
+                    <div className='md:w-1/2 md:pl-2'>
+                      <div className='mb-3'>
+                        <FieldInput label='Phone' value={contactInformation.phone} onChange={onContactInformationChanged} name='phone' type='text' placeholder='E.g. +44 1234 567890' errors={errors} />
+                      </div>
+                      <div>
+                        <FieldInput label='Company Address' value={contactInformation.companyAddress} onChange={onContactInformationChanged} name='companyAddress' type='text' placeholder='Company Address' errors={errors} />
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
           {files?.length > 0
