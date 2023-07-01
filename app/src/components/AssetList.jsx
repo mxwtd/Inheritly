@@ -59,7 +59,7 @@ const AssetList = () => {
                           <option value='Crypto' id='Crypto'>Crypto</option>
                           <option value='Property' id='Property'>Property</option>
                           <option value='Vehicles' id='Vehicles'>Vehicles</option>
-                          <option value='Jewelry' id='Jewelry'>Jewelry</option>
+                          <option value='Jewelry' id='Jewelry'>Jewellery</option>
                           <option value='Miscellaneous' id='Miscellaneous'>Miscellaneous</option>
                         </select>
                       </div>

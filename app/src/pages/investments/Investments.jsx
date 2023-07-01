@@ -16,7 +16,7 @@ const Investments = () => {
             <InvestmentCard cardName='Crypto' path='crypto' />
             <InvestmentCard cardName='Properties' path='properties' />
             <InvestmentCard cardName='Vehicles' path='vehicles' />
-            <InvestmentCard cardName='Jewelry' path='jewelry' />
+            <InvestmentCard cardName='Jewellery' path='jewelry' />
             <InvestmentCard cardName='Miscellaneous' path='miscellaneous' />
           </div>
         </div>
