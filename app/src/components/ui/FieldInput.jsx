@@ -1,7 +1,7 @@
 const FieldInput = ({ label, value, onChange, name, type, placeholder, errors, isRequire }) => {
   return (
     <>
-      <label htmlFor={name} className='block mb-2 text-sm font-medium text-slate-700 dark:text-white'>{label}</label>
+      <label htmlFor={name} className='block mb-2 mt-4 text-sm font-medium text-slate-700 dark:text-white'>{label}</label>
       <input
         type={type}
         value={value}

@@ -29,7 +29,7 @@ const ContactInformation = ({ errors }) => {
         </div>
         {!isPrivate && (
           <>
-            <h3 className='text-xl font-semibold text-slate-800 dark:text-slate-100 text-left mb-2'>Contact Information</h3>
+            <h3 className='text-xl font-semibold text-slate-800 dark:text-slate-100 text-left mb-2 mt-4'>Company Information</h3>
             <div className='md:flex md:justify-between items-center'>
               <div className='md:w-1/2 md:pr-2'>
                 <div className='mb-3'>
