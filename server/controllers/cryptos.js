@@ -1,11 +1,10 @@
 /* eslint-disable dot-notation */
-const Property = require('../models/InvestmentTypes/Property')
+const Crypto = require('../models/InvestmentTypes/Crypto')
 const User = require('../models/User')
 const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFolderFromGCS, updateFileFromGCS, deleteFileFromGCS, moveGCSFile } = require('../middleware/googleCloud')
 
-const createProperty = async (req, res, next) => {
+const createCrypto = async (req, res, next) => {
   try {
-    console.log('create property')
     const { userId } = req
     const user = await User.findById(userId)
 
@@ -16,10 +15,15 @@ const createProperty = async (req, res, next) => {
       value,
       taxStatus,
       type,
-      city,
-      country,
-      address,
-      zip,
+
+      symbol,
+      quantity,
+      purchasePrice,
+      purchaseDate,
+      additionalDetails,
+      purchasedAt,
+      walletAddress,
+
       accountNumber,
       email,
       phone,
@@ -27,11 +31,11 @@ const createProperty = async (req, res, next) => {
     } = req.body
 
     let photoFile = null
-    let propertyFiles = null
+    let vehicleFiles = null
 
     if (req.files) {
       photoFile = req.files['photo'] ? req.files['photo'][0] : null
-      propertyFiles = req.files['files'] ? req.files['files'] : null
+      vehicleFiles = req.files['files'] ? req.files['files'] : null
     }
 
     let photo = null
@@ -40,22 +44,18 @@ const createProperty = async (req, res, next) => {
     if (photoFile) {
       photo = {
         url: null,
-        folder: await uploadPhotoToGCS(photoFile, userId, name, 'properties')
+        folder: await uploadPhotoToGCS(photoFile, userId, name, 'cryptos')
       }
     }
 
-    if (propertyFiles) {
-      // files = propertyFiles ? await uploadFilesToGCS(propertyFiles, userId, name) : null
-      files = await Promise.all(propertyFiles.map(async (file) => {
+    if (vehicleFiles) {
+      files = await Promise.all(vehicleFiles.map(async (file) => {
         return {
           url: null,
-          folder: await uploadFilesToGCS(file, userId, name, 'properties')
+          folder: await uploadFilesToGCS(file, userId, name, 'cryptos')
         }
       }))
     }
-
-    console.log('photo ', photo)
-    console.log('files ', files)
 
     const contactInformation = {
       accountNumber,
@@ -64,64 +64,69 @@ const createProperty = async (req, res, next) => {
       companyAddress
     }
 
-    const property = {
+    const crypto = {
       name,
       currency,
       date,
       value,
       taxStatus,
       type,
-      city,
-      country,
-      address,
-      zip,
+      symbol,
+      quantity,
+      purchasePrice,
+      purchaseDate,
+      additionalDetails,
+      purchasedAt,
+      walletAddress,
       contactInformation,
       photo,
       files
     }
 
-    const newProperty = new Property({
-      ...property,
+    console.log('Crypto to save: ', crypto)
+
+    const newCryptos = new Crypto({
+      ...crypto,
       user: user._id
     })
 
-    console.log('new property: ', newProperty)
+    const savedCryptos = await newCryptos.save()
 
-    const savedProperty = await newProperty.save()
-
-    user.assets.push(savedProperty._id)
+    user.assets.push(savedCryptos._id)
     await user.save()
 
-    res.status(201).json(savedProperty)
+    res.status(201).json(savedCryptos)
   } catch (error) {
+    console.log('Error: ', error)
     next(error)
   }
 }
 
-const getAllUserProperties = async (req, res, next) => {
+const getAllUserCryptos = async (req, res, next) => {
   const { userId } = req
 
   try {
-    // Find properties that belong to the user with the given ID
-    const properties = await Property.find({ user: userId })
+    // Find cryptos that belong to the user with the given ID
+    const cryptos = await Crypto.find({ user: userId })
 
-    // Create an array of promises for changing the photo URLs
-    const changePhotoPromises = properties.map(async (property) => {
-      if (property.photo.folder) {
-        property.photo = {
-          ...property.photo,
-          url: await loadFileFromGCS(property.photo.folder)
+    const changePhotoPromises = cryptos.map(async (crypto) => {
+      if (crypto.photo.folder) {
+        crypto.photo = {
+          ...crypto.photo,
+          url: await loadFileFromGCS(crypto.photo.folder)
         }
       } else {
-        property.photo = {
-          ...property.photo,
-          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+        crypto.photo = {
+          ...crypto.photo,
+          url: 'https://i.pinimg.com/564x/91/ed/eb/91edebb64768d1f00ca34807a6b74d73.jpg'
         }
       }
 
-      if (property.files) {
-        property.files = await Promise.all(
-          property.files.map(async (file) => {
+      if (crypto.files) {
+        console.log('Set files')
+        console.log('cryptos files folder: ', crypto.files.folder)
+        crypto.files = await Promise.all(
+          crypto.files.map(async (file) => {
             return {
               ...file,
               url: await loadFileFromGCS(file.folder)
@@ -134,38 +139,35 @@ const getAllUserProperties = async (req, res, next) => {
     // Wait for all the promises to complete
     await Promise.all(changePhotoPromises)
 
-    // console.log('properties: ', properties)
-
-    res.json(properties)
+    res.json(cryptos)
   } catch (error) {
     next(error)
   }
 }
 
-const getPropertyById = async (req, res, next) => {
+const getCryptoById = async (req, res, next) => {
   const { id } = req.params
 
   try {
-    const property = await Property.findById(id)
-
-    // Create a promises for changing the photo URL
+    const crypto = await Crypto.findById(id)
+    // }
     const changePhotoPromise = async () => {
-      if (property.photo.folder) {
-        property.photo = {
-          ...property.photo,
-          url: await loadFileFromGCS(property.photo.folder)
+      if (crypto.photo.folder) {
+        crypto.photo = {
+          ...crypto.photo,
+          url: await loadFileFromGCS(crypto.photo.folder)
         }
       } else {
-        property.photo = {
-          ...property.photo,
-          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+        crypto.photo = {
+          ...crypto.photo,
+          url: 'https://i.pinimg.com/564x/91/ed/eb/91edebb64768d1f00ca34807a6b74d73.jpg'
         }
       }
 
-      if (property.files) {
+      if (crypto.files) {
         console.log('Set files')
-        property.files = await Promise.all(
-          property.files.map(async (file) => {
+        crypto.files = await Promise.all(
+          crypto.files.map(async (file) => {
             return {
               ...file,
               url: await loadFileFromGCS(file.folder)
@@ -178,55 +180,50 @@ const getPropertyById = async (req, res, next) => {
     // Wait for the promise to complete
     await changePhotoPromise()
 
-    res.json(property)
+    res.json(crypto)
   } catch (error) {
     (isNaN(id)) ? next(error) : res.status(404).end()
   }
 }
 
-const updateProperty = async (req, res, next) => {
+const updateCrypto = async (req, res, next) => {
   const { id } = req.params
   const updates = req.body
 
-  const contactInformation = {
-    accountNumber: updates.accountNumber || '',
-    email: updates.email || '',
-    phone: updates.phone || '',
-    companyAddress: updates.companyAddress || ''
-  }
-
-  updates.contactInformation = contactInformation
+  console.log('updates: ', updates)
 
   try {
-    const propertyToUpdate = await Property.findById(id)
+    const vehicleToUpdate = await Crypto.findById(id)
     const { userId } = req
 
-    const { name } = propertyToUpdate
-    let { files } = propertyToUpdate
+    const { name } = vehicleToUpdate
+    let { files } = vehicleToUpdate
 
     console.log('Files before: ', files)
 
     let photoFile = null
-    let propertyFiles = null
+    let vehicleFiles = null
 
     if (req.files) {
       photoFile = req.files['photo'] ? req.files['photo'][0] : null
-      propertyFiles = req.files['files'] ? req.files['files'] : null
+      vehicleFiles = req.files['files'] ? req.files['files'] : null
     }
+
+    console.log('crypto files: ', vehicleFiles)
 
     let photoPath = null
 
     if (photoFile) {
       // console.log('get photo file')
-      photoPath = await updateFileFromGCS(photoFile, propertyToUpdate.photo.folder)
+      photoPath = await updateFileFromGCS(photoFile, vehicleToUpdate.photo.folder)
     }
 
-    if (propertyFiles) {
+    if (vehicleFiles) {
       console.log('Set files')
-      const newFiles = await Promise.all(propertyFiles.map(async (file) => {
+      const newFiles = await Promise.all(vehicleFiles.map(async (file) => {
         return {
           url: null,
-          folder: await uploadFilesToGCS(file, userId, name, 'properties')
+          folder: await uploadFilesToGCS(file, userId, name, 'cryptos')
         }
       }))
 
@@ -261,34 +258,36 @@ const updateProperty = async (req, res, next) => {
     // console.log('updates photo: ', updates.photo)
 
     // Confirm note exists to update
-    const updatedProperty = await Property.findByIdAndUpdate(
+    const updatedCryptos = await Crypto.findByIdAndUpdate(
       id,
       updates,
       { new: true }
     ).exec()
 
-    res.json(updatedProperty)
+    res.json(updatedCryptos)
   } catch (error) {
     (isNaN(id)) ? next(error) : res.status(404).end()
   }
 }
 
-const deleteProperty = async (req, res, next) => {
+const deleteCrypto = async (req, res, next) => {
   const { id } = req.params
 
   try {
     const { userId } = req
     const user = await User.findById(userId)
-    const propertyToDelete = await Property.findByIdAndDelete(id)
+    const vehicleToDelete = await Crypto.findByIdAndDelete(id)
 
-    if (propertyToDelete.photo || propertyToDelete.files) {
-      const folderPath = `${userId}/properties/${propertyToDelete.name}/`
+    if (vehicleToDelete.photo) {
+      const folderPath = `${userId}/cryptos/${vehicleToDelete.name}/`
       await deleteFolderFromGCS(folderPath)
     }
 
     const updatedAssets = user.assets.filter(asset => asset.toString() !== id)
     user.assets = updatedAssets
     await user.save()
+
+    console.log('assets after: ', user.assets)
 
     res.status(204).end()
   } catch (error) {
@@ -300,20 +299,20 @@ const deleteFile = async (req, res, next) => {
   const { id, fileId } = req.params
 
   try {
-    const property = await Property.findById(id)
+    const crypto = await Crypto.findById(id)
 
-    if (property && property.files) {
-      const fileToDelete = property.files.find(file => file._id.toString() === fileId)
+    if (crypto && crypto.files) {
+      const fileToDelete = crypto.files.find(file => file._id.toString() === fileId)
 
       if (fileToDelete) {
         await deleteFileFromGCS(fileToDelete.folder)
 
-        const updatedFiles = property.files.filter(file => file._id.toString() !== fileId)
-        property.files = updatedFiles
+        const updatedFiles = crypto.files.filter(file => file._id.toString() !== fileId)
+        crypto.files = updatedFiles
 
-        await Property.findByIdAndUpdate(
+        await Crypto.findByIdAndUpdate(
           id,
-          property,
+          crypto,
           { new: true }
         ).exec()
 
@@ -329,10 +328,10 @@ const renameFile = async (req, res, next) => {
   const { id, fileId } = req.params
 
   try {
-    const property = await Property.findById(id)
+    const crypto = await Crypto.findById(id)
 
-    if (property && property.files) {
-      const fileToRename = property.files.find(file => file._id.toString() === fileId)
+    if (crypto && crypto.files) {
+      const fileToRename = crypto.files.find(file => file._id.toString() === fileId)
 
       if (fileToRename) {
         const { oldName, newName } = req.body
@@ -344,16 +343,16 @@ const renameFile = async (req, res, next) => {
 
         fileToRename.folder = newPath
 
-        const fileIndex = property.files.findIndex(file => file._id.toString() === fileId)
-        property.files[fileIndex] = fileToRename
+        const fileIndex = crypto.files.findIndex(file => file._id.toString() === fileId)
+        crypto.files[fileIndex] = fileToRename
 
-        await Property.findByIdAndUpdate(
+        await Crypto.findByIdAndUpdate(
           id,
-          property,
+          crypto,
           { new: true }
         ).exec()
 
-        console.log('Property files: ', property.files)
+        console.log('Crypto files: ', crypto.files)
 
         res.status(204).end()
       }
@@ -364,11 +363,11 @@ const renameFile = async (req, res, next) => {
 }
 
 module.exports = {
-  createProperty,
-  getAllUserProperties,
-  getPropertyById,
-  updateProperty,
-  deleteProperty,
+  createCrypto,
+  getAllUserCryptos,
+  getCryptoById,
+  updateCrypto,
+  deleteCrypto,
   deleteFile,
   renameFile
 }

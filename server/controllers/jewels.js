@@ -1,11 +1,10 @@
 /* eslint-disable dot-notation */
-const Property = require('../models/InvestmentTypes/Property')
+const Jewel = require('../models/InvestmentTypes/Jewel')
 const User = require('../models/User')
 const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFolderFromGCS, updateFileFromGCS, deleteFileFromGCS, moveGCSFile } = require('../middleware/googleCloud')
 
-const createProperty = async (req, res, next) => {
+const createJewel = async (req, res, next) => {
   try {
-    console.log('create property')
     const { userId } = req
     const user = await User.findById(userId)
 
@@ -16,10 +15,11 @@ const createProperty = async (req, res, next) => {
       value,
       taxStatus,
       type,
-      city,
-      country,
-      address,
-      zip,
+
+      description,
+      history,
+      condition,
+
       accountNumber,
       email,
       phone,
@@ -27,11 +27,11 @@ const createProperty = async (req, res, next) => {
     } = req.body
 
     let photoFile = null
-    let propertyFiles = null
+    let vehicleFiles = null
 
     if (req.files) {
       photoFile = req.files['photo'] ? req.files['photo'][0] : null
-      propertyFiles = req.files['files'] ? req.files['files'] : null
+      vehicleFiles = req.files['files'] ? req.files['files'] : null
     }
 
     let photo = null
@@ -40,22 +40,18 @@ const createProperty = async (req, res, next) => {
     if (photoFile) {
       photo = {
         url: null,
-        folder: await uploadPhotoToGCS(photoFile, userId, name, 'properties')
+        folder: await uploadPhotoToGCS(photoFile, userId, name, 'jewels')
       }
     }
 
-    if (propertyFiles) {
-      // files = propertyFiles ? await uploadFilesToGCS(propertyFiles, userId, name) : null
-      files = await Promise.all(propertyFiles.map(async (file) => {
+    if (vehicleFiles) {
+      files = await Promise.all(vehicleFiles.map(async (file) => {
         return {
           url: null,
-          folder: await uploadFilesToGCS(file, userId, name, 'properties')
+          folder: await uploadFilesToGCS(file, userId, name, 'jewels')
         }
       }))
     }
-
-    console.log('photo ', photo)
-    console.log('files ', files)
 
     const contactInformation = {
       accountNumber,
@@ -64,64 +60,65 @@ const createProperty = async (req, res, next) => {
       companyAddress
     }
 
-    const property = {
+    const jewel = {
       name,
       currency,
       date,
       value,
       taxStatus,
       type,
-      city,
-      country,
-      address,
-      zip,
+      description,
+      history,
+      condition,
       contactInformation,
       photo,
       files
     }
 
-    const newProperty = new Property({
-      ...property,
+    console.log('Jewel to save: ', jewel)
+
+    const newJewels = new Jewel({
+      ...jewel,
       user: user._id
     })
 
-    console.log('new property: ', newProperty)
+    const savedJewels = await newJewels.save()
 
-    const savedProperty = await newProperty.save()
-
-    user.assets.push(savedProperty._id)
+    user.assets.push(savedJewels._id)
     await user.save()
 
-    res.status(201).json(savedProperty)
+    res.status(201).json(savedJewels)
   } catch (error) {
+    console.log('Error: ', error)
     next(error)
   }
 }
 
-const getAllUserProperties = async (req, res, next) => {
+const getAllUserJewels = async (req, res, next) => {
   const { userId } = req
 
   try {
-    // Find properties that belong to the user with the given ID
-    const properties = await Property.find({ user: userId })
+    // Find jewels that belong to the user with the given ID
+    const jewels = await Jewel.find({ user: userId })
 
-    // Create an array of promises for changing the photo URLs
-    const changePhotoPromises = properties.map(async (property) => {
-      if (property.photo.folder) {
-        property.photo = {
-          ...property.photo,
-          url: await loadFileFromGCS(property.photo.folder)
+    const changePhotoPromises = jewels.map(async (jewel) => {
+      if (jewel.photo.folder) {
+        jewel.photo = {
+          ...jewel.photo,
+          url: await loadFileFromGCS(jewel.photo.folder)
         }
       } else {
-        property.photo = {
-          ...property.photo,
-          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+        jewel.photo = {
+          ...jewel.photo,
+          url: 'https://i.pinimg.com/564x/91/ed/eb/91edebb64768d1f00ca34807a6b74d73.jpg'
         }
       }
 
-      if (property.files) {
-        property.files = await Promise.all(
-          property.files.map(async (file) => {
+      if (jewel.files) {
+        console.log('Set files')
+        console.log('jewels files folder: ', jewel.files.folder)
+        jewel.files = await Promise.all(
+          jewel.files.map(async (file) => {
             return {
               ...file,
               url: await loadFileFromGCS(file.folder)
@@ -134,38 +131,35 @@ const getAllUserProperties = async (req, res, next) => {
     // Wait for all the promises to complete
     await Promise.all(changePhotoPromises)
 
-    // console.log('properties: ', properties)
-
-    res.json(properties)
+    res.json(jewels)
   } catch (error) {
     next(error)
   }
 }
 
-const getPropertyById = async (req, res, next) => {
+const getJewelById = async (req, res, next) => {
   const { id } = req.params
 
   try {
-    const property = await Property.findById(id)
-
-    // Create a promises for changing the photo URL
+    const jewel = await Jewel.findById(id)
+    // }
     const changePhotoPromise = async () => {
-      if (property.photo.folder) {
-        property.photo = {
-          ...property.photo,
-          url: await loadFileFromGCS(property.photo.folder)
+      if (jewel.photo.folder) {
+        jewel.photo = {
+          ...jewel.photo,
+          url: await loadFileFromGCS(jewel.photo.folder)
         }
       } else {
-        property.photo = {
-          ...property.photo,
-          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+        jewel.photo = {
+          ...jewel.photo,
+          url: 'https://i.pinimg.com/564x/91/ed/eb/91edebb64768d1f00ca34807a6b74d73.jpg'
         }
       }
 
-      if (property.files) {
+      if (jewel.files) {
         console.log('Set files')
-        property.files = await Promise.all(
-          property.files.map(async (file) => {
+        jewel.files = await Promise.all(
+          jewel.files.map(async (file) => {
             return {
               ...file,
               url: await loadFileFromGCS(file.folder)
@@ -178,55 +172,50 @@ const getPropertyById = async (req, res, next) => {
     // Wait for the promise to complete
     await changePhotoPromise()
 
-    res.json(property)
+    res.json(jewel)
   } catch (error) {
     (isNaN(id)) ? next(error) : res.status(404).end()
   }
 }
 
-const updateProperty = async (req, res, next) => {
+const updateJewel = async (req, res, next) => {
   const { id } = req.params
   const updates = req.body
 
-  const contactInformation = {
-    accountNumber: updates.accountNumber || '',
-    email: updates.email || '',
-    phone: updates.phone || '',
-    companyAddress: updates.companyAddress || ''
-  }
-
-  updates.contactInformation = contactInformation
+  console.log('updates: ', updates)
 
   try {
-    const propertyToUpdate = await Property.findById(id)
+    const vehicleToUpdate = await Jewel.findById(id)
     const { userId } = req
 
-    const { name } = propertyToUpdate
-    let { files } = propertyToUpdate
+    const { name } = vehicleToUpdate
+    let { files } = vehicleToUpdate
 
     console.log('Files before: ', files)
 
     let photoFile = null
-    let propertyFiles = null
+    let vehicleFiles = null
 
     if (req.files) {
       photoFile = req.files['photo'] ? req.files['photo'][0] : null
-      propertyFiles = req.files['files'] ? req.files['files'] : null
+      vehicleFiles = req.files['files'] ? req.files['files'] : null
     }
+
+    console.log('jewel files: ', vehicleFiles)
 
     let photoPath = null
 
     if (photoFile) {
       // console.log('get photo file')
-      photoPath = await updateFileFromGCS(photoFile, propertyToUpdate.photo.folder)
+      photoPath = await updateFileFromGCS(photoFile, vehicleToUpdate.photo.folder)
     }
 
-    if (propertyFiles) {
+    if (vehicleFiles) {
       console.log('Set files')
-      const newFiles = await Promise.all(propertyFiles.map(async (file) => {
+      const newFiles = await Promise.all(vehicleFiles.map(async (file) => {
         return {
           url: null,
-          folder: await uploadFilesToGCS(file, userId, name, 'properties')
+          folder: await uploadFilesToGCS(file, userId, name, 'jewels')
         }
       }))
 
@@ -261,34 +250,36 @@ const updateProperty = async (req, res, next) => {
     // console.log('updates photo: ', updates.photo)
 
     // Confirm note exists to update
-    const updatedProperty = await Property.findByIdAndUpdate(
+    const updatedJewels = await Jewel.findByIdAndUpdate(
       id,
       updates,
       { new: true }
     ).exec()
 
-    res.json(updatedProperty)
+    res.json(updatedJewels)
   } catch (error) {
     (isNaN(id)) ? next(error) : res.status(404).end()
   }
 }
 
-const deleteProperty = async (req, res, next) => {
+const deleteJewel = async (req, res, next) => {
   const { id } = req.params
 
   try {
     const { userId } = req
     const user = await User.findById(userId)
-    const propertyToDelete = await Property.findByIdAndDelete(id)
+    const vehicleToDelete = await Jewel.findByIdAndDelete(id)
 
-    if (propertyToDelete.photo || propertyToDelete.files) {
-      const folderPath = `${userId}/properties/${propertyToDelete.name}/`
+    if (vehicleToDelete.photo) {
+      const folderPath = `${userId}/jewels/${vehicleToDelete.name}/`
       await deleteFolderFromGCS(folderPath)
     }
 
     const updatedAssets = user.assets.filter(asset => asset.toString() !== id)
     user.assets = updatedAssets
     await user.save()
+
+    console.log('assets after: ', user.assets)
 
     res.status(204).end()
   } catch (error) {
@@ -300,20 +291,20 @@ const deleteFile = async (req, res, next) => {
   const { id, fileId } = req.params
 
   try {
-    const property = await Property.findById(id)
+    const jewel = await Jewel.findById(id)
 
-    if (property && property.files) {
-      const fileToDelete = property.files.find(file => file._id.toString() === fileId)
+    if (jewel && jewel.files) {
+      const fileToDelete = jewel.files.find(file => file._id.toString() === fileId)
 
       if (fileToDelete) {
         await deleteFileFromGCS(fileToDelete.folder)
 
-        const updatedFiles = property.files.filter(file => file._id.toString() !== fileId)
-        property.files = updatedFiles
+        const updatedFiles = jewel.files.filter(file => file._id.toString() !== fileId)
+        jewel.files = updatedFiles
 
-        await Property.findByIdAndUpdate(
+        await Jewel.findByIdAndUpdate(
           id,
-          property,
+          jewel,
           { new: true }
         ).exec()
 
@@ -329,10 +320,10 @@ const renameFile = async (req, res, next) => {
   const { id, fileId } = req.params
 
   try {
-    const property = await Property.findById(id)
+    const jewel = await Jewel.findById(id)
 
-    if (property && property.files) {
-      const fileToRename = property.files.find(file => file._id.toString() === fileId)
+    if (jewel && jewel.files) {
+      const fileToRename = jewel.files.find(file => file._id.toString() === fileId)
 
       if (fileToRename) {
         const { oldName, newName } = req.body
@@ -344,16 +335,16 @@ const renameFile = async (req, res, next) => {
 
         fileToRename.folder = newPath
 
-        const fileIndex = property.files.findIndex(file => file._id.toString() === fileId)
-        property.files[fileIndex] = fileToRename
+        const fileIndex = jewel.files.findIndex(file => file._id.toString() === fileId)
+        jewel.files[fileIndex] = fileToRename
 
-        await Property.findByIdAndUpdate(
+        await Jewel.findByIdAndUpdate(
           id,
-          property,
+          jewel,
           { new: true }
         ).exec()
 
-        console.log('Property files: ', property.files)
+        console.log('Jewel files: ', jewel.files)
 
         res.status(204).end()
       }
@@ -364,11 +355,11 @@ const renameFile = async (req, res, next) => {
 }
 
 module.exports = {
-  createProperty,
-  getAllUserProperties,
-  getPropertyById,
-  updateProperty,
-  deleteProperty,
+  createJewel,
+  getAllUserJewels,
+  getJewelById,
+  updateJewel,
+  deleteJewel,
   deleteFile,
   renameFile
 }

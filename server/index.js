@@ -16,6 +16,10 @@ const { logger } = require('./middleware/logger')
 const userRoutes = require('./routes/userRoutes')
 const propertyRoutes = require('./routes/propertyRoutes')
 const vehicleRoutes = require('./routes/vehicleRoutes')
+const jewelRoutes = require('./routes/jewelRoutes')
+const stockRoutes = require('./routes/stockRoutes')
+const cryptoRoutes = require('./routes/cryptoRoutes')
+const bondRoutes = require('./routes/bondRoutes')
 const authRoutes = require('./routes/authRoutes')
 
 const app = express()
@@ -60,6 +64,14 @@ app.use(authRoutes)
 app.use(propertyRoutes)
 
 app.use(vehicleRoutes)
+
+app.use(jewelRoutes)
+
+app.use(stockRoutes)
+
+app.use(cryptoRoutes)
+
+app.use(bondRoutes)
 
 app.use(notFound)
 
