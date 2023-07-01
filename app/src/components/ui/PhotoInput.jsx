@@ -21,7 +21,7 @@ const PhotoInput = () => {
       <label htmlFor='photo' className='flex flex-col items-center justify-center w-full h-72 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-200 dark:hover:bg-bray-800 dark:bg-slate-700 hover:bg-slate-300 dark:text-white  dark:border-slate-600 dark:hover:border-slate-500 dark:hover:bg-slate-600'>
         {photo
           ? (
-            <img src={photo} alt='Selected' className='object-cover w-full h-60 rounded-lg' />
+            <img src={photo} alt='Selected' className='object-cover w-full h-full p-2 rounded-2xl' />
             )
           : (
             <div className='flex flex-col items-center justify-center pt-5 pb-6'>

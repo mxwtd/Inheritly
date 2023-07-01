@@ -110,7 +110,7 @@ const NewPropertyForm = () => {
               </div>
             </div>
             <div className='md:flex md:justify-between'>
-              <div className='md:w-1/2 md:pr-2 my-4'>
+              <div className='md:w-1/2 md:pr-2'>
                 <div className='mb-2'>
                   <FieldInput label='Address' value={address} onChange={onAddressChanged} name='address' type='text' placeholder='Street Address' errors={errors} isRequire />
                 </div>
@@ -118,7 +118,7 @@ const NewPropertyForm = () => {
                   <FieldInput label='City' value={city} onChange={onCityChanged} name='city' type='text' placeholder='City Name' errors={errors} isRequire />
                 </div>
               </div>
-              <div className='md:w-1/2 md:pl-2 my-4'>
+              <div className='md:w-1/2 md:pl-2'>
                 <div className='mb-2'>
                   <FieldInput label='Postcode / Zip' value={zip} onChange={onZipChanged} name='zip' type='text' placeholder='Postcode / Zip Code' errors={errors} isRequire />
                 </div>
