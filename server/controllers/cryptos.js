@@ -31,11 +31,11 @@ const createCrypto = async (req, res, next) => {
     } = req.body
 
     let photoFile = null
-    let vehicleFiles = null
+    let cryptoFiles = null
 
     if (req.files) {
       photoFile = req.files['photo'] ? req.files['photo'][0] : null
-      vehicleFiles = req.files['files'] ? req.files['files'] : null
+      cryptoFiles = req.files['files'] ? req.files['files'] : null
     }
 
     let photo = null
@@ -48,8 +48,8 @@ const createCrypto = async (req, res, next) => {
       }
     }
 
-    if (vehicleFiles) {
-      files = await Promise.all(vehicleFiles.map(async (file) => {
+    if (cryptoFiles) {
+      files = await Promise.all(cryptoFiles.map(async (file) => {
         return {
           url: null,
           folder: await uploadFilesToGCS(file, userId, name, 'cryptos')
@@ -193,34 +193,34 @@ const updateCrypto = async (req, res, next) => {
   console.log('updates: ', updates)
 
   try {
-    const vehicleToUpdate = await Crypto.findById(id)
+    const cryptoToUpdate = await Crypto.findById(id)
     const { userId } = req
 
-    const { name } = vehicleToUpdate
-    let { files } = vehicleToUpdate
+    const { name } = cryptoToUpdate
+    let { files } = cryptoToUpdate
 
     console.log('Files before: ', files)
 
     let photoFile = null
-    let vehicleFiles = null
+    let cryptoFiles = null
 
     if (req.files) {
       photoFile = req.files['photo'] ? req.files['photo'][0] : null
-      vehicleFiles = req.files['files'] ? req.files['files'] : null
+      cryptoFiles = req.files['files'] ? req.files['files'] : null
     }
 
-    console.log('crypto files: ', vehicleFiles)
+    console.log('crypto files: ', cryptoFiles)
 
     let photoPath = null
 
     if (photoFile) {
       // console.log('get photo file')
-      photoPath = await updateFileFromGCS(photoFile, vehicleToUpdate.photo.folder)
+      photoPath = await updateFileFromGCS(photoFile, cryptoToUpdate.photo.folder)
     }
 
-    if (vehicleFiles) {
+    if (cryptoFiles) {
       console.log('Set files')
-      const newFiles = await Promise.all(vehicleFiles.map(async (file) => {
+      const newFiles = await Promise.all(cryptoFiles.map(async (file) => {
         return {
           url: null,
           folder: await uploadFilesToGCS(file, userId, name, 'cryptos')
@@ -276,10 +276,10 @@ const deleteCrypto = async (req, res, next) => {
   try {
     const { userId } = req
     const user = await User.findById(userId)
-    const vehicleToDelete = await Crypto.findByIdAndDelete(id)
+    const cryptoToDelete = await Crypto.findByIdAndDelete(id)
 
-    if (vehicleToDelete.photo) {
-      const folderPath = `${userId}/cryptos/${vehicleToDelete.name}/`
+    if (cryptoToDelete.photo) {
+      const folderPath = `${userId}/cryptos/${cryptoToDelete.name}/`
       await deleteFolderFromGCS(folderPath)
     }
 

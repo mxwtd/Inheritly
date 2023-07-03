@@ -30,11 +30,11 @@ const createStock = async (req, res, next) => {
     } = req.body
 
     let photoFile = null
-    let vehicleFiles = null
+    let stockFiles = null
 
     if (req.files) {
       photoFile = req.files['photo'] ? req.files['photo'][0] : null
-      vehicleFiles = req.files['files'] ? req.files['files'] : null
+      stockFiles = req.files['files'] ? req.files['files'] : null
     }
 
     let photo = null
@@ -47,8 +47,8 @@ const createStock = async (req, res, next) => {
       }
     }
 
-    if (vehicleFiles) {
-      files = await Promise.all(vehicleFiles.map(async (file) => {
+    if (stockFiles) {
+      files = await Promise.all(stockFiles.map(async (file) => {
         return {
           url: null,
           folder: await uploadFilesToGCS(file, userId, name, 'stocks')
@@ -189,34 +189,34 @@ const updateStock = async (req, res, next) => {
   console.log('updates: ', updates)
 
   try {
-    const vehicleToUpdate = await Stock.findById(id)
+    const stockToUpdate = await Stock.findById(id)
     const { userId } = req
 
-    const { name } = vehicleToUpdate
-    let { files } = vehicleToUpdate
+    const { name } = stockToUpdate
+    let { files } = stockToUpdate
 
     console.log('Files before: ', files)
 
     let photoFile = null
-    let vehicleFiles = null
+    let stockFiles = null
 
     if (req.files) {
       photoFile = req.files['photo'] ? req.files['photo'][0] : null
-      vehicleFiles = req.files['files'] ? req.files['files'] : null
+      stockFiles = req.files['files'] ? req.files['files'] : null
     }
 
-    console.log('stock files: ', vehicleFiles)
+    console.log('stock files: ', stockFiles)
 
     let photoPath = null
 
     if (photoFile) {
       // console.log('get photo file')
-      photoPath = await updateFileFromGCS(photoFile, vehicleToUpdate.photo.folder)
+      photoPath = await updateFileFromGCS(photoFile, stockToUpdate.photo.folder)
     }
 
-    if (vehicleFiles) {
+    if (stockFiles) {
       console.log('Set files')
-      const newFiles = await Promise.all(vehicleFiles.map(async (file) => {
+      const newFiles = await Promise.all(stockFiles.map(async (file) => {
         return {
           url: null,
           folder: await uploadFilesToGCS(file, userId, name, 'stocks')
@@ -272,10 +272,10 @@ const deleteStock = async (req, res, next) => {
   try {
     const { userId } = req
     const user = await User.findById(userId)
-    const vehicleToDelete = await Stock.findByIdAndDelete(id)
+    const stockToDelete = await Stock.findByIdAndDelete(id)
 
-    if (vehicleToDelete.photo) {
-      const folderPath = `${userId}/stocks/${vehicleToDelete.name}/`
+    if (stockToDelete.photo) {
+      const folderPath = `${userId}/stocks/${stockToDelete.name}/`
       await deleteFolderFromGCS(folderPath)
     }
 
