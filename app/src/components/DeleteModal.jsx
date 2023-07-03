@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
-import { useDeletePropertyMutation } from '../features/properties/services/propertiesApiSlice'
-import { useDeleteVehicleMutation } from '../features/vehicles/services/vehiclesApiSlice'
+import { useDeletePropertyMutation } from '../features/InvestmentTypes/properties/services/propertiesApiSlice'
+import { useDeleteVehicleMutation } from '../features/InvestmentTypes/vehicles/services/vehiclesApiSlice'
 
 const DeleteModal = ({ onClose, investmentType }) => {
   const investmentsTypes = [

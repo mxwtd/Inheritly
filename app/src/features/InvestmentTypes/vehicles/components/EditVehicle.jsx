@@ -4,9 +4,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { useUpdateVehicleMutation, useGetVehicleByIdQuery } from '../services/vehiclesApiSlice'
 
-import FieldInput from '../../../components/ui/FieldInput'
-import FilesList from '../../../components/form/InvestmentType/FilesList'
-import FileInput from '../../../components/ui/FileInput'
+import FieldInput from '../../../../components/ui/FieldInput'
+import FilesList from '../../../../components/form/InvestmentType/FilesList'
+import FileInput from '../../../../components/ui/FileInput'
 
 const EditVehicle = () => {
   const { id } = useParams()

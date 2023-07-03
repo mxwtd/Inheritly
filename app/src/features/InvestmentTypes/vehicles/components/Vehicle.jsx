@@ -1,12 +1,12 @@
 import Vehicles from '../index.jsx'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useGetVehicleByIdQuery } from '../services/vehiclesApiSlice.js'
-import MapChart from '../../../components/HoverMap.jsx'
+import MapChart from '../../../../components/HoverMap.jsx'
 import { useState, useEffect } from 'react'
 
-import DeleteModal from '../../../components/DeleteModal.jsx'
+import DeleteModal from '../../../../components/DeleteModal.jsx'
 
-import { getFileNameFromUrl } from '../../../hook/getFileNameFromUrl.js'
+import { getFileNameFromUrl } from '../../../../hook/getFileNameFromUrl.js'
 
 const Vehicle = () => {
   const { id } = useParams()

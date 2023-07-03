@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useDeleteFileMutation, useRenameFileMutation } from '../../../features/properties/services/propertiesApiSlice'
+import { useDeleteFileMutation, useRenameFileMutation } from '../../../features/InvestmentTypes/properties/services/propertiesApiSlice'
 import { getFileNameFromUrl } from '../../../hook/getFileNameFromUrl'
 
 const FilesList = ({ id, files, setFiles }) => {

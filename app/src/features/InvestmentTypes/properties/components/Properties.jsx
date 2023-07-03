@@ -4,10 +4,10 @@
 
 import { useState, useEffect } from 'react'
 
-import Property from '../../../components/Property'
+import Property from '../../../../components/Property'
 
 import { getAllProperties } from '../../../services/properties'
-import ModalAddButton from '../../../components/ModalAddButton'
+import ModalAddButton from '../../../../components/ModalAddButton'
 
 const Properties = () => {
   const [properties, updateProperties] = useState([])

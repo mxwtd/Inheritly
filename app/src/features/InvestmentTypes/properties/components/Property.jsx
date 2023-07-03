@@ -1,11 +1,11 @@
 import Properties from '../index.jsx'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
-import MapChart from '../../../components/HoverMap.jsx'
+import MapChart from '../../../../components/HoverMap.jsx'
 import { useState, useEffect } from 'react'
-import DeleteModal from '../../../components/DeleteModal.jsx'
+import DeleteModal from '../../../../components/DeleteModal.jsx'
 
-import { getFileNameFromUrl } from '../../../hook/getFileNameFromUrl.js'
+import { getFileNameFromUrl } from '../../../../hook/getFileNameFromUrl.js'
 
 const Property = () => {
   const { id } = useParams()

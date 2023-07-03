@@ -3,10 +3,10 @@ import { useGetVehiclesQuery } from '../services/vehiclesApiSlice'
 import VehicleCard from './VehicleCard.jsx'
 import Vehicles from '../index.jsx'
 import { Link } from 'react-router-dom'
-import ModalAddButton from '../../../components/ModalAddButton.jsx'
-import CardSkeleton from '../../../components/CardSkeleton.jsx'
+import ModalAddButton from '../../../../components/ModalAddButton.jsx'
+import CardSkeleton from '../../../../components/CardSkeleton.jsx'
 
-import AddNewContainer from '../../../components/AddNewContainer.jsx'
+import AddNewContainer from '../../../../components/AddNewContainer.jsx'
 
 const VehiclesList = () => {
   const {

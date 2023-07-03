@@ -5,11 +5,11 @@ import Vehicles from '../index.jsx'
 
 import { useAddNewVehicleMutation } from '../services/vehiclesApiSlice.js'
 
-import BasicInformation from '../../../components/form/InvestmentType/BasicInformation.jsx'
-import ContactInformation from '../../../components/form/InvestmentType/ContactInformation.jsx'
-import FilesList from '../../../components/form/InvestmentType/FilesList.jsx'
-import FileInput from '../../../components/ui/FileInput.jsx'
-import FieldInput from '../../../components/ui/FieldInput.jsx'
+import BasicInformation from '../../../../components/form/InvestmentType/BasicInformation.jsx'
+import ContactInformation from '../../../../components/form/InvestmentType/ContactInformation.jsx'
+import FilesList from '../../../../components/form/InvestmentType/FilesList.jsx'
+import FileInput from '../../../../components/ui/FileInput.jsx'
+import FieldInput from '../../../../components/ui/FieldInput.jsx'
 
 const NewVehicleForm = () => {
   const [addNewVehicle, {

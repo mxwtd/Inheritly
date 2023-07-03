@@ -1,4 +1,4 @@
-import { apiSlice } from '../../../services/api/apiSlice'
+import { apiSlice } from '../../../../services/api/apiSlice'
 import { vehiclesAdapter } from '../hooks/vehiclesSlice.js'
 
 export const vehiclesApiSlice = apiSlice.injectEndpoints({

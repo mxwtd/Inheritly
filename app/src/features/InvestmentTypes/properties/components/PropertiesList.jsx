@@ -3,9 +3,9 @@ import { useGetPropertiesQuery } from '../services/propertiesApiSlice'
 import PropertyCard from './PropertyCard.jsx'
 import Properties from '../index.jsx'
 import { Link } from 'react-router-dom'
-import ModalAddButton from '../../../components/ModalAddButton.jsx'
-import CardSkeleton from '../../../components/CardSkeleton.jsx'
-import AddNewContainer from '../../../components/AddNewContainer.jsx'
+import ModalAddButton from '../../../../components/ModalAddButton.jsx'
+import CardSkeleton from '../../../../components/CardSkeleton.jsx'
+import AddNewContainer from '../../../../components/AddNewContainer.jsx'
 
 const PropertiesList = () => {
   const {

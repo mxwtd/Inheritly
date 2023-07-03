@@ -1,4 +1,4 @@
-import { apiSlice } from '../../../services/api/apiSlice'
+import { apiSlice } from '../../../../services/api/apiSlice'
 import { propertiesAdapter } from '../hooks/propertiesSlice.js'
 
 export const propertiesApiSlice = apiSlice.injectEndpoints({
