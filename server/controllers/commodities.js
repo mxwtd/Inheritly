@@ -1,9 +1,9 @@
 /* eslint-disable dot-notation */
-const Bond = require('../models/InvestmentTypes/Bond')
+const Commodity = require('../models/InvestmentTypes/Commodity')
 const User = require('../models/User')
 const { uploadPhotoToGCS, uploadFilesToGCS, loadFileFromGCS, deleteFolderFromGCS, updateFileFromGCS, deleteFileFromGCS, moveGCSFile } = require('../middleware/googleCloud')
 
-const createBond = async (req, res, next) => {
+const createCommodity = async (req, res, next) => {
   try {
     const { userId } = req
     const user = await User.findById(userId)
@@ -16,12 +16,10 @@ const createBond = async (req, res, next) => {
       taxStatus,
       type,
 
-      issuer,
-      purchasePrice,
-      purchaseDate,
+      quantity,
+      unit,
+      location,
       additionalDetails,
-      purchasedAt,
-      couponRate,
 
       accountNumber,
       email,
@@ -30,11 +28,11 @@ const createBond = async (req, res, next) => {
     } = req.body
 
     let photoFile = null
-    let bondFiles = null
+    let commodityFiles = null
 
     if (req.files) {
       photoFile = req.files['photo'] ? req.files['photo'][0] : null
-      bondFiles = req.files['files'] ? req.files['files'] : null
+      commodityFiles = req.files['files'] ? req.files['files'] : null
     }
 
     let photo = null
@@ -43,15 +41,15 @@ const createBond = async (req, res, next) => {
     if (photoFile) {
       photo = {
         url: null,
-        folder: await uploadPhotoToGCS(photoFile, userId, name, 'bonds')
+        folder: await uploadPhotoToGCS(photoFile, userId, name, 'commodities')
       }
     }
 
-    if (bondFiles) {
-      files = await Promise.all(bondFiles.map(async (file) => {
+    if (commodityFiles) {
+      files = await Promise.all(commodityFiles.map(async (file) => {
         return {
           url: null,
-          folder: await uploadFilesToGCS(file, userId, name, 'bonds')
+          folder: await uploadFilesToGCS(file, userId, name, 'commodities')
         }
       }))
     }
@@ -63,68 +61,66 @@ const createBond = async (req, res, next) => {
       companyAddress
     }
 
-    const bond = {
+    const commodity = {
       name,
       currency,
       date,
       value,
       taxStatus,
       type,
-      issuer,
-      purchasePrice,
-      purchaseDate,
+      quantity,
+      unit,
+      location,
       additionalDetails,
-      purchasedAt,
-      couponRate,
       contactInformation,
       photo,
       files
     }
 
-    console.log('Bond to save: ', bond)
+    console.log('Commodity to save: ', commodity)
 
-    const newBonds = new Bond({
-      ...bond,
+    const newCommodities = new Commodity({
+      ...commodity,
       user: user._id
     })
 
-    const savedBonds = await newBonds.save()
+    const savedCommodities = await newCommodities.save()
 
-    user.assets.push(savedBonds._id)
+    user.assets.push(savedCommodities._id)
     await user.save()
 
-    res.status(201).json(savedBonds)
+    res.status(201).json(savedCommodities)
   } catch (error) {
     console.log('Error: ', error)
     next(error)
   }
 }
 
-const getAllUserBonds = async (req, res, next) => {
+const getAllUserCommodities = async (req, res, next) => {
   const { userId } = req
 
   try {
-    // Find bonds that belong to the user with the given ID
-    const bonds = await Bond.find({ user: userId })
+    // Find commodities that belong to the user with the given ID
+    const commodities = await Commodity.find({ user: userId })
 
-    const changePhotoPromises = bonds.map(async (bond) => {
-      if (bond.photo.folder) {
-        bond.photo = {
-          ...bond.photo,
-          url: await loadFileFromGCS(bond.photo.folder)
+    const changePhotoPromises = commodities.map(async (commodity) => {
+      if (commodity.photo.folder) {
+        commodity.photo = {
+          ...commodity.photo,
+          url: await loadFileFromGCS(commodity.photo.folder)
         }
       } else {
-        bond.photo = {
-          ...bond.photo,
+        commodity.photo = {
+          ...commodity.photo,
           url: 'https://i.pinimg.com/564x/91/ed/eb/91edebb64768d1f00ca34807a6b74d73.jpg'
         }
       }
 
-      if (bond.files) {
+      if (commodity.files) {
         console.log('Set files')
-        console.log('bonds files folder: ', bond.files.folder)
-        bond.files = await Promise.all(
-          bond.files.map(async (file) => {
+        console.log('commodities files folder: ', commodity.files.folder)
+        commodity.files = await Promise.all(
+          commodity.files.map(async (file) => {
             return {
               ...file,
               url: await loadFileFromGCS(file.folder)
@@ -137,35 +133,35 @@ const getAllUserBonds = async (req, res, next) => {
     // Wait for all the promises to complete
     await Promise.all(changePhotoPromises)
 
-    res.json(bonds)
+    res.json(commodities)
   } catch (error) {
     next(error)
   }
 }
 
-const getBondById = async (req, res, next) => {
+const getCommodityById = async (req, res, next) => {
   const { id } = req.params
 
   try {
-    const bond = await Bond.findById(id)
+    const commodity = await Commodity.findById(id)
     // }
     const changePhotoPromise = async () => {
-      if (bond.photo.folder) {
-        bond.photo = {
-          ...bond.photo,
-          url: await loadFileFromGCS(bond.photo.folder)
+      if (commodity.photo.folder) {
+        commodity.photo = {
+          ...commodity.photo,
+          url: await loadFileFromGCS(commodity.photo.folder)
         }
       } else {
-        bond.photo = {
-          ...bond.photo,
+        commodity.photo = {
+          ...commodity.photo,
           url: 'https://i.pinimg.com/564x/91/ed/eb/91edebb64768d1f00ca34807a6b74d73.jpg'
         }
       }
 
-      if (bond.files) {
+      if (commodity.files) {
         console.log('Set files')
-        bond.files = await Promise.all(
-          bond.files.map(async (file) => {
+        commodity.files = await Promise.all(
+          commodity.files.map(async (file) => {
             return {
               ...file,
               url: await loadFileFromGCS(file.folder)
@@ -178,50 +174,50 @@ const getBondById = async (req, res, next) => {
     // Wait for the promise to complete
     await changePhotoPromise()
 
-    res.json(bond)
+    res.json(commodity)
   } catch (error) {
     (isNaN(id)) ? next(error) : res.status(404).end()
   }
 }
 
-const updateBond = async (req, res, next) => {
+const updateCommodity = async (req, res, next) => {
   const { id } = req.params
   const updates = req.body
 
   console.log('updates: ', updates)
 
   try {
-    const bondToUpdate = await Bond.findById(id)
+    const commodityToUpdate = await Commodity.findById(id)
     const { userId } = req
 
-    const { name } = bondToUpdate
-    let { files } = bondToUpdate
+    const { name } = commodityToUpdate
+    let { files } = commodityToUpdate
 
     console.log('Files before: ', files)
 
     let photoFile = null
-    let bondFiles = null
+    let commodityFiles = null
 
     if (req.files) {
       photoFile = req.files['photo'] ? req.files['photo'][0] : null
-      bondFiles = req.files['files'] ? req.files['files'] : null
+      commodityFiles = req.files['files'] ? req.files['files'] : null
     }
 
-    console.log('bond files: ', bondFiles)
+    console.log('commodity files: ', commodityFiles)
 
     let photoPath = null
 
     if (photoFile) {
       // console.log('get photo file')
-      photoPath = await updateFileFromGCS(photoFile, bondToUpdate.photo.folder)
+      photoPath = await updateFileFromGCS(photoFile, commodityToUpdate.photo.folder)
     }
 
-    if (bondFiles) {
+    if (commodityFiles) {
       console.log('Set files')
-      const newFiles = await Promise.all(bondFiles.map(async (file) => {
+      const newFiles = await Promise.all(commodityFiles.map(async (file) => {
         return {
           url: null,
-          folder: await uploadFilesToGCS(file, userId, name, 'bonds')
+          folder: await uploadFilesToGCS(file, userId, name, 'commodities')
         }
       }))
 
@@ -256,28 +252,28 @@ const updateBond = async (req, res, next) => {
     // console.log('updates photo: ', updates.photo)
 
     // Confirm note exists to update
-    const updatedBonds = await Bond.findByIdAndUpdate(
+    const updatedCommodities = await Commodity.findByIdAndUpdate(
       id,
       updates,
       { new: true }
     ).exec()
 
-    res.json(updatedBonds)
+    res.json(updatedCommodities)
   } catch (error) {
     (isNaN(id)) ? next(error) : res.status(404).end()
   }
 }
 
-const deleteBond = async (req, res, next) => {
+const deleteCommodity = async (req, res, next) => {
   const { id } = req.params
 
   try {
     const { userId } = req
     const user = await User.findById(userId)
-    const bondToDelete = await Bond.findByIdAndDelete(id)
+    const commodityToDelete = await Commodity.findByIdAndDelete(id)
 
-    if (bondToDelete.photo) {
-      const folderPath = `${userId}/bonds/${bondToDelete.name}/`
+    if (commodityToDelete.photo) {
+      const folderPath = `${userId}/commodities/${commodityToDelete.name}/`
       await deleteFolderFromGCS(folderPath)
     }
 
@@ -297,20 +293,20 @@ const deleteFile = async (req, res, next) => {
   const { id, fileId } = req.params
 
   try {
-    const bond = await Bond.findById(id)
+    const commodity = await Commodity.findById(id)
 
-    if (bond && bond.files) {
-      const fileToDelete = bond.files.find(file => file._id.toString() === fileId)
+    if (commodity && commodity.files) {
+      const fileToDelete = commodity.files.find(file => file._id.toString() === fileId)
 
       if (fileToDelete) {
         await deleteFileFromGCS(fileToDelete.folder)
 
-        const updatedFiles = bond.files.filter(file => file._id.toString() !== fileId)
-        bond.files = updatedFiles
+        const updatedFiles = commodity.files.filter(file => file._id.toString() !== fileId)
+        commodity.files = updatedFiles
 
-        await Bond.findByIdAndUpdate(
+        await Commodity.findByIdAndUpdate(
           id,
-          bond,
+          commodity,
           { new: true }
         ).exec()
 
@@ -326,10 +322,10 @@ const renameFile = async (req, res, next) => {
   const { id, fileId } = req.params
 
   try {
-    const bond = await Bond.findById(id)
+    const commodity = await Commodity.findById(id)
 
-    if (bond && bond.files) {
-      const fileToRename = bond.files.find(file => file._id.toString() === fileId)
+    if (commodity && commodity.files) {
+      const fileToRename = commodity.files.find(file => file._id.toString() === fileId)
 
       if (fileToRename) {
         const { oldName, newName } = req.body
@@ -341,16 +337,16 @@ const renameFile = async (req, res, next) => {
 
         fileToRename.folder = newPath
 
-        const fileIndex = bond.files.findIndex(file => file._id.toString() === fileId)
-        bond.files[fileIndex] = fileToRename
+        const fileIndex = commodity.files.findIndex(file => file._id.toString() === fileId)
+        commodity.files[fileIndex] = fileToRename
 
-        await Bond.findByIdAndUpdate(
+        await Commodity.findByIdAndUpdate(
           id,
-          bond,
+          commodity,
           { new: true }
         ).exec()
 
-        console.log('Bond files: ', bond.files)
+        console.log('Commodity files: ', commodity.files)
 
         res.status(204).end()
       }
@@ -361,11 +357,11 @@ const renameFile = async (req, res, next) => {
 }
 
 module.exports = {
-  createBond,
-  getAllUserBonds,
-  getBondById,
-  updateBond,
-  deleteBond,
+  createCommodity,
+  getAllUserCommodities,
+  getCommodityById,
+  updateCommodity,
+  deleteCommodity,
   deleteFile,
   renameFile
 }

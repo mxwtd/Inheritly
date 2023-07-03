@@ -27,11 +27,11 @@ const createJewel = async (req, res, next) => {
     } = req.body
 
     let photoFile = null
-    let vehicleFiles = null
+    let jewelFiles = null
 
     if (req.files) {
       photoFile = req.files['photo'] ? req.files['photo'][0] : null
-      vehicleFiles = req.files['files'] ? req.files['files'] : null
+      jewelFiles = req.files['files'] ? req.files['files'] : null
     }
 
     let photo = null
@@ -44,8 +44,8 @@ const createJewel = async (req, res, next) => {
       }
     }
 
-    if (vehicleFiles) {
-      files = await Promise.all(vehicleFiles.map(async (file) => {
+    if (jewelFiles) {
+      files = await Promise.all(jewelFiles.map(async (file) => {
         return {
           url: null,
           folder: await uploadFilesToGCS(file, userId, name, 'jewels')
@@ -185,34 +185,34 @@ const updateJewel = async (req, res, next) => {
   console.log('updates: ', updates)
 
   try {
-    const vehicleToUpdate = await Jewel.findById(id)
+    const jewelToUpdate = await Jewel.findById(id)
     const { userId } = req
 
-    const { name } = vehicleToUpdate
-    let { files } = vehicleToUpdate
+    const { name } = jewelToUpdate
+    let { files } = jewelToUpdate
 
     console.log('Files before: ', files)
 
     let photoFile = null
-    let vehicleFiles = null
+    let jewelFiles = null
 
     if (req.files) {
       photoFile = req.files['photo'] ? req.files['photo'][0] : null
-      vehicleFiles = req.files['files'] ? req.files['files'] : null
+      jewelFiles = req.files['files'] ? req.files['files'] : null
     }
 
-    console.log('jewel files: ', vehicleFiles)
+    console.log('jewel files: ', jewelFiles)
 
     let photoPath = null
 
     if (photoFile) {
       // console.log('get photo file')
-      photoPath = await updateFileFromGCS(photoFile, vehicleToUpdate.photo.folder)
+      photoPath = await updateFileFromGCS(photoFile, jewelToUpdate.photo.folder)
     }
 
-    if (vehicleFiles) {
+    if (jewelFiles) {
       console.log('Set files')
-      const newFiles = await Promise.all(vehicleFiles.map(async (file) => {
+      const newFiles = await Promise.all(jewelFiles.map(async (file) => {
         return {
           url: null,
           folder: await uploadFilesToGCS(file, userId, name, 'jewels')
@@ -268,10 +268,10 @@ const deleteJewel = async (req, res, next) => {
   try {
     const { userId } = req
     const user = await User.findById(userId)
-    const vehicleToDelete = await Jewel.findByIdAndDelete(id)
+    const jewelToDelete = await Jewel.findByIdAndDelete(id)
 
-    if (vehicleToDelete.photo) {
-      const folderPath = `${userId}/jewels/${vehicleToDelete.name}/`
+    if (jewelToDelete.photo) {
+      const folderPath = `${userId}/jewels/${jewelToDelete.name}/`
       await deleteFolderFromGCS(folderPath)
     }
 
