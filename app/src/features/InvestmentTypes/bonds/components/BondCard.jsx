@@ -18,7 +18,7 @@ const BondCard = ({ bond }) => {
               <div className='mb-3 flex flex-col items-start justify-between px-1 md:items-start'>
                 <div className='mb-2 w-full'>
                   <p className='text-lg font-bold text-slate-800 dark:text-slate-300 break-words overflow-hidden'>{bond.name}</p>
-                  <p className='mt-1 text-sm font-medium text-slate-600 dark:text-slate-400 md:mt-2'>{bond.country}, {bond.city}</p>
+                  <p className='mt-1 text-sm font-medium text-slate-600 dark:text-slate-400 md:mt-2'>{bond.purchasedAt}</p>
                 </div>
               </div>
               <div className='flex items-center justify-between md:items-center lg:justify-between '>

@@ -11,11 +11,7 @@ const bondSchema = new Schema({
     type: Number,
     required: true
   },
-  purchaseDate: {
-    type: Date,
-    required: true
-  },
-  additionalDetails: {
+  details: {
     type: String
   },
   purchasedAt: {

@@ -36,7 +36,6 @@ const EditBond = () => {
   }
 
   const [name, setName] = useState(bond?.name || '')
-  const [country, setCountry] = useState(bond?.country || '')
   const [currency, setCurrency] = useState(bond?.currency || '')
   const [date, setDate] = useState(() => {
     const originalDate = new Date(bond?.date)
@@ -45,9 +44,12 @@ const EditBond = () => {
   const [value, setValue] = useState(bond?.value || '')
   const [taxStatus, setTaxStatus] = useState(bond?.taxStatus || '')
   const [type, setType] = useState(bond?.type || '')
-  const [city, setCity] = useState(bond?.city || '')
-  const [address, setAddress] = useState(bond?.address || '')
-  const [zip, setZip] = useState(bond?.zip || '')
+
+  const [issuer, setIssuer] = useState('')
+  const [purchasePrice, setPurchasePrice] = useState('')
+  const [details, setDetails] = useState('')
+  const [couponRate, setCouponRate] = useState('')
+  const [purchasedAt, setPurchasedAt] = useState('')
 
   const [contactInformation, setContactInformation] = useState({
     accountNumber: bond?.contactInformation?.accountNumber || '',
@@ -73,15 +75,18 @@ const EditBond = () => {
     console.log('bond change')
     if (bond) {
       setName(bond.name)
-      setCountry(bond.country)
       setCurrency(bond.currency)
       setDate(formatDate(new Date(bond.date)))
       setValue(bond.value)
       setTaxStatus(bond.taxStatus)
       setType(bond.type)
-      setCity(bond.city)
-      setAddress(bond.address)
-      setZip(bond.zip)
+
+      setIssuer(bond.issuer)
+      setPurchasePrice(bond.purchasePrice)
+      setDetails(bond.details)
+      setCouponRate(bond.couponRate)
+      setPurchasedAt(bond.purchasedAt)
+
       setPhoto(bond.photo)
 
       if (bond?.contactInformation) {
@@ -112,15 +117,17 @@ const EditBond = () => {
   }, [id, isSuccess, navigate])
 
   const onNameChanged = e => setName(e.target.value)
-  const onCountryChanged = e => setCountry(e.target.value)
   const onCurrencyChanged = e => setCurrency(e.target.value)
   const onDateChanged = e => setDate(e.target.value)
   const onValueChanged = e => setValue(e.target.value)
   const onTaxStatusChanged = e => setTaxStatus(e.target.value)
   const onTypeChanged = e => setType(e.target.value)
-  const onCityChanged = e => setCity(e.target.value)
-  const onAddressChanged = e => setAddress(e.target.value)
-  const onZipChanged = e => setZip(e.target.value)
+
+  const onIssuerChanged = e => setIssuer(e.target.value)
+  const onPurchasePriceChanged = e => setPurchasePrice(e.target.value)
+  const onDetailsChanged = e => setDetails(e.target.value)
+  const onCouponRateChanged = e => setCouponRate(e.target.value)
+  const onPurchasedAtChanged = e => setPurchasedAt(e.target.value)
 
   const onFilesChanged = (event) => {
     setFiles(prevFiles => [...prevFiles, ...Array.from(event.target.files)])
@@ -253,20 +260,23 @@ const EditBond = () => {
               </div>
             </div>
             <div className='md:flex md:justify-between'>
-              <div className='md:w-1/2 md:pr-2 my-4'>
+              <div className='md:w-1/2 md:pr-2'>
                 <div className='mb-2'>
-                  <FieldInput label='Address' value={address} onChange={onAddressChanged} name='address' type='text' placeholder='Street Address' errors={errors} isRequire />
+                  <FieldInput label='Issuer' value={issuer} onChange={onIssuerChanged} name='issuer' type='text' placeholder='Street Issuer' errors={errors} isRequire />
                 </div>
                 <div className='mt-3'>
-                  <FieldInput label='City' value={city} onChange={onCityChanged} name='city' type='text' placeholder='City Name' errors={errors} isRequire />
+                  <FieldInput label='Purchase Price' value={purchasePrice} onChange={onPurchasePriceChanged} name='purchasePrice' type='number' placeholder='Purchase Price' errors={errors} isRequire />
                 </div>
               </div>
-              <div className='md:w-1/2 md:pl-2 my-4'>
+              <div className='md:w-1/2 md:pl-2'>
                 <div className='mb-2'>
-                  <FieldInput label='Postcode / Zip' value={zip} onChange={onZipChanged} name='zip' type='text' placeholder='Postcode / Zip Code' errors={errors} isRequire />
+                  <FieldInput label='Additional Details' value={details} onChange={onDetailsChanged} name='details' type='text' placeholder='Details' errors={errors} />
                 </div>
                 <div className='mt-3'>
-                  <FieldInput label='Country' value={country} onChange={onCountryChanged} name='country' type='text' placeholder='Country Name' errors={errors} isRequire />
+                  <FieldInput label='Purchased at' value={purchasedAt} onChange={onPurchasedAtChanged} name='purchasedAt' type='text' placeholder='Purchased at' errors={errors} isRequire />
+                </div>
+                <div className='mt-3'>
+                  <FieldInput label='Coupon Rate' value={couponRate} onChange={onCouponRateChanged} name='couponRate' type='number' placeholder='Coupon Rate' errors={errors} isRequire />
                 </div>
               </div>
             </div>

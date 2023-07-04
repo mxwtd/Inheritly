@@ -22,10 +22,11 @@ const NewBondForm = () => {
 
   const [date, setDate] = useState('')
   const [taxStatus, setTaxStatus] = useState('')
-  const [address, setAddress] = useState('')
-  const [city, setCity] = useState('')
-  const [zip, setZip] = useState('')
-  const [country, setCountry] = useState('')
+  const [issuer, setIssuer] = useState('')
+  const [purchasePrice, setPurchasePrice] = useState('')
+  const [details, setDetails] = useState('')
+  const [couponRate, setCouponRate] = useState('')
+  const [purchasedAt, setPurchasedAt] = useState('')
 
   const [files, setFiles] = useState([]) // changed to array for the file upload
 
@@ -39,10 +40,11 @@ const NewBondForm = () => {
 
   const onDateChanged = e => setDate(e.target.value)
   const onTaxStatusChanged = e => setTaxStatus(e.target.value)
-  const onAddressChanged = e => setAddress(e.target.value)
-  const onCityChanged = e => setCity(e.target.value)
-  const onZipChanged = e => setZip(e.target.value)
-  const onCountryChanged = e => setCountry(e.target.value)
+  const onIssuerChanged = e => setIssuer(e.target.value)
+  const onPurchasePriceChanged = e => setPurchasePrice(e.target.value)
+  const onDetailsChanged = e => setDetails(e.target.value)
+  const onCouponRateChanged = e => setCouponRate(e.target.value)
+  const onPurchasedAtChanged = e => setPurchasedAt(e.target.value)
 
   const onFilesChanged = (event) => {
     setFiles(prevFiles => [...prevFiles, ...Array.from(event.target.files)])
@@ -57,13 +59,14 @@ const NewBondForm = () => {
   const onSaveBondClicked = async (e) => {
     e.preventDefault()
 
+    console.log('Create button clicked')
+
     const newErrors = {
-      country: !country,
+      couponRate: !couponRate,
       date: !date,
       taxStatus: !taxStatus,
-      city: !city,
-      address: !address,
-      zip: !zip
+      purchasePrice: !purchasePrice,
+      issuer: !issuer
     }
 
     setErrors(newErrors)
@@ -112,18 +115,21 @@ const NewBondForm = () => {
             <div className='md:flex md:justify-between'>
               <div className='md:w-1/2 md:pr-2'>
                 <div className='mb-2'>
-                  <FieldInput label='Address' value={address} onChange={onAddressChanged} name='address' type='text' placeholder='Street Address' errors={errors} isRequire />
+                  <FieldInput label='Issuer' value={issuer} onChange={onIssuerChanged} name='issuer' type='text' placeholder='Issuer' errors={errors} isRequire />
                 </div>
                 <div className='mt-3'>
-                  <FieldInput label='City' value={city} onChange={onCityChanged} name='city' type='text' placeholder='City Name' errors={errors} isRequire />
+                  <FieldInput label='Purchase Price' value={purchasePrice} onChange={onPurchasePriceChanged} name='purchasePrice' type='number' placeholder='Purchase Price' errors={errors} isRequire />
                 </div>
               </div>
               <div className='md:w-1/2 md:pl-2'>
                 <div className='mb-2'>
-                  <FieldInput label='Postcode / Zip' value={zip} onChange={onZipChanged} name='zip' type='text' placeholder='Postcode / Zip Code' errors={errors} isRequire />
+                  <FieldInput label='Additional Details' value={details} onChange={onDetailsChanged} name='details' type='text' placeholder='Details' errors={errors} />
                 </div>
                 <div className='mt-3'>
-                  <FieldInput label='Country' value={country} onChange={onCountryChanged} name='country' type='text' placeholder='Country Name' errors={errors} isRequire />
+                  <FieldInput label='Purchased at' value={purchasedAt} onChange={onPurchasedAtChanged} name='purchasedAt' type='text' placeholder='Purchased at' errors={errors} isRequire />
+                </div>
+                <div className='mt-3'>
+                  <FieldInput label='Coupon Rate' value={couponRate} onChange={onCouponRateChanged} name='couponRate' type='number' placeholder='Coupon Rate' errors={errors} isRequire />
                 </div>
               </div>
             </div>
@@ -135,7 +141,11 @@ const NewBondForm = () => {
               )
             : null}
           <FileInput onFilesChanged={onFilesChanged} />
-          <button className='w-full py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 bg-blue-600 hover:bg-blue-700 focus:ring-offset-blue-200 focus:ring-blue-500'>Create</button>
+          <button
+            className='w-full py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 bg-blue-600 hover:bg-blue-700 focus:ring-offset-blue-200 focus:ring-blue-500'
+          >
+            Create
+          </button>
         </form>
       </div>
     </Bonds>
