@@ -22,13 +22,16 @@ import PropertiesList from './features/InvestmentTypes/properties/components/Pro
 import Property from './features/InvestmentTypes/properties/components/Property'
 import NewProperty from './features/InvestmentTypes/properties/components/NewProperty'
 import EditProperty from './features/InvestmentTypes/properties/components/EditProperty'
-// import DeleteProperty from './features/properties/components/DeleteProperty'
 
 import VehiclesList from './features/InvestmentTypes/vehicles/components/VehiclesList'
 import Vehicle from './features/InvestmentTypes/vehicles/components/Vehicle'
 import NewVehicle from './features/InvestmentTypes/vehicles/components/NewVehicle'
 import EditVehicle from './features/InvestmentTypes/vehicles/components/EditVehicle'
-// import DeleteVehicle from './features/vehicles/components/DeleteVehicle'
+
+import BondsList from './features/InvestmentTypes/bonds/components/BondsList'
+import Bond from './features/InvestmentTypes/bonds/components/Bond'
+import NewBond from './features/InvestmentTypes/bonds/components/NewBond'
+import EditBond from './features/InvestmentTypes/bonds/components/EditBond'
 
 import Error from './pages/Error'
 import Footer from './components/Footer'
@@ -73,7 +76,13 @@ const App = () => {
                       <Route path='new' element={<NewVehicle />} />
                       <Route path=':id' element={<Vehicle />} />
                       <Route path=':id/edit' element={<EditVehicle />} />
-                      {/* <Route path=':id/delete' element={<DeleteVehicle />} /> */}
+                    </Route>
+
+                    <Route path='bonds'>
+                      <Route index element={<BondsList />} />
+                      <Route path='new' element={<NewBond />} />
+                      <Route path=':id' element={<Bond />} />
+                      <Route path=':id/edit' element={<EditBond />} />
                     </Route>
                   </Route>
 
