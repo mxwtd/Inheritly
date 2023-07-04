@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useDeletePropertyMutation } from '../features/InvestmentTypes/properties/services/propertiesApiSlice'
 import { useDeleteVehicleMutation } from '../features/InvestmentTypes/vehicles/services/vehiclesApiSlice'
 import { useDeleteBondMutation } from '../features/InvestmentTypes/bonds/services/bondsApiSlice'
+import { useDeleteCommodityMutation } from '../features/InvestmentTypes/commodities/services/commoditiesApiSlice'
 
 const DeleteModal = ({ onClose, investmentType }) => {
   const investmentsTypes = [
@@ -20,6 +21,11 @@ const DeleteModal = ({ onClose, investmentType }) => {
       type: 'bond',
       pluralName: 'bonds',
       getMutation: useDeleteBondMutation()
+    },
+    {
+      type: 'commodity',
+      pluralName: 'commodities',
+      getMutation: useDeleteCommodityMutation()
     }
   ]
 

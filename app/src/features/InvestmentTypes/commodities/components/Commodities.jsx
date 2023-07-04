@@ -1,27 +1,27 @@
 /// ///////////////////////
-// NEW PROPERTY CARDS ////
+// NEW COMMODITY CARDS ////
 /// /////////////////////
 
 import { useState, useEffect } from 'react'
 
-import Property from '../../../../components/Property'
+import Commodity from '../../../../components/Commodity'
 
-import { getAllProperties } from '../../../services/properties'
+import { getAllCommodities } from '../../../services/commodities'
 import ModalAddButton from '../../../../components/ModalAddButton'
 
-const Properties = () => {
-  const [properties, updateProperties] = useState([])
+const Commodities = () => {
+  const [commodities, updateCommodities] = useState([])
 
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    fetchProperties()
+    fetchCommodities()
   }, [])
 
-  const fetchProperties = async () => {
-    const properties = await getAllProperties()
+  const fetchCommodities = async () => {
+    const commodities = await getAllCommodities()
     try {
-      updateProperties(properties)
+      updateCommodities(commodities)
     } catch {
       setError('Error')
       setTimeout(() => {
@@ -37,7 +37,7 @@ const Properties = () => {
         <div className='p-4 mt-14'>
           <div>
             <div className='flex justify-between'>
-              <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Properties</h1>
+              <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Commodities</h1>
               <div className='flex justify-end items-center'>
                 <ModalAddButton />
               </div>
@@ -54,8 +54,8 @@ const Properties = () => {
                 </span>
               </div>}
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4'>
-              {properties.map((property) => (
-                <Property key={property.id} property={property} />
+              {commodities.map((commodity) => (
+                <Commodity key={commodity.id} commodity={commodity} />
               ))}
             </div>
           </div>
@@ -65,4 +65,4 @@ const Properties = () => {
   )
 }
 
-export default Properties
+export default Commodities

@@ -1,30 +1,30 @@
 
-import Properties from '../index'
+import Commodities from '../index'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { useUpdatePropertyMutation, useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
+import { useUpdateCommodityMutation, useGetCommodityByIdQuery } from '../services/commoditiesApiSlice'
 
 import FieldInput from '../../../../components/ui/FieldInput'
 import FilesList from '../../../../components/form/InvestmentType/FilesList'
 import FileInput from '../../../../components/ui/FileInput'
 
-const EditProperty = () => {
+const EditCommodity = () => {
   const { id } = useParams()
 
   const {
-    data: property
-  } = useGetPropertyByIdQuery(id, {
+    data: commodity
+  } = useGetCommodityByIdQuery(id, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
     pollingInterval: 900000
   })
 
-  const [updateProperty, {
+  const [updateCommodity, {
     isSuccess,
     isError,
     error
-  }] = useUpdatePropertyMutation()
+  }] = useUpdateCommodityMutation()
 
   const navigate = useNavigate()
 
@@ -35,32 +35,33 @@ const EditProperty = () => {
     return `${year}-${month}-${day}`
   }
 
-  const [name, setName] = useState(property?.name || '')
-  const [country, setCountry] = useState(property?.country || '')
-  const [currency, setCurrency] = useState(property?.currency || '')
+  const [name, setName] = useState(commodity?.name || '')
+  const [currency, setCurrency] = useState(commodity?.currency || '')
   const [date, setDate] = useState(() => {
-    const originalDate = new Date(property?.date)
+    const originalDate = new Date(commodity?.date)
     return formatDate(originalDate)
   })
-  const [value, setValue] = useState(property?.value || '')
-  const [taxStatus, setTaxStatus] = useState(property?.taxStatus || '')
-  const [type, setType] = useState(property?.type || '')
-  const [city, setCity] = useState(property?.city || '')
-  const [address, setAddress] = useState(property?.address || '')
-  const [zip, setZip] = useState(property?.zip || '')
+  const [value, setValue] = useState(commodity?.value || '')
+  const [taxStatus, setTaxStatus] = useState(commodity?.taxStatus || '')
+  const [type, setType] = useState(commodity?.type || '')
+
+  const [quantity, setQuantity] = useState('')
+  const [unit, setUnit] = useState('')
+  const [location, setLocation] = useState('')
+  const [details, setDetails] = useState('')
 
   const [contactInformation, setContactInformation] = useState({
-    accountNumber: property?.contactInformation?.accountNumber || '',
-    email: property?.contactInformation?.email || '',
-    phone: property?.contactInformation?.phone || '',
-    companyAddress: property?.contactInformation?.companyAddress || ''
+    accountNumber: commodity?.contactInformation?.accountNumber || '',
+    email: commodity?.contactInformation?.email || '',
+    phone: commodity?.contactInformation?.phone || '',
+    companyAddress: commodity?.contactInformation?.companyAddress || ''
   } || {})
 
-  const [photo, setPhoto] = useState(property?.photo || null)
-  const [files, setFiles] = useState(property?.files || [])
+  const [photo, setPhoto] = useState(commodity?.photo || null)
+  const [files, setFiles] = useState(commodity?.files || [])
 
   const [isPrivate, setIsPrivate] = useState(() => {
-    if (property?.contactInformation) {
+    if (commodity?.contactInformation) {
       return false
     } else {
       return true
@@ -70,57 +71,60 @@ const EditProperty = () => {
   const [errors] = useState({ name: false, type: false, photo: false })
 
   useEffect(() => {
-    console.log('property change')
-    if (property) {
-      setName(property.name)
-      setCountry(property.country)
-      setCurrency(property.currency)
-      setDate(formatDate(new Date(property.date)))
-      setValue(property.value)
-      setTaxStatus(property.taxStatus)
-      setType(property.type)
-      setCity(property.city)
-      setAddress(property.address)
-      setZip(property.zip)
-      setPhoto(property.photo)
+    console.log('commodity change')
+    if (commodity) {
+      setName(commodity.name)
+      setCurrency(commodity.currency)
+      setDate(formatDate(new Date(commodity.date)))
+      setValue(commodity.value)
+      setTaxStatus(commodity.taxStatus)
+      setType(commodity.type)
 
-      if (property?.contactInformation) {
+      setQuantity(commodity.quantity)
+      setUnit(commodity.unit)
+      setLocation(commodity.location)
+      setDetails(commodity.details)
+
+      setPhoto(commodity.photo)
+
+      if (commodity?.contactInformation) {
         setContactInformation({
-          accountNumber: property?.contactInformation.accountNumber || '',
-          email: property?.contactInformation.email || '',
-          phone: property?.contactInformation.phone || '',
-          companyAddress: property?.contactInformation.companyAddress || ''
+          accountNumber: commodity?.contactInformation.accountNumber || '',
+          email: commodity?.contactInformation.email || '',
+          phone: commodity?.contactInformation.phone || '',
+          companyAddress: commodity?.contactInformation.companyAddress || ''
         } || {})
       }
 
       setIsPrivate(() => {
-        if (property.contactInformation) {
+        if (commodity.contactInformation) {
           return false
         } else {
           return true
         }
       })
 
-      setFiles(property.files)
+      setFiles(commodity.files)
     }
-  }, [property, id])
+  }, [commodity, id])
 
   useEffect(() => {
     if (isSuccess) {
-      navigate(`/investments/properties/${id}`)
+      navigate(`/investments/commodities/${id}`)
     }
   }, [id, isSuccess, navigate])
 
   const onNameChanged = e => setName(e.target.value)
-  const onCountryChanged = e => setCountry(e.target.value)
   const onCurrencyChanged = e => setCurrency(e.target.value)
   const onDateChanged = e => setDate(e.target.value)
   const onValueChanged = e => setValue(e.target.value)
   const onTaxStatusChanged = e => setTaxStatus(e.target.value)
   const onTypeChanged = e => setType(e.target.value)
-  const onCityChanged = e => setCity(e.target.value)
-  const onAddressChanged = e => setAddress(e.target.value)
-  const onZipChanged = e => setZip(e.target.value)
+
+  const onQuantityChanged = e => setQuantity(e.target.value)
+  const onUnitChanged = e => setUnit(e.target.value)
+  const onLocationChanged = e => setLocation(e.target.value)
+  const onDetailsChanged = e => setDetails(e.target.value)
 
   const onFilesChanged = (event) => {
     setFiles(prevFiles => [...prevFiles, ...Array.from(event.target.files)])
@@ -152,33 +156,33 @@ const EditProperty = () => {
     }
   }
 
-  const onSavePropertyClicked = async (e) => {
+  const onSaveCommodityClicked = async (e) => {
     e.preventDefault()
 
     console.log('update button clicked')
 
-    const propertyData = new FormData(e.target)
+    const commodityData = new FormData(e.target)
 
-    console.log('PropertyData name: ', propertyData.get('name'))
+    console.log('CommodityData name: ', commodityData.get('name'))
 
     console.log('')
 
     if (files) {
-      propertyData.delete('files')
+      commodityData.delete('files')
       files.forEach(file => {
         if (file instanceof File) {
-          propertyData.append('files', file)
+          commodityData.append('files', file)
         }
       })
     }
 
-    await updateProperty({ id, propertyData })
+    await updateCommodity({ id, commodityData })
   }
 
   const errClass = isError ? 'errorMsg text-red-500' : 'offscreen'
 
   const content = (
-    <Properties backTo={`/investments/properties/${id}`}>
+    <Commodities backTo={`/investments/commodities/${id}`}>
       <p className={errClass}>{error?.data?.message}</p>
       {
         (error?.data?.error === 'Forbidden token')
@@ -189,9 +193,9 @@ const EditProperty = () => {
       }
       <div className='bg-white backdrop-blur-md rounded-3xl shadow-xl dark:border md:mt-0 p-6 dark:bg-slate-800 dark:border-slate-700'>
         <div className='mb-10'>
-          <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Edit {property?.name}</h1>
+          <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Edit {commodity?.name}</h1>
         </div>
-        <form encType='multipart/form-data' onSubmit={onSavePropertyClicked} className='space-y-4 md:space-y-6' action='#'>
+        <form encType='multipart/form-data' onSubmit={onSaveCommodityClicked} className='space-y-4 md:space-y-6' action='#'>
           <p className={errClass}>
             {
             (error?.data?.message) ? error?.data?.message : error?.data?.error
@@ -227,7 +231,7 @@ const EditProperty = () => {
             </div>
             <div className='md:w-1/2 md:pr-2'>
               <div className='mb-3'>
-                <FieldInput label='Property name' value={name} onChange={onNameChanged} name='name' type='text' placeholder='Property name' errors={errors} isRequire />
+                <FieldInput label='Commodity name' value={name} onChange={onNameChanged} name='name' type='text' placeholder='Commodity name' errors={errors} isRequire />
               </div>
               <div>
                 <FieldInput label='Type' value={type} onChange={onTypeChanged} name='type' type='text' placeholder='E.g. House, Apartment, etc.' errors={errors} isRequire />
@@ -238,7 +242,7 @@ const EditProperty = () => {
                 <FieldInput label='Currency' value={currency} onChange={onCurrencyChanged} name='currency' type='text' placeholder='E.g. USD' errors={errors} isRequire />
               </div>
               <div>
-                <FieldInput label='Value' value={value} onChange={onValueChanged} name='value' type='text' placeholder='Property Value' errors={errors} isRequire />
+                <FieldInput label='Value' value={value} onChange={onValueChanged} name='value' type='text' placeholder='Commodity Value' errors={errors} isRequire />
               </div>
             </div>
           </div>
@@ -253,20 +257,20 @@ const EditProperty = () => {
               </div>
             </div>
             <div className='md:flex md:justify-between'>
-              <div className='md:w-1/2 md:pr-2 my-4'>
+              <div className='md:w-1/2 md:pr-2'>
                 <div className='mb-2'>
-                  <FieldInput label='Address' value={address} onChange={onAddressChanged} name='address' type='text' placeholder='Street Address' errors={errors} isRequire />
+                  <FieldInput label='Quantity' value={quantity} onChange={onQuantityChanged} name='quantity' type='number' placeholder='Quantity' errors={errors} isRequire />
                 </div>
                 <div className='mt-3'>
-                  <FieldInput label='City' value={city} onChange={onCityChanged} name='city' type='text' placeholder='City Name' errors={errors} isRequire />
+                  <FieldInput label='Unit' value={unit} onChange={onUnitChanged} name='unit' type='text' placeholder='Unit Name' errors={errors} isRequire />
                 </div>
               </div>
-              <div className='md:w-1/2 md:pl-2 my-4'>
+              <div className='md:w-1/2 md:pl-2'>
                 <div className='mb-2'>
-                  <FieldInput label='Postcode / Zip' value={zip} onChange={onZipChanged} name='zip' type='text' placeholder='Postcode / Zip Code' errors={errors} isRequire />
+                  <FieldInput label='Location' value={location} onChange={onLocationChanged} name='location' type='text' placeholder='Location' errors={errors} isRequire />
                 </div>
                 <div className='mt-3'>
-                  <FieldInput label='Country' value={country} onChange={onCountryChanged} name='country' type='text' placeholder='Country Name' errors={errors} isRequire />
+                  <FieldInput label='Details' value={details} onChange={onDetailsChanged} name='details' type='text' placeholder='Detail' errors={errors} />
                 </div>
               </div>
             </div>
@@ -319,10 +323,10 @@ const EditProperty = () => {
           </button>
         </form>
       </div>
-    </Properties>
+    </Commodities>
   )
 
   return content
 }
 
-export default EditProperty
+export default EditCommodity

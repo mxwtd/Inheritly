@@ -33,6 +33,11 @@ import Bond from './features/InvestmentTypes/bonds/components/Bond'
 import NewBond from './features/InvestmentTypes/bonds/components/NewBond'
 import EditBond from './features/InvestmentTypes/bonds/components/EditBond'
 
+import CommoditiesList from './features/InvestmentTypes/commodities/components/CommoditiesList'
+import Commodity from './features/InvestmentTypes/commodities/components/Commodity'
+import NewCommodity from './features/InvestmentTypes/commodities/components/NewCommodity'
+import EditCommodity from './features/InvestmentTypes/commodities/components/EditCommodity'
+
 import Error from './pages/Error'
 import Footer from './components/Footer'
 
@@ -83,6 +88,13 @@ const App = () => {
                       <Route path='new' element={<NewBond />} />
                       <Route path=':id' element={<Bond />} />
                       <Route path=':id/edit' element={<EditBond />} />
+                    </Route>
+
+                    <Route path='commodities'>
+                      <Route index element={<CommoditiesList />} />
+                      <Route path='new' element={<NewCommodity />} />
+                      <Route path=':id' element={<Commodity />} />
+                      <Route path=':id/edit' element={<EditCommodity />} />
                     </Route>
                   </Route>
 
