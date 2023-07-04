@@ -1,4 +1,4 @@
-import AssetList from '../components/AssetList'
+import AssetList from './AssetList'
 
 const Stocks = () => {
   return (
