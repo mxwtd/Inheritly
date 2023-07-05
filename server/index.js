@@ -21,6 +21,7 @@ const stockRoutes = require('./routes/stockRoutes')
 const cryptoRoutes = require('./routes/cryptoRoutes')
 const bondRoutes = require('./routes/bondRoutes')
 const authRoutes = require('./routes/authRoutes')
+const willRoutes = require('./routes/willRoutes')
 const commodityRoutes = require('./routes/commodityRoutes')
 const fundRoutes = require('./routes/fundRoutes')
 
@@ -74,6 +75,8 @@ app.use(stockRoutes)
 app.use(cryptoRoutes)
 
 app.use(bondRoutes)
+
+app.use(willRoutes)
 
 app.use(commodityRoutes)
 
