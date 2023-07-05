@@ -19,7 +19,7 @@ const createCommodity = async (req, res, next) => {
       quantity,
       unit,
       location,
-      additionalDetails,
+      details,
 
       accountNumber,
       email,
@@ -71,7 +71,7 @@ const createCommodity = async (req, res, next) => {
       quantity,
       unit,
       location,
-      additionalDetails,
+      details,
       contactInformation,
       photo,
       files
@@ -225,16 +225,16 @@ const updateCommodity = async (req, res, next) => {
     }
 
     // Check for empty values in updates
-    const hasEmptyValues = Object.values(updates).some((value) => {
-      if (typeof value === 'string') {
-        return value.trim() === ''
-      }
-      return false
-    })
+    // const hasEmptyValues = Object.values(updates).some((value) => {
+    //   if (typeof value === 'string') {
+    //     return value.trim() === ''
+    //   }
+    //   return false
+    // })
 
-    if (hasEmptyValues) {
-      return res.status(400).json({ error: 'Empty values are not allowed' })
-    }
+    // if (hasEmptyValues) {
+    //   return res.status(400).json({ error: 'Empty values are not allowed' })
+    // }
 
     // add photo to updates if it exists
     if (photoPath) {

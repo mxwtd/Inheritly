@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import { useDeleteFileMutation, useRenameFileMutation } from '../../../features/properties/services/propertiesApiSlice'
+import { useDeleteFileMutation, useRenameFileMutation } from '../../../features/InvestmentTypes/properties/services/propertiesApiSlice'
 import { getFileNameFromUrl } from '../../../hook/getFileNameFromUrl'
 
-const FilesList = ({ id, files, setFiles }) => {
+const FilesList = ({ id, files, setFiles, type }) => {
   /// ////////////////////////////////////////////////////////////////////////
   // The following handles the amount of file on one page of the file list ///
   /// ////////////////////////////////////////////////////////////////////////
@@ -53,7 +53,7 @@ const FilesList = ({ id, files, setFiles }) => {
         newFiles[index] = { ...newFiles[index], name: newFileName }
         setFiles(newFiles)
 
-        await renamePropertyFile({ id, fileId: file._id, oldName, newName: newFileName })
+        await renamePropertyFile({ id, fileId: file._id, oldName, newName: newFileName, type })
       } else {
         setFiles(prevFiles => {
           const newFiles = [...prevFiles]
@@ -80,7 +80,8 @@ const FilesList = ({ id, files, setFiles }) => {
       setFiles(newFiles)
 
       if (file._id) {
-        await deletePropertyFile({ id, fileId: file._id })
+        console.log('File has an id')
+        await deletePropertyFile({ id, fileId: file._id, type })
       }
     }
   }

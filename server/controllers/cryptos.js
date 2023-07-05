@@ -118,7 +118,7 @@ const getAllUserCryptos = async (req, res, next) => {
       } else {
         crypto.photo = {
           ...crypto.photo,
-          url: 'https://i.pinimg.com/564x/91/ed/eb/91edebb64768d1f00ca34807a6b74d73.jpg'
+          url: 'https://i.pinimg.com/564x/dc/56/40/dc56402c003b214d53c13e8fdb1a96ed.jpg'
         }
       }
 
@@ -160,7 +160,7 @@ const getCryptoById = async (req, res, next) => {
       } else {
         crypto.photo = {
           ...crypto.photo,
-          url: 'https://i.pinimg.com/564x/91/ed/eb/91edebb64768d1f00ca34807a6b74d73.jpg'
+          url: 'https://i.pinimg.com/564x/dc/56/40/dc56402c003b214d53c13e8fdb1a96ed.jpg'
         }
       }
 
@@ -231,16 +231,16 @@ const updateCrypto = async (req, res, next) => {
     }
 
     // Check for empty values in updates
-    const hasEmptyValues = Object.values(updates).some((value) => {
-      if (typeof value === 'string') {
-        return value.trim() === ''
-      }
-      return false
-    })
+    // const hasEmptyValues = Object.values(updates).some((value) => {
+    //   if (typeof value === 'string') {
+    //     return value.trim() === ''
+    //   }
+    //   return false
+    // })
 
-    if (hasEmptyValues) {
-      return res.status(400).json({ error: 'Empty values are not allowed' })
-    }
+    // if (hasEmptyValues) {
+    //   return res.status(400).json({ error: 'Empty values are not allowed' })
+    // }
 
     // add photo to updates if it exists
     if (photoPath) {

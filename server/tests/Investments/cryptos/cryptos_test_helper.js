@@ -14,8 +14,7 @@ const initialCryptos = async () => {
       symbol: 'RPL',
       quantity: 100,
       purchasePrice: 100,
-      purchaseDate: new Date(),
-      additionalDetails: 'Good crypto',
+      detail: 'Good crypto',
       purchasedAt: 'Robinhood',
       walletAddress: '123456789',
 
@@ -38,8 +37,7 @@ const initialCryptos = async () => {
       symbol: 'ADA',
       quantity: 100,
       purchasePrice: 100,
-      purchaseDate: new Date(),
-      additionalDetails: 'Good crypto',
+      detail: 'Good crypto',
       purchasedAt: 'Robinhood',
       walletAddress: '123456789',
 

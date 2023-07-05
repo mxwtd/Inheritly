@@ -106,7 +106,7 @@ describe('Create Commodities', () => {
       quantity: 1000,
       unit: 'Unit',
       location: 'Location',
-      additionalDetails: 'Additional details',
+      details: 'Additional details',
 
       photo: '',
       files: null,

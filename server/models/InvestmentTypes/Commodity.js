@@ -15,7 +15,7 @@ const commoditySchema = new Schema({
     type: String,
     required: true
   },
-  additionalDetails: {
+  details: {
     type: String
   }
 }, { timestamps: true })

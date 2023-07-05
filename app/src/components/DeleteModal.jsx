@@ -1,7 +1,13 @@
 import { useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
-import { useDeletePropertyMutation } from '../features/properties/services/propertiesApiSlice'
-import { useDeleteVehicleMutation } from '../features/vehicles/services/vehiclesApiSlice'
+import { useDeletePropertyMutation } from '../features/InvestmentTypes/properties/services/propertiesApiSlice'
+import { useDeleteVehicleMutation } from '../features/InvestmentTypes/vehicles/services/vehiclesApiSlice'
+import { useDeleteBondMutation } from '../features/InvestmentTypes/bonds/services/bondsApiSlice'
+import { useDeleteCommodityMutation } from '../features/InvestmentTypes/commodities/services/commoditiesApiSlice'
+import { useDeleteCryptoMutation } from '../features/InvestmentTypes/cryptos/services/cryptosApiSlice'
+import { useDeleteFundMutation } from '../features/InvestmentTypes/funds/services/fundsApiSlice'
+import { useDeleteJewelMutation } from '../features/InvestmentTypes/jewels/services/jewelsApiSlice'
+import { useDeleteStockMutation } from '../features/InvestmentTypes/stocks/services/stocksApiSlice'
 
 const DeleteModal = ({ onClose, investmentType }) => {
   const investmentsTypes = [
@@ -14,6 +20,36 @@ const DeleteModal = ({ onClose, investmentType }) => {
       type: 'vehicle',
       pluralName: 'vehicles',
       getMutation: useDeleteVehicleMutation()
+    },
+    {
+      type: 'bond',
+      pluralName: 'bonds',
+      getMutation: useDeleteBondMutation()
+    },
+    {
+      type: 'commodity',
+      pluralName: 'commodities',
+      getMutation: useDeleteCommodityMutation()
+    },
+    {
+      type: 'crypto',
+      pluralName: 'cryptos',
+      getMutation: useDeleteCryptoMutation()
+    },
+    {
+      type: 'fund',
+      pluralName: 'funds',
+      getMutation: useDeleteFundMutation()
+    },
+    {
+      type: 'jewel',
+      pluralName: 'jewels',
+      getMutation: useDeleteJewelMutation()
+    },
+    {
+      type: 'stock',
+      pluralName: 'stocks',
+      getMutation: useDeleteStockMutation()
     }
   ]
 
