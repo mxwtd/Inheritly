@@ -48,6 +48,11 @@ import Fund from './features/InvestmentTypes/funds/components/Fund'
 import NewFund from './features/InvestmentTypes/funds/components/NewFund'
 import EditFund from './features/InvestmentTypes/funds/components/EditFund'
 
+import JewelsList from './features/InvestmentTypes/jewels/components/JewelsList'
+import Jewel from './features/InvestmentTypes/jewels/components/Jewel'
+import NewJewel from './features/InvestmentTypes/jewels/components/NewJewel'
+import EditJewel from './features/InvestmentTypes/jewels/components/EditJewel'
+
 import Error from './pages/Error'
 import Footer from './components/Footer'
 
@@ -119,6 +124,13 @@ const App = () => {
                       <Route path='new' element={<NewFund />} />
                       <Route path=':id' element={<Fund />} />
                       <Route path=':id/edit' element={<EditFund />} />
+                    </Route>
+
+                    <Route path='jewels'>
+                      <Route index element={<JewelsList />} />
+                      <Route path='new' element={<NewJewel />} />
+                      <Route path=':id' element={<Jewel />} />
+                      <Route path=':id/edit' element={<EditJewel />} />
                     </Route>
                   </Route>
 

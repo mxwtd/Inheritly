@@ -1,27 +1,27 @@
 /// ///////////////////////
-// NEW PROPERTY CARDS ////
+// NEW JEWEL CARDS ////
 /// /////////////////////
 
 import { useState, useEffect } from 'react'
 
-import Property from '../../../../components/Property'
+import Jewel from '../../../../components/Jewel'
 
-import { getAllProperties } from '../../../services/properties'
+import { getAllJewels } from '../../../services/jewels'
 import ModalAddButton from '../../../../components/ModalAddButton'
 
-const Properties = () => {
-  const [properties, updateProperties] = useState([])
+const Jewels = () => {
+  const [jewels, updateJewels] = useState([])
 
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    fetchProperties()
+    fetchJewels()
   }, [])
 
-  const fetchProperties = async () => {
-    const properties = await getAllProperties()
+  const fetchJewels = async () => {
+    const jewels = await getAllJewels()
     try {
-      updateProperties(properties)
+      updateJewels(jewels)
     } catch {
       setError('Error')
       setTimeout(() => {
@@ -37,7 +37,7 @@ const Properties = () => {
         <div className='p-4 mt-14'>
           <div>
             <div className='flex justify-between'>
-              <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Properties</h1>
+              <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Jewels</h1>
               <div className='flex justify-end items-center'>
                 <ModalAddButton />
               </div>
@@ -54,8 +54,8 @@ const Properties = () => {
                 </span>
               </div>}
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4'>
-              {properties.map((property) => (
-                <Property key={property.id} property={property} />
+              {jewels.map((jewel) => (
+                <Jewel key={jewel.id} jewel={jewel} />
               ))}
             </div>
           </div>
@@ -65,4 +65,4 @@ const Properties = () => {
   )
 }
 
-export default Properties
+export default Jewels

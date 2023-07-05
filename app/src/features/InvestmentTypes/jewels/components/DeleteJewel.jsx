@@ -1,31 +1,31 @@
-import Properties from '../index'
+import Jewels from '../index'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 
-import { useDeletePropertyMutation, useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
+import { useDeleteJewelMutation, useGetJewelByIdQuery } from '../services/jewelsApiSlice'
 
-const DeleteProperty = () => {
+const DeleteJewel = () => {
   const { id } = useParams()
 
   const {
-    data: property
-  } = useGetPropertyByIdQuery(id, {
+    data: jewel
+  } = useGetJewelByIdQuery(id, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
     pollingInterval: 300000
   })
 
-  const [deleteProperty, {
+  const [deleteJewel, {
     isSuccess,
     isError,
     error
-  }] = useDeletePropertyMutation()
+  }] = useDeleteJewelMutation()
 
   const navigate = useNavigate()
 
   useEffect(() => {
     if (isSuccess) {
-      navigate('/investments/properties/')
+      navigate('/investments/jewels/')
     }
   }, [id, isSuccess, navigate])
 
@@ -34,13 +34,13 @@ const DeleteProperty = () => {
 
     console.log('id to delete', id)
 
-    await deleteProperty({ id })
+    await deleteJewel({ id })
   }
 
   const errClass = isError ? 'errorMsg text-red-500' : 'offscreen'
 
   const content = (
-    <Properties backTo={`/investments/properties/${id}`}>
+    <Jewels backTo={`/investments/jewels/${id}`}>
       <p className={errClass}>{error?.data?.message}</p>
       {
         (error?.data?.error === 'Forbidden token')
@@ -54,14 +54,14 @@ const DeleteProperty = () => {
           <div className='flex flex-col items-center'>
             <div className='my-8 text-center'>
               <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Delete</h1>
-              <h2 className='text-2xl font-bold text-slate-800 dark:text-white mt-3'>{property?.name}?</h2>
+              <h2 className='text-2xl font-bold text-slate-800 dark:text-white mt-3'>{jewel?.name}?</h2>
             </div>
             <div className='relative w-full rounded-2xl' style={{ aspectRatio: '1/1' }}>
               <div className='bg-slate-200 dark:bg-slate-800 p-4 rounded-2xl'>
                 <div className='relative w-full h-full overflow-hidden rounded-2xl'>
                   <img
-                    src={property.photo}
-                    alt={property?.name}
+                    src={jewel.photo}
+                    alt={jewel?.name}
                     className='object-cover w-full h-full transform transition-all duration-500 hover:scale-110'
                     style={{ aspectRatio: '1/1' }}
                   />
@@ -76,10 +76,10 @@ const DeleteProperty = () => {
         </div>
       </div>
 
-    </Properties>
+    </Jewels>
   )
 
   return content
 }
 
-export default DeleteProperty
+export default DeleteJewel

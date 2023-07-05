@@ -162,7 +162,7 @@ const Vehicle = () => {
                         <tbody>
                           {files?.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage).map((file, index) => (
                             <tr key={index} className={(index + currentPage * itemsPerPage) % 2 === 0 ? 'cursor-pointer bg-white border-b dark:bg-slate-800 dark:border-slate-700' : 'cursor-pointer border-b bg-slate-50 dark:bg-slate-800 dark:border-slate-700'}>
-                              <th onClick={() => handleDownload(file)} scope='row' className='px-6 py-4 font-medium text-slate-900 whitespace-nowrap dark:text-white'>
+                              <th onClick={() => handleDownload(file.url)} scope='row' className='px-6 py-4 font-medium text-slate-900 whitespace-nowrap dark:text-white'>
                                 {getFileNameFromUrl(file.url)}
                               </th>
                             </tr>
