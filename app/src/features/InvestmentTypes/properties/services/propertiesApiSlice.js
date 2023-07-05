@@ -65,8 +65,8 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
       ]
     }),
     deleteFile: builder.mutation({
-      query: ({ id, fileId }) => ({
-        url: `/properties/${id}/${fileId}`,
+      query: ({ id, fileId, type }) => ({
+        url: `/${type}/${id}/${fileId}`,
         method: 'DELETE'
       }),
       invalidatesTags: (result, error, arg) => [
@@ -74,8 +74,8 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
       ]
     }),
     renameFile: builder.mutation({
-      query: ({ id, fileId, oldName, newName }) => ({
-        url: `/properties/${id}/${fileId}`,
+      query: ({ id, fileId, oldName, newName, type }) => ({
+        url: `/${type}/${id}/${fileId}`,
         method: 'PATCH',
         body: { oldName, newName }
       }),

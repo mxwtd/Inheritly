@@ -311,7 +311,7 @@ const EditCommodity = () => {
           </div>
           {files?.length > 0
             ? (
-              <FilesList id={id} files={files} setFiles={setFiles} />
+              <FilesList id={id} files={files} setFiles={setFiles} type='commodities' />
               )
             : null}
           <FileInput onFilesChanged={onFilesChanged} />

@@ -38,6 +38,11 @@ import Commodity from './features/InvestmentTypes/commodities/components/Commodi
 import NewCommodity from './features/InvestmentTypes/commodities/components/NewCommodity'
 import EditCommodity from './features/InvestmentTypes/commodities/components/EditCommodity'
 
+import CryptosList from './features/InvestmentTypes/cryptos/components/CryptosList'
+import Crypto from './features/InvestmentTypes/cryptos/components/Crypto'
+import NewCrypto from './features/InvestmentTypes/cryptos/components/NewCrypto'
+import EditCrypto from './features/InvestmentTypes/cryptos/components/EditCrypto'
+
 import Error from './pages/Error'
 import Footer from './components/Footer'
 
@@ -95,6 +100,13 @@ const App = () => {
                       <Route path='new' element={<NewCommodity />} />
                       <Route path=':id' element={<Commodity />} />
                       <Route path=':id/edit' element={<EditCommodity />} />
+                    </Route>
+
+                    <Route path='cryptos'>
+                      <Route index element={<CryptosList />} />
+                      <Route path='new' element={<NewCrypto />} />
+                      <Route path=':id' element={<Crypto />} />
+                      <Route path=':id/edit' element={<EditCrypto />} />
                     </Route>
                   </Route>
 

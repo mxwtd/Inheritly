@@ -1,20 +1,20 @@
 
-import { useGetPropertiesQuery } from '../services/propertiesApiSlice'
-import PropertyCard from './PropertyCard.jsx'
-import Properties from '../index.jsx'
+import { useGetCryptosQuery } from '../services/cryptosApiSlice'
+import CryptoCard from './CryptoCard.jsx'
+import Cryptos from '../index.jsx'
 import { Link } from 'react-router-dom'
 import ModalAddButton from '../../../../components/ModalAddButton.jsx'
 import CardSkeleton from '../../../../components/CardSkeleton.jsx'
 import AddNewContainer from '../../../../components/AddNewContainer.jsx'
 
-const PropertiesList = () => {
+const CryptosList = () => {
   const {
-    data: properties,
+    data: cryptos,
     isLoading,
     isSuccess,
     isError,
     error
-  } = useGetPropertiesQuery('propertiesList', {
+  } = useGetCryptosQuery('cryptosList', {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
     pollingInterval: 300000
@@ -24,9 +24,9 @@ const PropertiesList = () => {
 
   if (isLoading) {
     content = (
-      <Properties>
+      <Cryptos>
         <CardSkeleton />
-      </Properties>
+      </Cryptos>
     )
   }
 
@@ -34,11 +34,11 @@ const PropertiesList = () => {
 
   if (isError) {
     content = (
-      <Properties>
+      <Cryptos>
         <div className='flex justify-between'>
-          <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Properties</h1>
+          <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Cryptos</h1>
           <div className='flex justify-end items-center'>
-            <Link to='/investments/properties/new'>
+            <Link to='/investments/cryptos/new'>
               <ModalAddButton />
             </Link>
           </div>
@@ -51,29 +51,29 @@ const PropertiesList = () => {
             )
           : null
       }
-      </Properties>
+      </Cryptos>
     )
   }
 
   if (isSuccess) {
-    const listContent = properties?.length
-      ? properties.map(property => <PropertyCard key={property.id} property={property} />)
+    const listContent = cryptos?.length
+      ? cryptos.map(crypto => <CryptoCard key={crypto.id} crypto={crypto} />)
       : null
 
     content = (
-      <Properties backTo='/investments'>
+      <Cryptos backTo='/investments'>
         <div className='flex justify-between my-8'>
-          <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Properties</h1>
+          <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Cryptos</h1>
           <Link to='./new'><ModalAddButton /></Link>
         </div>
-        {(!listContent || listContent.length === 0) && <AddNewContainer type='property' />}
+        {(!listContent || listContent.length === 0) && <AddNewContainer type='crypto' />}
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 my-4 '>
           {listContent}
         </div>
-      </Properties>
+      </Cryptos>
     )
   }
 
   return content
 }
-export default PropertiesList
+export default CryptosList

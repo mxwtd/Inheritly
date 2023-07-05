@@ -130,7 +130,7 @@ const NewCommodityForm = () => {
           <ContactInformation errors={errors} />
           {files.length > 0
             ? (
-              <FilesList files={files} setFiles={setFiles} />
+              <FilesList files={files} setFiles={setFiles} type='commodities' />
               )
             : null}
           <FileInput onFilesChanged={onFilesChanged} />

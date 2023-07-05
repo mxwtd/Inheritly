@@ -137,7 +137,7 @@ const NewBondForm = () => {
           <ContactInformation errors={errors} />
           {files.length > 0
             ? (
-              <FilesList files={files} setFiles={setFiles} />
+              <FilesList files={files} setFiles={setFiles} type='bonds' />
               )
             : null}
           <FileInput onFilesChanged={onFilesChanged} />

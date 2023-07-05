@@ -1,27 +1,27 @@
 /// ///////////////////////
-// NEW PROPERTY CARDS ////
+// NEW CRYPTO CARDS ////
 /// /////////////////////
 
 import { useState, useEffect } from 'react'
 
-import Property from '../../../../components/Property'
+import Crypto from '../../../../components/Crypto'
 
-import { getAllProperties } from '../../../services/properties'
+import { getAllCryptos } from '../../../services/cryptos'
 import ModalAddButton from '../../../../components/ModalAddButton'
 
-const Properties = () => {
-  const [properties, updateProperties] = useState([])
+const Cryptos = () => {
+  const [cryptos, updateCryptos] = useState([])
 
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    fetchProperties()
+    fetchCryptos()
   }, [])
 
-  const fetchProperties = async () => {
-    const properties = await getAllProperties()
+  const fetchCryptos = async () => {
+    const cryptos = await getAllCryptos()
     try {
-      updateProperties(properties)
+      updateCryptos(cryptos)
     } catch {
       setError('Error')
       setTimeout(() => {
@@ -37,7 +37,7 @@ const Properties = () => {
         <div className='p-4 mt-14'>
           <div>
             <div className='flex justify-between'>
-              <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Properties</h1>
+              <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Cryptos</h1>
               <div className='flex justify-end items-center'>
                 <ModalAddButton />
               </div>
@@ -54,8 +54,8 @@ const Properties = () => {
                 </span>
               </div>}
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4'>
-              {properties.map((property) => (
-                <Property key={property.id} property={property} />
+              {cryptos.map((crypto) => (
+                <Crypto key={crypto.id} crypto={crypto} />
               ))}
             </div>
           </div>
@@ -65,4 +65,4 @@ const Properties = () => {
   )
 }
 
-export default Properties
+export default Cryptos

@@ -1,23 +1,23 @@
-import Properties from '../index.jsx'
+import Cryptos from '../index.jsx'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
+import { useGetCryptoByIdQuery } from '../services/cryptosApiSlice.js'
 import MapChart from '../../../../components/HoverMap.jsx'
 import { useState, useEffect } from 'react'
 import DeleteModal from '../../../../components/DeleteModal.jsx'
 
 import { getFileNameFromUrl } from '../../../../hook/getFileNameFromUrl.js'
 
-const Property = () => {
+const Crypto = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
   const {
-    data: property,
+    data: crypto,
     isLoading,
     isSuccess,
     isError,
     error
-  } = useGetPropertyByIdQuery(id, {
+  } = useGetCryptoByIdQuery(id, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
     pollingInterval: 300000
@@ -62,8 +62,8 @@ const Property = () => {
   }
 
   useEffect(() => {
-    setFiles(property?.files)
-  }, [property, id])
+    setFiles(crypto?.files)
+  }, [crypto, id])
 
   useEffect(() => {
     if (downloadUrl) {
@@ -93,7 +93,7 @@ const Property = () => {
 
   if (isError) {
     content = (
-      <Properties title='Properties'>
+      <Cryptos title='Cryptos'>
         <h1 className='text-4xl font-semibold text-red-500 dark:text-red-500 my-8'>{error?.data?.message}</h1>
         {
           (error.data.error === 'Forbidden token')
@@ -102,7 +102,7 @@ const Property = () => {
               )
             : null
         }
-      </Properties>
+      </Cryptos>
     )
   }
 
@@ -127,9 +127,9 @@ const Property = () => {
       const handleEdit = () => navigate('./edit')
 
       content = (
-        <Properties backTo='/investments/properties'>
+        <Cryptos backTo='/investments/cryptos'>
           <div className='flex justify-between items-center mb-5 md:mb-10'>
-            <h1 className='text-3xl md:text-4xl font-bold text-slate-800 dark:text-white'>{property?.name}</h1>
+            <h1 className='text-3xl md:text-4xl font-bold text-slate-800 dark:text-white'>{crypto?.name}</h1>
             <div className='flex flex-row gap-2 md:gap-4 bg-slate-300 dark:bg-slate-800 p-2 rounded-full'>
               <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold p-3 rounded-full' onClick={handleEdit}>
                 <svg className='w-4 h-4 md:w-6 md:h-6' fill='none' stroke='currentColor' strokeWidth='1.5' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' aria-hidden='true'>
@@ -147,7 +147,7 @@ const Property = () => {
             <div className='relative bg-slate-50 dark:bg-slate-800 p-4 rounded-xl aspect-w-1 aspect-h-1'>
               <div className='mb-3 h-full w-full rounded-lg overflow-hidden' style={{ aspectRatio: '1/1' }}>
                 <img
-                  src={property?.photo.url}
+                  src={crypto?.photo.url}
                   className='object-cover w-full h-full transform transition-all duration-500 hover:scale-110'
                 />
               </div>
@@ -158,19 +158,19 @@ const Property = () => {
                   <div className='grid grid-cols-2 grid-rows-2 gap-4 xl:gap-8 text-slate-700 dark:text-white'>
                     <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Purchased</h2>
-                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{new Date(property?.date).toLocaleDateString()}</h3>
+                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{new Date(crypto?.date).toLocaleDateString()}</h3>
                     </div>
                     <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Value</h2>
-                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{property?.currency} {property?.value}</h3>
+                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{crypto?.currency} {crypto?.value}</h3>
                     </div>
                     <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Type</h2>
-                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{property?.type}</h3>
+                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{crypto?.type}</h3>
                     </div>
                     <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Tax Status</h2>
-                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{property?.taxStatus}</h3>
+                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{crypto?.taxStatus}</h3>
                     </div>
                   </div>
                   <div className='py-2 px-4 mt-4 xl:mt-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg'>
@@ -227,7 +227,7 @@ const Property = () => {
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4'>
             <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-2 col-span-1 lg:col-span-1 lg:row-span-2 dark:bg-slate-800 shadow-lg'>
               <div className='items-center'>
-                <p className='text-xl lg:text-2xl px-4 pt-4 text-slate-400 dark:text-slate-500'>Property Location</p>
+                <p className='text-xl lg:text-2xl px-4 pt-4 text-slate-400 dark:text-slate-500'>Crypto Location</p>
               </div>
               <div className='p-5 rounded-lg'>
                 <div className='bg-slate-100 dark:bg-slate-700 rounded-lg shadow-xl'>
@@ -237,39 +237,39 @@ const Property = () => {
             </div>
             <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
               <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg h-full flex flex-col justify-center'>
-                <p className='text-xl lg:text-2xl px-4 mb-2'>Address</p>
-                <p className='text-md lg:text-lg px-4'>{property?.address}</p>
-                <p className='text-md lg:text-lg px-4'>{property?.city}</p>
-                <p className='text-md lg:text-lg px-4'>{property?.zip}</p>
-                <p className='text-md lg:text-lg px-4'>{property?.country}</p>
+                <p className='text-xl lg:text-2xl px-4 mb-2'>Information</p>
+                <p className='text-md lg:text-lg px-4'>{crypto?.symbol}, Amount: {crypto?.quantity}</p>
+                <p className='text-md lg:text-lg px-4'>Purchase Price: {crypto?.purchasePrice}</p>
+                <p className='text-md lg:text-lg px-4'>Purchased At: {crypto?.purchasedAt}</p>
+                <p className='text-md lg:text-lg px-4'>WalletAddress: {crypto?.walletAddress}</p>
               </div>
             </div>
             {
-              property?.contactInformation
+              crypto?.contactInformation
                 ? (
                   <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
                     <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg h-full flex flex-col justify-center'>
                       <p className='text-xl lg:text-2xl px-4 mb-2'>Contact</p>
-                      <p className='text-md lg:text-lg px-4'>Account Number: {property?.contactInformation.accountNumber}</p>
-                      <p className='text-md lg:text-lg px-4'>Email: {property?.contactInformation.email}</p>
-                      <p className='text-md lg:text-lg px-4'>Phone: {property?.contactInformation.phone}</p>
-                      <p className='text-md lg:text-lg px-4'>Company Address: {property?.contactInformation.companyAddress}</p>
+                      <p className='text-md lg:text-lg px-4'>Account Number: {crypto?.contactInformation.accountNumber}</p>
+                      <p className='text-md lg:text-lg px-4'>Email: {crypto?.contactInformation.email}</p>
+                      <p className='text-md lg:text-lg px-4'>Phone: {crypto?.contactInformation.phone}</p>
+                      <p className='text-md lg:text-lg px-4'>Company Address: {crypto?.contactInformation.companyAddress}</p>
                     </div>
                   </div>
                   )
                 : null
             }
           </div>
-        </Properties>
+        </Cryptos>
       )
     }
     return (
       <>
         {content}
-        {showDeleteModal && <DeleteModal onClose={handleCloseDelete} investmentType={property} />}
+        {showDeleteModal && <DeleteModal onClose={handleCloseDelete} investmentType={crypto} />}
       </>
     )
   }
 }
 
-export default Property
+export default Crypto

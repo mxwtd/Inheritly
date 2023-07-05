@@ -307,7 +307,7 @@ const EditVehicle = () => {
           </div>
           {files?.length > 0
             ? (
-              <FilesList id={id} files={files} setFiles={setFiles} />
+              <FilesList id={id} files={files} setFiles={setFiles} type='properties' />
               )
             : null}
           <FileInput onFilesChanged={onFilesChanged} />

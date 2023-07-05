@@ -4,6 +4,7 @@ import { useDeletePropertyMutation } from '../features/InvestmentTypes/propertie
 import { useDeleteVehicleMutation } from '../features/InvestmentTypes/vehicles/services/vehiclesApiSlice'
 import { useDeleteBondMutation } from '../features/InvestmentTypes/bonds/services/bondsApiSlice'
 import { useDeleteCommodityMutation } from '../features/InvestmentTypes/commodities/services/commoditiesApiSlice'
+import { useDeleteCryptoMutation } from '../features/InvestmentTypes/cryptos/services/cryptosApiSlice'
 
 const DeleteModal = ({ onClose, investmentType }) => {
   const investmentsTypes = [
@@ -26,6 +27,11 @@ const DeleteModal = ({ onClose, investmentType }) => {
       type: 'commodity',
       pluralName: 'commodities',
       getMutation: useDeleteCommodityMutation()
+    },
+    {
+      type: 'crypto',
+      pluralName: 'cryptos',
+      getMutation: useDeleteCryptoMutation()
     }
   ]
 

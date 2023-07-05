@@ -1,30 +1,30 @@
 
-import Properties from '../index'
+import Cryptos from '../index'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { useUpdatePropertyMutation, useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
+import { useUpdateCryptoMutation, useGetCryptoByIdQuery } from '../services/cryptosApiSlice'
 
 import FieldInput from '../../../../components/ui/FieldInput'
 import FilesList from '../../../../components/form/InvestmentType/FilesList'
 import FileInput from '../../../../components/ui/FileInput'
 
-const EditProperty = () => {
+const EditCrypto = () => {
   const { id } = useParams()
 
   const {
-    data: property
-  } = useGetPropertyByIdQuery(id, {
+    data: crypto
+  } = useGetCryptoByIdQuery(id, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
     pollingInterval: 900000
   })
 
-  const [updateProperty, {
+  const [updateCrypto, {
     isSuccess,
     isError,
     error
-  }] = useUpdatePropertyMutation()
+  }] = useUpdateCryptoMutation()
 
   const navigate = useNavigate()
 
@@ -35,32 +35,35 @@ const EditProperty = () => {
     return `${year}-${month}-${day}`
   }
 
-  const [name, setName] = useState(property?.name || '')
-  const [country, setCountry] = useState(property?.country || '')
-  const [currency, setCurrency] = useState(property?.currency || '')
+  const [name, setName] = useState(crypto?.name || '')
+  const [currency, setCurrency] = useState(crypto?.currency || '')
   const [date, setDate] = useState(() => {
-    const originalDate = new Date(property?.date)
+    const originalDate = new Date(crypto?.date)
     return formatDate(originalDate)
   })
-  const [value, setValue] = useState(property?.value || '')
-  const [taxStatus, setTaxStatus] = useState(property?.taxStatus || '')
-  const [type, setType] = useState(property?.type || '')
-  const [city, setCity] = useState(property?.city || '')
-  const [address, setAddress] = useState(property?.address || '')
-  const [zip, setZip] = useState(property?.zip || '')
+  const [value, setValue] = useState(crypto?.value || '')
+  const [taxStatus, setTaxStatus] = useState(crypto?.taxStatus || '')
+  const [type, setType] = useState(crypto?.type || '')
+
+  const [symbol, setSymbol] = useState(crypto?.symbol || '')
+  const [quantity, setQuantity] = useState(crypto?.quantity || '')
+  const [purchasePrice, setPurchasePrice] = useState(crypto?.purchasePrice || '')
+  const [purchasedAt, setPurchasedAt] = useState(crypto?.purchasedAt || '')
+  const [walletAddress, setWalletAddress] = useState(crypto?.walletAddress || '')
+  const [detail, setDetail] = useState(crypto?.detail || '')
 
   const [contactInformation, setContactInformation] = useState({
-    accountNumber: property?.contactInformation?.accountNumber || '',
-    email: property?.contactInformation?.email || '',
-    phone: property?.contactInformation?.phone || '',
-    companyAddress: property?.contactInformation?.companyAddress || ''
+    accountNumber: crypto?.contactInformation?.accountNumber || '',
+    email: crypto?.contactInformation?.email || '',
+    phone: crypto?.contactInformation?.phone || '',
+    companyAddress: crypto?.contactInformation?.companyAddress || ''
   } || {})
 
-  const [photo, setPhoto] = useState(property?.photo || null)
-  const [files, setFiles] = useState(property?.files || [])
+  const [photo, setPhoto] = useState(crypto?.photo || null)
+  const [files, setFiles] = useState(crypto?.files || [])
 
   const [isPrivate, setIsPrivate] = useState(() => {
-    if (property?.contactInformation) {
+    if (crypto?.contactInformation) {
       return false
     } else {
       return true
@@ -70,57 +73,62 @@ const EditProperty = () => {
   const [errors] = useState({ name: false, type: false, photo: false })
 
   useEffect(() => {
-    console.log('property change')
-    if (property) {
-      setName(property.name)
-      setCountry(property.country)
-      setCurrency(property.currency)
-      setDate(formatDate(new Date(property.date)))
-      setValue(property.value)
-      setTaxStatus(property.taxStatus)
-      setType(property.type)
-      setCity(property.city)
-      setAddress(property.address)
-      setZip(property.zip)
-      setPhoto(property.photo)
+    console.log('crypto change')
+    if (crypto) {
+      setName(crypto.name)
+      setCurrency(crypto.currency)
+      setDate(formatDate(new Date(crypto.date)))
+      setValue(crypto.value)
+      setTaxStatus(crypto.taxStatus)
+      setType(crypto.type)
 
-      if (property?.contactInformation) {
+      setSymbol(crypto.symbol)
+      setQuantity(crypto.quantity)
+      setPurchasePrice(crypto.purchasePrice)
+      setPurchasedAt(crypto.purchasedAt)
+
+      setPhoto(crypto.photo)
+
+      if (crypto?.contactInformation) {
         setContactInformation({
-          accountNumber: property?.contactInformation.accountNumber || '',
-          email: property?.contactInformation.email || '',
-          phone: property?.contactInformation.phone || '',
-          companyAddress: property?.contactInformation.companyAddress || ''
+          accountNumber: crypto?.contactInformation.accountNumber || '',
+          email: crypto?.contactInformation.email || '',
+          phone: crypto?.contactInformation.phone || '',
+          companyAddress: crypto?.contactInformation.companyAddress || ''
         } || {})
       }
 
       setIsPrivate(() => {
-        if (property.contactInformation) {
+        if (crypto.contactInformation) {
           return false
         } else {
           return true
         }
       })
 
-      setFiles(property.files)
+      setFiles(crypto.files)
     }
-  }, [property, id])
+  }, [crypto, id])
 
   useEffect(() => {
     if (isSuccess) {
-      navigate(`/investments/properties/${id}`)
+      navigate(`/investments/cryptos/${id}`)
     }
   }, [id, isSuccess, navigate])
 
   const onNameChanged = e => setName(e.target.value)
-  const onCountryChanged = e => setCountry(e.target.value)
   const onCurrencyChanged = e => setCurrency(e.target.value)
   const onDateChanged = e => setDate(e.target.value)
   const onValueChanged = e => setValue(e.target.value)
   const onTaxStatusChanged = e => setTaxStatus(e.target.value)
   const onTypeChanged = e => setType(e.target.value)
-  const onCityChanged = e => setCity(e.target.value)
-  const onAddressChanged = e => setAddress(e.target.value)
-  const onZipChanged = e => setZip(e.target.value)
+
+  const onSymbolChanged = e => setSymbol(e.target.value)
+  const onQuantityChanged = e => setQuantity(e.target.value)
+  const onPurchasePriceChanged = e => setPurchasePrice(e.target.value)
+  const onPurchasedAtChanged = e => setPurchasedAt(e.target.value)
+  const onWalletAddressChanged = e => setWalletAddress(e.target.value)
+  const onDetailChanged = e => setDetail(e.target.value)
 
   const onFilesChanged = (event) => {
     setFiles(prevFiles => [...prevFiles, ...Array.from(event.target.files)])
@@ -152,33 +160,33 @@ const EditProperty = () => {
     }
   }
 
-  const onSavePropertyClicked = async (e) => {
+  const onSaveCryptoClicked = async (e) => {
     e.preventDefault()
 
     console.log('update button clicked')
 
-    const propertyData = new FormData(e.target)
+    const cryptoData = new FormData(e.target)
 
-    console.log('PropertyData name: ', propertyData.get('name'))
+    console.log('CryptoData name: ', cryptoData.get('name'))
 
     console.log('')
 
     if (files) {
-      propertyData.delete('files')
+      cryptoData.delete('files')
       files.forEach(file => {
         if (file instanceof File) {
-          propertyData.append('files', file)
+          cryptoData.append('files', file)
         }
       })
     }
 
-    await updateProperty({ id, propertyData })
+    await updateCrypto({ id, cryptoData })
   }
 
   const errClass = isError ? 'errorMsg text-red-500' : 'offscreen'
 
   const content = (
-    <Properties backTo={`/investments/properties/${id}`}>
+    <Cryptos backTo={`/investments/cryptos/${id}`}>
       <p className={errClass}>{error?.data?.message}</p>
       {
         (error?.data?.error === 'Forbidden token')
@@ -189,9 +197,9 @@ const EditProperty = () => {
       }
       <div className='bg-white backdrop-blur-md rounded-3xl shadow-xl dark:border md:mt-0 p-6 dark:bg-slate-800 dark:border-slate-700'>
         <div className='mb-10'>
-          <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Edit {property?.name}</h1>
+          <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Edit {crypto?.name}</h1>
         </div>
-        <form encType='multipart/form-data' onSubmit={onSavePropertyClicked} className='space-y-4 md:space-y-6' action='#'>
+        <form encType='multipart/form-data' onSubmit={onSaveCryptoClicked} className='space-y-4 md:space-y-6' action='#'>
           <p className={errClass}>
             {
             (error?.data?.message) ? error?.data?.message : error?.data?.error
@@ -227,7 +235,7 @@ const EditProperty = () => {
             </div>
             <div className='md:w-1/2 md:pr-2'>
               <div className='mb-3'>
-                <FieldInput label='Property name' value={name} onChange={onNameChanged} name='name' type='text' placeholder='Property name' errors={errors} isRequire />
+                <FieldInput label='Crypto name' value={name} onChange={onNameChanged} name='name' type='text' placeholder='Crypto name' errors={errors} isRequire />
               </div>
               <div>
                 <FieldInput label='Type' value={type} onChange={onTypeChanged} name='type' type='text' placeholder='E.g. House, Apartment, etc.' errors={errors} isRequire />
@@ -238,7 +246,7 @@ const EditProperty = () => {
                 <FieldInput label='Currency' value={currency} onChange={onCurrencyChanged} name='currency' type='text' placeholder='E.g. USD' errors={errors} isRequire />
               </div>
               <div>
-                <FieldInput label='Value' value={value} onChange={onValueChanged} name='value' type='text' placeholder='Property Value' errors={errors} isRequire />
+                <FieldInput label='Value' value={value} onChange={onValueChanged} name='value' type='text' placeholder='Crypto Value' errors={errors} isRequire />
               </div>
             </div>
           </div>
@@ -253,20 +261,28 @@ const EditProperty = () => {
               </div>
             </div>
             <div className='md:flex md:justify-between'>
-              <div className='md:w-1/2 md:pr-2 my-4'>
+              <div className='md:w-1/2 md:pr-2'>
                 <div className='mb-2'>
-                  <FieldInput label='Address' value={address} onChange={onAddressChanged} name='address' type='text' placeholder='Street Address' errors={errors} isRequire />
+                  <FieldInput label='Symbol' value={symbol} onChange={onSymbolChanged} name='symbol' type='text' placeholder='Street Symbol' errors={errors} isRequire />
                 </div>
                 <div className='mt-3'>
-                  <FieldInput label='City' value={city} onChange={onCityChanged} name='city' type='text' placeholder='City Name' errors={errors} isRequire />
+                  <FieldInput label='Quantity' value={quantity} onChange={onQuantityChanged} name='quantity' type='number' placeholder='Quantity Name' errors={errors} isRequire />
                 </div>
               </div>
-              <div className='md:w-1/2 md:pl-2 my-4'>
+              <div className='md:w-1/2 md:pl-2'>
                 <div className='mb-2'>
-                  <FieldInput label='Postcode / Zip' value={zip} onChange={onZipChanged} name='zip' type='text' placeholder='Postcode / Zip Code' errors={errors} isRequire />
+                  <FieldInput label='PurchasePrice' value={purchasePrice} onChange={onPurchasePriceChanged} name='purchasePrice' type='number' placeholder='PurchasePrice Code' errors={errors} isRequire />
                 </div>
                 <div className='mt-3'>
-                  <FieldInput label='Country' value={country} onChange={onCountryChanged} name='country' type='text' placeholder='Country Name' errors={errors} isRequire />
+                  <FieldInput label='PurchasedAt' value={purchasedAt} onChange={onPurchasedAtChanged} name='purchasedAt' type='text' placeholder='PurchasedAt Name' errors={errors} isRequire />
+                </div>
+              </div>
+              <div className='md:w-1/2 md:pl-2'>
+                <div className='mb-2'>
+                  <FieldInput label='Wallet Address' value={walletAddress} onChange={onWalletAddressChanged} name='walletAddress' type='text' placeholder='WalletAddress Code' errors={errors} isRequire />
+                </div>
+                <div className='mt-3'>
+                  <FieldInput label='Detail' value={detail} onChange={onDetailChanged} name='detail' type='text' placeholder='Detail' errors={errors} />
                 </div>
               </div>
             </div>
@@ -307,7 +323,7 @@ const EditProperty = () => {
           </div>
           {files?.length > 0
             ? (
-              <FilesList id={id} files={files} setFiles={setFiles} />
+              <FilesList id={id} files={files} setFiles={setFiles} type='cryptos' />
               )
             : null}
           <FileInput onFilesChanged={onFilesChanged} />
@@ -319,10 +335,10 @@ const EditProperty = () => {
           </button>
         </form>
       </div>
-    </Properties>
+    </Cryptos>
   )
 
   return content
 }
 
-export default EditProperty
+export default EditCrypto

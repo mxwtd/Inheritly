@@ -1,31 +1,32 @@
-import Properties from '../index'
+
+import Cryptos from '../index'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 
-import { useDeletePropertyMutation, useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
+import { useDeleteCryptoMutation, useGetCryptoByIdQuery } from '../services/cryptosApiSlice'
 
-const DeleteProperty = () => {
+const DeleteCrypto = () => {
   const { id } = useParams()
 
   const {
-    data: property
-  } = useGetPropertyByIdQuery(id, {
+    data: crypto
+  } = useGetCryptoByIdQuery(id, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
     pollingInterval: 300000
   })
 
-  const [deleteProperty, {
+  const [deleteCrypto, {
     isSuccess,
     isError,
     error
-  }] = useDeletePropertyMutation()
+  }] = useDeleteCryptoMutation()
 
   const navigate = useNavigate()
 
   useEffect(() => {
     if (isSuccess) {
-      navigate('/investments/properties/')
+      navigate('/investments/cryptos/')
     }
   }, [id, isSuccess, navigate])
 
@@ -34,13 +35,13 @@ const DeleteProperty = () => {
 
     console.log('id to delete', id)
 
-    await deleteProperty({ id })
+    await deleteCrypto({ id })
   }
 
   const errClass = isError ? 'errorMsg text-red-500' : 'offscreen'
 
   const content = (
-    <Properties backTo={`/investments/properties/${id}`}>
+    <Cryptos backTo={`/investments/cryptos/${id}`}>
       <p className={errClass}>{error?.data?.message}</p>
       {
         (error?.data?.error === 'Forbidden token')
@@ -54,14 +55,14 @@ const DeleteProperty = () => {
           <div className='flex flex-col items-center'>
             <div className='my-8 text-center'>
               <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Delete</h1>
-              <h2 className='text-2xl font-bold text-slate-800 dark:text-white mt-3'>{property?.name}?</h2>
+              <h2 className='text-2xl font-bold text-slate-800 dark:text-white mt-3'>{crypto?.name}?</h2>
             </div>
             <div className='relative w-full rounded-2xl' style={{ aspectRatio: '1/1' }}>
               <div className='bg-slate-200 dark:bg-slate-800 p-4 rounded-2xl'>
                 <div className='relative w-full h-full overflow-hidden rounded-2xl'>
                   <img
-                    src={property.photo}
-                    alt={property?.name}
+                    src={crypto.photo}
+                    alt={crypto?.name}
                     className='object-cover w-full h-full transform transition-all duration-500 hover:scale-110'
                     style={{ aspectRatio: '1/1' }}
                   />
@@ -76,10 +77,10 @@ const DeleteProperty = () => {
         </div>
       </div>
 
-    </Properties>
+    </Cryptos>
   )
 
   return content
 }
 
-export default DeleteProperty
+export default DeleteCrypto
