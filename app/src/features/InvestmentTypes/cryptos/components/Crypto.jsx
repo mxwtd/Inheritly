@@ -266,15 +266,6 @@ const Crypto = () => {
                   )
                 : null
             }
-            <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
-              <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg h-full flex flex-col justify-center'>
-                <p className='text-xl lg:text-2xl px-4 mb-2'>Information</p>
-                <p className='text-md lg:text-lg px-4'>{crypto?.symbol}, Amount: {crypto?.quantity}</p>
-                <p className='text-md lg:text-lg px-4'>Purchase Price: {crypto?.purchasePrice}</p>
-                <p className='text-md lg:text-lg px-4'>Purchased At: {crypto?.purchasedAt}</p>
-                <p className='text-md lg:text-lg px-4'>WalletAddress: {crypto?.walletAddress}</p>
-              </div>
-            </div>
             {
               crypto?.contactInformation
                 ? (
