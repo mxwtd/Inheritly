@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-const Properties = ({ children, title, backTo }) => {
+const Stocks = ({ children, title, backTo }) => {
   return (
     <>
       <div className='p-4 sm:ml-64'>
@@ -19,4 +19,4 @@ const Properties = ({ children, title, backTo }) => {
   )
 }
 
-export default Properties
+export default Stocks

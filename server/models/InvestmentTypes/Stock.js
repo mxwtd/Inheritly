@@ -15,11 +15,7 @@ const stockSchema = new Schema({
     type: Number,
     required: true
   },
-  purchaseDate: {
-    type: Date,
-    required: true
-  },
-  additionalDetails: {
+  detail: {
     type: String
   },
   purchasedAt: {

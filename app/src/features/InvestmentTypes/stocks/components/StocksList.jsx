@@ -1,20 +1,20 @@
 
-import { useGetPropertiesQuery } from '../services/propertiesApiSlice'
-import PropertyCard from './PropertyCard.jsx'
-import Properties from '../index.jsx'
+import { useGetStocksQuery } from '../services/stocksApiSlice'
+import StockCard from './StockCard.jsx'
+import Stocks from '../index.jsx'
 import { Link } from 'react-router-dom'
 import ModalAddButton from '../../../../components/ModalAddButton.jsx'
 import CardSkeleton from '../../../../components/CardSkeleton.jsx'
 import AddNewContainer from '../../../../components/AddNewContainer.jsx'
 
-const PropertiesList = () => {
+const StocksList = () => {
   const {
-    data: properties,
+    data: stocks,
     isLoading,
     isSuccess,
     isError,
     error
-  } = useGetPropertiesQuery('propertiesList', {
+  } = useGetStocksQuery('stocksList', {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
     pollingInterval: 300000
@@ -24,9 +24,9 @@ const PropertiesList = () => {
 
   if (isLoading) {
     content = (
-      <Properties>
+      <Stocks>
         <CardSkeleton />
-      </Properties>
+      </Stocks>
     )
   }
 
@@ -34,11 +34,11 @@ const PropertiesList = () => {
 
   if (isError) {
     content = (
-      <Properties>
+      <Stocks>
         <div className='flex justify-between'>
-          <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Properties</h1>
+          <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Stocks</h1>
           <div className='flex justify-end items-center'>
-            <Link to='/investments/properties/new'>
+            <Link to='/investments/stocks/new'>
               <ModalAddButton />
             </Link>
           </div>
@@ -51,29 +51,29 @@ const PropertiesList = () => {
             )
           : null
       }
-      </Properties>
+      </Stocks>
     )
   }
 
   if (isSuccess) {
-    const listContent = properties?.length
-      ? properties.map(property => <PropertyCard key={property.id} property={property} />)
+    const listContent = stocks?.length
+      ? stocks.map(stock => <StockCard key={stock.id} stock={stock} />)
       : null
 
     content = (
-      <Properties backTo='/investments'>
+      <Stocks backTo='/investments'>
         <div className='flex justify-between my-8'>
-          <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Properties</h1>
+          <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Stocks</h1>
           <Link to='./new'><ModalAddButton /></Link>
         </div>
-        {(!listContent || listContent.length === 0) && <AddNewContainer type='property' />}
+        {(!listContent || listContent.length === 0) && <AddNewContainer type='stock' />}
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 my-4 '>
           {listContent}
         </div>
-      </Properties>
+      </Stocks>
     )
   }
 
   return content
 }
-export default PropertiesList
+export default StocksList

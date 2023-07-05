@@ -7,6 +7,7 @@ import { useDeleteCommodityMutation } from '../features/InvestmentTypes/commodit
 import { useDeleteCryptoMutation } from '../features/InvestmentTypes/cryptos/services/cryptosApiSlice'
 import { useDeleteFundMutation } from '../features/InvestmentTypes/funds/services/fundsApiSlice'
 import { useDeleteJewelMutation } from '../features/InvestmentTypes/jewels/services/jewelsApiSlice'
+import { useDeleteStockMutation } from '../features/InvestmentTypes/stocks/services/stocksApiSlice'
 
 const DeleteModal = ({ onClose, investmentType }) => {
   const investmentsTypes = [
@@ -44,6 +45,11 @@ const DeleteModal = ({ onClose, investmentType }) => {
       type: 'jewel',
       pluralName: 'jewels',
       getMutation: useDeleteJewelMutation()
+    },
+    {
+      type: 'stock',
+      pluralName: 'stocks',
+      getMutation: useDeleteStockMutation()
     }
   ]
 

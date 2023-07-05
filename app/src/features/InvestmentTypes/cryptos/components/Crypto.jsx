@@ -235,6 +235,37 @@ const Crypto = () => {
                 </div>
               </div>
             </div>
+            {
+              (crypto?.quantity || crypto?.purchasePrice || crypto?.purchasedAt || crypto?.detail || crypto?.symbol || crypto?.walletAddress)
+                ? (
+                  <>
+                    <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
+                      <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg h-full flex flex-col justify-center'>
+                        <p className='text-xl lg:text-2xl px-4 mb-2'>Information</p>
+                        {crypto?.symbol
+                          ? <p className='text-md lg:text-lg px-4'>Symbol: {crypto?.symbol}</p>
+                          : null}
+                        {crypto?.quantity
+                          ? <p className='text-md lg:text-lg px-4'>Quantity: {crypto?.quantity}</p>
+                          : null}
+                        {crypto?.purchasePrice
+                          ? <p className='text-md lg:text-lg px-4'>Purchase Price: {crypto?.purchasePrice}</p>
+                          : null}
+                        {crypto?.purchasedAt
+                          ? <p className='text-md lg:text-lg px-4'>Purchased At: {crypto?.purchasedAt}</p>
+                          : null}
+                        {crypto?.detail
+                          ? <p className='text-md lg:text-lg px-4'>Details: {crypto?.detail}</p>
+                          : null}
+                        {crypto?.walletAddress
+                          ? <p className='text-md lg:text-lg px-4'>Wallet Address: {crypto?.walletAddress}</p>
+                          : null}
+                      </div>
+                    </div>
+                  </>
+                  )
+                : null
+            }
             <div className='rounded-xl bg-slate-50 aspect-w-1 aspect-h-1 dark:bg-slate-800 shadow-lg p-4'>
               <div className='p-4 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-white rounded-xl shadow-lg h-full flex flex-col justify-center'>
                 <p className='text-xl lg:text-2xl px-4 mb-2'>Information</p>
