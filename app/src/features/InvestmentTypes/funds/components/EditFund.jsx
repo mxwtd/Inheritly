@@ -1,30 +1,30 @@
 
-import Properties from '../index'
+import Funds from '../index'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { useUpdatePropertyMutation, useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
+import { useUpdateFundMutation, useGetFundByIdQuery } from '../services/fundsApiSlice'
 
 import FieldInput from '../../../../components/ui/FieldInput'
 import FilesList from '../../../../components/form/InvestmentType/FilesList'
 import FileInput from '../../../../components/ui/FileInput'
 
-const EditProperty = () => {
+const EditFund = () => {
   const { id } = useParams()
 
   const {
-    data: property
-  } = useGetPropertyByIdQuery(id, {
+    data: fund
+  } = useGetFundByIdQuery(id, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
     pollingInterval: 900000
   })
 
-  const [updateProperty, {
+  const [updateFund, {
     isSuccess,
     isError,
     error
-  }] = useUpdatePropertyMutation()
+  }] = useUpdateFundMutation()
 
   const navigate = useNavigate()
 
@@ -35,32 +35,30 @@ const EditProperty = () => {
     return `${year}-${month}-${day}`
   }
 
-  const [name, setName] = useState(property?.name || '')
-  const [country, setCountry] = useState(property?.country || '')
-  const [currency, setCurrency] = useState(property?.currency || '')
+  const [name, setName] = useState(fund?.name || '')
+  const [currency, setCurrency] = useState(fund?.currency || '')
   const [date, setDate] = useState(() => {
-    const originalDate = new Date(property?.date)
+    const originalDate = new Date(fund?.date)
     return formatDate(originalDate)
   })
-  const [value, setValue] = useState(property?.value || '')
-  const [taxStatus, setTaxStatus] = useState(property?.taxStatus || '')
-  const [type, setType] = useState(property?.type || '')
-  const [city, setCity] = useState(property?.city || '')
-  const [address, setAddress] = useState(property?.address || '')
-  const [zip, setZip] = useState(property?.zip || '')
+  const [value, setValue] = useState(fund?.value || '')
+  const [taxStatus, setTaxStatus] = useState(fund?.taxStatus || '')
+  const [type, setType] = useState(fund?.type || '')
+
+  const [description, setDescription] = useState(fund?.description || '')
 
   const [contactInformation, setContactInformation] = useState({
-    accountNumber: property?.contactInformation?.accountNumber || '',
-    email: property?.contactInformation?.email || '',
-    phone: property?.contactInformation?.phone || '',
-    companyAddress: property?.contactInformation?.companyAddress || ''
+    accountNumber: fund?.contactInformation?.accountNumber || '',
+    email: fund?.contactInformation?.email || '',
+    phone: fund?.contactInformation?.phone || '',
+    companyAddress: fund?.contactInformation?.companyAddress || ''
   } || {})
 
-  const [photo, setPhoto] = useState(property?.photo || null)
-  const [files, setFiles] = useState(property?.files || [])
+  const [photo, setPhoto] = useState(fund?.photo || null)
+  const [files, setFiles] = useState(fund?.files || [])
 
   const [isPrivate, setIsPrivate] = useState(() => {
-    if (property?.contactInformation) {
+    if (fund?.contactInformation) {
       return false
     } else {
       return true
@@ -70,57 +68,51 @@ const EditProperty = () => {
   const [errors] = useState({ name: false, type: false, photo: false })
 
   useEffect(() => {
-    console.log('property change')
-    if (property) {
-      setName(property.name)
-      setCountry(property.country)
-      setCurrency(property.currency)
-      setDate(formatDate(new Date(property.date)))
-      setValue(property.value)
-      setTaxStatus(property.taxStatus)
-      setType(property.type)
-      setCity(property.city)
-      setAddress(property.address)
-      setZip(property.zip)
-      setPhoto(property.photo)
+    console.log('fund change')
+    if (fund) {
+      setName(fund.name)
+      setCurrency(fund.currency)
+      setDate(formatDate(new Date(fund.date)))
+      setValue(fund.value)
+      setTaxStatus(fund.taxStatus)
+      setType(fund.type)
+      setDescription(fund.description)
+      setPhoto(fund.photo)
 
-      if (property?.contactInformation) {
+      if (fund?.contactInformation) {
         setContactInformation({
-          accountNumber: property?.contactInformation.accountNumber || '',
-          email: property?.contactInformation.email || '',
-          phone: property?.contactInformation.phone || '',
-          companyAddress: property?.contactInformation.companyAddress || ''
+          accountNumber: fund?.contactInformation.accountNumber || '',
+          email: fund?.contactInformation.email || '',
+          phone: fund?.contactInformation.phone || '',
+          companyAddress: fund?.contactInformation.companyAddress || ''
         } || {})
       }
 
       setIsPrivate(() => {
-        if (property.contactInformation) {
+        if (fund.contactInformation) {
           return false
         } else {
           return true
         }
       })
 
-      setFiles(property.files)
+      setFiles(fund.files)
     }
-  }, [property, id])
+  }, [fund, id])
 
   useEffect(() => {
     if (isSuccess) {
-      navigate(`/investments/properties/${id}`)
+      navigate(`/investments/funds/${id}`)
     }
   }, [id, isSuccess, navigate])
 
   const onNameChanged = e => setName(e.target.value)
-  const onCountryChanged = e => setCountry(e.target.value)
   const onCurrencyChanged = e => setCurrency(e.target.value)
   const onDateChanged = e => setDate(e.target.value)
   const onValueChanged = e => setValue(e.target.value)
   const onTaxStatusChanged = e => setTaxStatus(e.target.value)
   const onTypeChanged = e => setType(e.target.value)
-  const onCityChanged = e => setCity(e.target.value)
-  const onAddressChanged = e => setAddress(e.target.value)
-  const onZipChanged = e => setZip(e.target.value)
+  const onDescriptionChanged = e => setDescription(e.target.value)
 
   const onFilesChanged = (event) => {
     setFiles(prevFiles => [...prevFiles, ...Array.from(event.target.files)])
@@ -152,33 +144,33 @@ const EditProperty = () => {
     }
   }
 
-  const onSavePropertyClicked = async (e) => {
+  const onSaveFundClicked = async (e) => {
     e.preventDefault()
 
     console.log('update button clicked')
 
-    const propertyData = new FormData(e.target)
+    const fundData = new FormData(e.target)
 
-    console.log('PropertyData name: ', propertyData.get('name'))
+    console.log('FundData name: ', fundData.get('name'))
 
     console.log('')
 
     if (files) {
-      propertyData.delete('files')
+      fundData.delete('files')
       files.forEach(file => {
         if (file instanceof File) {
-          propertyData.append('files', file)
+          fundData.append('files', file)
         }
       })
     }
 
-    await updateProperty({ id, propertyData })
+    await updateFund({ id, fundData })
   }
 
   const errClass = isError ? 'errorMsg text-red-500' : 'offscreen'
 
   const content = (
-    <Properties backTo={`/investments/properties/${id}`}>
+    <Funds backTo={`/investments/funds/${id}`}>
       <p className={errClass}>{error?.data?.message}</p>
       {
         (error?.data?.error === 'Forbidden token')
@@ -189,9 +181,9 @@ const EditProperty = () => {
       }
       <div className='bg-white backdrop-blur-md rounded-3xl shadow-xl dark:border md:mt-0 p-6 dark:bg-slate-800 dark:border-slate-700'>
         <div className='mb-10'>
-          <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Edit {property?.name}</h1>
+          <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Edit {fund?.name}</h1>
         </div>
-        <form encType='multipart/form-data' onSubmit={onSavePropertyClicked} className='space-y-4 md:space-y-6' action='#'>
+        <form encType='multipart/form-data' onSubmit={onSaveFundClicked} className='space-y-4 md:space-y-6' action='#'>
           <p className={errClass}>
             {
             (error?.data?.message) ? error?.data?.message : error?.data?.error
@@ -227,7 +219,7 @@ const EditProperty = () => {
             </div>
             <div className='md:w-1/2 md:pr-2'>
               <div className='mb-3'>
-                <FieldInput label='Property name' value={name} onChange={onNameChanged} name='name' type='text' placeholder='Property name' errors={errors} isRequire />
+                <FieldInput label='Fund name' value={name} onChange={onNameChanged} name='name' type='text' placeholder='Fund name' errors={errors} isRequire />
               </div>
               <div>
                 <FieldInput label='Type' value={type} onChange={onTypeChanged} name='type' type='text' placeholder='E.g. House, Apartment, etc.' errors={errors} isRequire />
@@ -238,7 +230,7 @@ const EditProperty = () => {
                 <FieldInput label='Currency' value={currency} onChange={onCurrencyChanged} name='currency' type='text' placeholder='E.g. USD' errors={errors} isRequire />
               </div>
               <div>
-                <FieldInput label='Value' value={value} onChange={onValueChanged} name='value' type='text' placeholder='Property Value' errors={errors} isRequire />
+                <FieldInput label='Value' value={value} onChange={onValueChanged} name='value' type='text' placeholder='Fund Value' errors={errors} isRequire />
               </div>
             </div>
           </div>
@@ -254,19 +246,8 @@ const EditProperty = () => {
             </div>
             <div className='md:flex md:justify-between'>
               <div className='md:w-1/2 md:pr-2 my-4'>
-                <div className='mb-2'>
-                  <FieldInput label='Address' value={address} onChange={onAddressChanged} name='address' type='text' placeholder='Street Address' errors={errors} isRequire />
-                </div>
                 <div className='mt-3'>
-                  <FieldInput label='City' value={city} onChange={onCityChanged} name='city' type='text' placeholder='City Name' errors={errors} isRequire />
-                </div>
-              </div>
-              <div className='md:w-1/2 md:pl-2 my-4'>
-                <div className='mb-2'>
-                  <FieldInput label='Postcode / Zip' value={zip} onChange={onZipChanged} name='zip' type='text' placeholder='Postcode / Zip Code' errors={errors} isRequire />
-                </div>
-                <div className='mt-3'>
-                  <FieldInput label='Country' value={country} onChange={onCountryChanged} name='country' type='text' placeholder='Country Name' errors={errors} isRequire />
+                  <FieldInput label='Description' value={description} onChange={onDescriptionChanged} name='description' type='text' placeholder='Description Name' errors={errors} />
                 </div>
               </div>
             </div>
@@ -307,7 +288,7 @@ const EditProperty = () => {
           </div>
           {files?.length > 0
             ? (
-              <FilesList id={id} files={files} setFiles={setFiles} type='properties' />
+              <FilesList id={id} files={files} setFiles={setFiles} type='funds' />
               )
             : null}
           <FileInput onFilesChanged={onFilesChanged} />
@@ -319,10 +300,10 @@ const EditProperty = () => {
           </button>
         </form>
       </div>
-    </Properties>
+    </Funds>
   )
 
   return content
 }
 
-export default EditProperty
+export default EditFund

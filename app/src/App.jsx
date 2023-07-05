@@ -43,6 +43,11 @@ import Crypto from './features/InvestmentTypes/cryptos/components/Crypto'
 import NewCrypto from './features/InvestmentTypes/cryptos/components/NewCrypto'
 import EditCrypto from './features/InvestmentTypes/cryptos/components/EditCrypto'
 
+import FundsList from './features/InvestmentTypes/funds/components/FundsList'
+import Fund from './features/InvestmentTypes/funds/components/Fund'
+import NewFund from './features/InvestmentTypes/funds/components/NewFund'
+import EditFund from './features/InvestmentTypes/funds/components/EditFund'
+
 import Error from './pages/Error'
 import Footer from './components/Footer'
 
@@ -107,6 +112,13 @@ const App = () => {
                       <Route path='new' element={<NewCrypto />} />
                       <Route path=':id' element={<Crypto />} />
                       <Route path=':id/edit' element={<EditCrypto />} />
+                    </Route>
+
+                    <Route path='funds'>
+                      <Route index element={<FundsList />} />
+                      <Route path='new' element={<NewFund />} />
+                      <Route path=':id' element={<Fund />} />
+                      <Route path=':id/edit' element={<EditFund />} />
                     </Route>
                   </Route>
 

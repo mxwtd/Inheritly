@@ -4,8 +4,7 @@ const defaultData = require('./globalData')
 const fundSchema = new Schema({
   ...defaultData,
   description: {
-    type: String,
-    required: true
+    type: String
   }
 }, { timestamps: true })
 

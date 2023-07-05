@@ -1,31 +1,31 @@
-import Properties from '../index'
+import Funds from '../index'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 
-import { useDeletePropertyMutation, useGetPropertyByIdQuery } from '../services/propertiesApiSlice'
+import { useDeleteFundMutation, useGetFundByIdQuery } from '../services/fundsApiSlice'
 
-const DeleteProperty = () => {
+const DeleteFund = () => {
   const { id } = useParams()
 
   const {
-    data: property
-  } = useGetPropertyByIdQuery(id, {
+    data: fund
+  } = useGetFundByIdQuery(id, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: false,
     pollingInterval: 300000
   })
 
-  const [deleteProperty, {
+  const [deleteFund, {
     isSuccess,
     isError,
     error
-  }] = useDeletePropertyMutation()
+  }] = useDeleteFundMutation()
 
   const navigate = useNavigate()
 
   useEffect(() => {
     if (isSuccess) {
-      navigate('/investments/properties/')
+      navigate('/investments/funds/')
     }
   }, [id, isSuccess, navigate])
 
@@ -34,13 +34,13 @@ const DeleteProperty = () => {
 
     console.log('id to delete', id)
 
-    await deleteProperty({ id })
+    await deleteFund({ id })
   }
 
   const errClass = isError ? 'errorMsg text-red-500' : 'offscreen'
 
   const content = (
-    <Properties backTo={`/investments/properties/${id}`}>
+    <Funds backTo={`/investments/funds/${id}`}>
       <p className={errClass}>{error?.data?.message}</p>
       {
         (error?.data?.error === 'Forbidden token')
@@ -54,14 +54,14 @@ const DeleteProperty = () => {
           <div className='flex flex-col items-center'>
             <div className='my-8 text-center'>
               <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100'>Delete</h1>
-              <h2 className='text-2xl font-bold text-slate-800 dark:text-white mt-3'>{property?.name}?</h2>
+              <h2 className='text-2xl font-bold text-slate-800 dark:text-white mt-3'>{fund?.name}?</h2>
             </div>
             <div className='relative w-full rounded-2xl' style={{ aspectRatio: '1/1' }}>
               <div className='bg-slate-200 dark:bg-slate-800 p-4 rounded-2xl'>
                 <div className='relative w-full h-full overflow-hidden rounded-2xl'>
                   <img
-                    src={property.photo}
-                    alt={property?.name}
+                    src={fund.photo}
+                    alt={fund?.name}
                     className='object-cover w-full h-full transform transition-all duration-500 hover:scale-110'
                     style={{ aspectRatio: '1/1' }}
                   />
@@ -76,10 +76,10 @@ const DeleteProperty = () => {
         </div>
       </div>
 
-    </Properties>
+    </Funds>
   )
 
   return content
 }
 
-export default DeleteProperty
+export default DeleteFund

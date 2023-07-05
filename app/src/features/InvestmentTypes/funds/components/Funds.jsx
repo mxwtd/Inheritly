@@ -1,27 +1,27 @@
 /// ///////////////////////
-// NEW PROPERTY CARDS ////
+// NEW FUND CARDS ////
 /// /////////////////////
 
 import { useState, useEffect } from 'react'
 
-import Property from '../../../../components/Property'
+import Fund from '../../../../components/Fund'
 
-import { getAllProperties } from '../../../services/properties'
+import { getAllFunds } from '../../../services/funds'
 import ModalAddButton from '../../../../components/ModalAddButton'
 
-const Properties = () => {
-  const [properties, updateProperties] = useState([])
+const Funds = () => {
+  const [funds, updateFunds] = useState([])
 
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    fetchProperties()
+    fetchFunds()
   }, [])
 
-  const fetchProperties = async () => {
-    const properties = await getAllProperties()
+  const fetchFunds = async () => {
+    const funds = await getAllFunds()
     try {
-      updateProperties(properties)
+      updateFunds(funds)
     } catch {
       setError('Error')
       setTimeout(() => {
@@ -37,7 +37,7 @@ const Properties = () => {
         <div className='p-4 mt-14'>
           <div>
             <div className='flex justify-between'>
-              <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Properties</h1>
+              <h1 className='text-4xl font-semibold text-slate-800 dark:text-slate-100 my-8'>Funds</h1>
               <div className='flex justify-end items-center'>
                 <ModalAddButton />
               </div>
@@ -54,8 +54,8 @@ const Properties = () => {
                 </span>
               </div>}
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4'>
-              {properties.map((property) => (
-                <Property key={property.id} property={property} />
+              {funds.map((fund) => (
+                <Fund key={fund.id} fund={fund} />
               ))}
             </div>
           </div>
@@ -65,4 +65,4 @@ const Properties = () => {
   )
 }
 
-export default Properties
+export default Funds

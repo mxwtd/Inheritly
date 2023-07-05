@@ -131,7 +131,7 @@ const NewPropertyForm = () => {
           <ContactInformation errors={errors} />
           {files.length > 0
             ? (
-              <FilesList files={files} setFiles={setFiles} type='' />
+              <FilesList files={files} setFiles={setFiles} type='properties' />
               )
             : null}
           <FileInput onFilesChanged={onFilesChanged} />
