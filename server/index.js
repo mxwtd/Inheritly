@@ -38,11 +38,6 @@ app.use(express.json()) // initial Parse JSON bodies
 
 app.use(cookieParser())
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('../app/dist'))
-  app.get('*', (req, res) => res.sendFile(path.resolve('app', 'dist', 'index.html')))
-}
-
 Sentry.init({
   dsn: 'https://05a850a7ff3a47c6a6edcd93f8c1a6ab@o4505107991822336.ingest.sentry.io/4505107993853952',
   integrations: [
@@ -90,6 +85,26 @@ app.use(commodityRoutes)
 app.use(fundRoutes)
 
 app.use(notFound)
+
+// --------------------------deployment------------------------------
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static('../app/dist'))
+//   app.get('*', (req, res) => res.sendFile(path.resolve('app', 'dist', 'index.html')))
+// }
+const __dirname = path.resolve()
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/app/dist')))
+
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'app', 'dist', 'index.html'))
+  )
+} else {
+  app.get('/', (req, res) => {
+    res.send(express.static('../app/dist'))
+  })
+}
+// --------------------------deployment------------------------------
 
 app.use(Sentry.Handlers.errorHandler())
 
