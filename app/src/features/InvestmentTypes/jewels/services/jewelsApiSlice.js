@@ -7,6 +7,14 @@ export const jewelsApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: '/jewels'
       }),
+      async onQueryStarted (arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled
+          console.log('work', data)
+        } catch (err) {
+          console.log('getProperties: ', err)
+        }
+      },
       validateStatus: (response, result) => {
         return response.status === 200 && !result.isError
       },

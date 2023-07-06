@@ -144,6 +144,7 @@ const getAllUserProperties = async (req, res, next) => {
     res.json({ properties, balanceAmount })
     // res.json(properties)
   } catch (error) {
+    console.log('Error: ', error)
     next(error)
   }
 }
