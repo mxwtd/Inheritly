@@ -25,6 +25,7 @@ const cryptoRoutes = require('./routes/cryptoRoutes')
 const bondRoutes = require('./routes/bondRoutes')
 const authRoutes = require('./routes/authRoutes')
 const willRoutes = require('./routes/willRoutes')
+const calculatorRoutes = require('./routes/calculatorRoutes')
 const commodityRoutes = require('./routes/commodityRoutes')
 const fundRoutes = require('./routes/fundRoutes')
 
@@ -62,10 +63,6 @@ Sentry.init({
 app.use(Sentry.Handlers.requestHandler())
 app.use(Sentry.Handlers.tracingHandler())
 
-app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>')
-})
-
 app.use(userRoutes)
 
 app.use(authRoutes)
@@ -85,6 +82,8 @@ app.use(cryptoRoutes)
 app.use(bondRoutes)
 
 app.use(willRoutes)
+
+app.use(calculatorRoutes)
 
 app.use(commodityRoutes)
 

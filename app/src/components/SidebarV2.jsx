@@ -222,7 +222,7 @@ const SidebarV2 = () => {
               <li>
                 <Link to='/manage' className='flex items-center p-2 text-slate-900 rounded-lg dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700'>
                   <svg fill='none' stroke='currentColor' className='w-6 h-6 text-slate-500 transition duration-75 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' strokeWidth='1.5' viewBox='0 0 22 22' xmlns='http://www.w3.org/2000/svg' aria-hidden='true'><path strokeLinecap='round' strokeLinejoin='round' d='M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75' /></svg>
-                  <span className='ml-3 mt-1'>Manage</span>
+                  <span className='ml-3 mt-1'>My Wills</span>
                 </Link>
               </li>
               <li>
@@ -231,7 +231,16 @@ const SidebarV2 = () => {
                     <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z' />
                   </svg>
                   <span className='flex-1 ml-3 mt-1 whitespace-nowrap'>Generate</span>
-                  <span className='inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-slate-800 bg-slate-200 rounded-full dark:bg-slate-700 dark:text-slate-300'>New</span>
+                  <span className='inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-slate-800 bg-purple-200 rounded-full dark:bg-purple-200/70 dark:text-slate-300'>Ai</span>
+                </Link>
+              </li>
+            </ul>
+            <h2 className='text-slate-900 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700 py-4 mb-3 mt-3'>Tools</h2>
+            <ul className='space-y-2 font-medium'>
+              <li>
+                <Link to='/calculator' className='flex items-center p-2 text-slate-900 rounded-lg dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700'>
+                  <svg fill='none' stroke='currentColor' className='w-6 h-6 text-slate-500 transition duration-75 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' strokeWidth='1.5' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' aria-hidden='true'><path d='M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V18zm2.498-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zM8.25 6h7.5v2.25h-7.5V6zM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0012 2.25z' strokeLinecap='round' strokeLinejoin='round' /></svg>
+                  <span className='ml-3 mt-1'>Retirement calculator</span>
                 </Link>
               </li>
             </ul>
@@ -241,7 +250,6 @@ const SidebarV2 = () => {
                 <Link to='/settings' className='flex items-center p-2 text-slate-900 rounded-lg dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700'>
                   <svg fill='none' className='flex-shrink-0 w-6 h-6 text-slate-500 transition duration-75 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' stroke='currentColor' strokeWidth='1.5' viewBox='0 0 22 22' xmlns='http://www.w3.org/2000/svg' aria-hidden='true'><path strokeLinecap='round' strokeLinejoin='round' d='M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495' /></svg>
                   <span className='flex-1 ml-3 mt-1 whitespace-nowrap'>Settings</span>
-                  <span className='inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-slate-800 bg-slate-200 rounded-full dark:bg-slate-700 dark:text-slate-300'>New</span>
                 </Link>
               </li>
               <li>
