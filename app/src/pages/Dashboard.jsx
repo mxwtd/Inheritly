@@ -1,5 +1,5 @@
 import Overview from './Overview'
-import Investments from './investments/Investments'
+import Investments from '../features/Investments/components/Investments'
 
 const Dashboard = () => {
   return (

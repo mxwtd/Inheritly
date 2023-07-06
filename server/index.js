@@ -13,6 +13,7 @@ const errorHandler = require('./middleware/errorHandler')
 const { logger } = require('./middleware/logger')
 
 // Import controllers
+const investmentRouter = require('./routes/investmentRoutes')
 const userRoutes = require('./routes/userRoutes')
 const propertyRoutes = require('./routes/propertyRoutes')
 const vehicleRoutes = require('./routes/vehicleRoutes')
@@ -63,6 +64,8 @@ app.get('/', (request, response) => {
 app.use(userRoutes)
 
 app.use(authRoutes)
+
+app.use(investmentRouter)
 
 app.use(propertyRoutes)
 

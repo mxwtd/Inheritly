@@ -138,10 +138,11 @@ const getAllUserProperties = async (req, res, next) => {
     // console.log('properties: ', properties)
 
     // response properties and balance amount
+    console.log('properties: ', properties)
     console.log('balanceAmount: ', balanceAmount)
 
-    // res.json({ properties, balanceAmount })
-    res.json(properties)
+    res.json({ properties, balanceAmount })
+    // res.json(properties)
   } catch (error) {
     next(error)
   }
