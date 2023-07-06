@@ -64,6 +64,7 @@ import Footer from './components/Footer'
 
 import { AuthProvider } from './features/authentication/hooks/authProvider'
 import GenerateWill from './pages/GenerateWill'
+import RetirementCalculator from './pages/RetirementCalculator'
 
 const App = () => {
   const location = useLocation()
@@ -151,6 +152,7 @@ const App = () => {
                   <Route path='beneficiaries' element={<Beneficiaries />} />
                   <Route path='manage' element={<Manage />} />
                   <Route path='generate' element={<GenerateWill />} />
+                  <Route path='calculator' element={<RetirementCalculator />} />
                   <Route path='settings' element={<Settings />} />
                   <Route path='report' element={<Report />} />
                 </Route>
