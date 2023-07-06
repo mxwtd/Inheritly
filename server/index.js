@@ -7,6 +7,8 @@ const Sentry = require('@sentry/node')
 const Tracing = require('@sentry/tracing')
 const cookieParser = require('cookie-parser')
 
+const path = require('path')
+
 // import middleware
 const notFound = require('./middleware/notFound')
 const errorHandler = require('./middleware/errorHandler')
@@ -35,7 +37,10 @@ app.use(express.json()) // initial Parse JSON bodies
 
 app.use(cookieParser())
 
-app.use(express.static('../app/dist'))
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('../app/dist'))
+  app.get('*', (req, res) => res.sendFile(path.resolve('app', 'dist', 'index.html')))
+}
 
 Sentry.init({
   dsn: 'https://05a850a7ff3a47c6a6edcd93f8c1a6ab@o4505107991822336.ingest.sentry.io/4505107993853952',
