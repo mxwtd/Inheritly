@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react'
-import Template from '../../components/form/user/template'
+import Template from '../../components/form/user/Template'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../features/authentication/hooks/authSlice'
 import { useCreateUserMutation } from '../../features/users/services/usersApiSlice'

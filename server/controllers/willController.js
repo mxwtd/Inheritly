@@ -16,10 +16,12 @@ const generateWill = async (req, res) => {
 
   try {
     const completion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo-16k",
+      model: 'gpt-3.5-turbo-16k',
       messages: [
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", content: `
+        { role: 'system', content: 'You are a helpful assistant.' },
+        {
+          role: 'user',
+          content: `
           As an AI, I am instructed to create a digital will for ${data.name} ${data.surname}, who was born on ${data.dateOfBirth} and resides at ${data.address}. This document will adhere to a professional style, and serve as a template for further personalization and refinement. It is based on the considerations and preferences provided by ${data.name}, as detailed in ${data.considerations}.
 
           This document should be read in conjunction with legal advice, as I am an AI model and do not provide legal advice. It is important to ensure that the final document complies with all the legal requirements in ${data.jurisdiction}, which may include, but is not limited to, the necessity of being written, signed, and witnessed.
@@ -37,8 +39,9 @@ const generateWill = async (req, res) => {
           Finally, the will should conclude with a statement that it is indeed ${data.name}'s last will and testament, followed by a place for ${data.name} to sign and date, and spaces for witnesses to do the same.
 
           The final document should be reviewed by a legal professional to ensure it is legally valid and accurately reflects ${data.name}'s wishes. It is also important for ${data.name} to consider adding details about their executor, dependents, pets, funeral instructions, and specific bequests as they see fit.
-        `}
-      ],
+        `
+        }
+      ]
     })
 
     return res.status(200).json({ message: completion.data.choices[0].message.content })
