@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import Template from '../../components/form/user/template'
+import Template from '../../components/form/user/Template'
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('')
