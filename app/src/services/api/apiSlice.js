@@ -48,6 +48,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 export const apiSlice = createApi({
   // Change this in development to point to the correct port
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Property', 'User'],
+  tagTypes: ['Property', 'User', 'Vehicle', 'Investment'],
   endpoints: (builder) => ({})
 })

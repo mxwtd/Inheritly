@@ -12,12 +12,14 @@ export const propertiesApiSlice = apiSlice.injectEndpoints({
       },
       // keepUnusedDataFor: 5,
       providesTags: (result, error, arg) => {
-        if (result) {
+        if (Array.isArray(result)) {
           return [
             { type: 'Property', id: 'LIST' },
             ...result.map((id) => ({ type: 'Property', id }))
           ]
-        } else return [{ type: 'Property', id: 'LIST' }]
+        } else {
+          return [{ type: 'Property', id: 'LIST' }]
+        }
       }
     }),
     getPropertyById: builder.query({
