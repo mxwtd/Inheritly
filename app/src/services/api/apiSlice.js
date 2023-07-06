@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { setCredentials } from '../../features/authentication/hooks/authSlice'
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:3001/api',
+  baseUrl: 'https://inheritly.app/api',
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token
@@ -48,6 +48,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 export const apiSlice = createApi({
   // Change this in development to point to the correct port
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Property', 'User'],
+  tagTypes: ['Property', 'User', 'Vehicle', 'Investment'],
   endpoints: (builder) => ({})
 })

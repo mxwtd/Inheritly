@@ -13,6 +13,7 @@ const errorHandler = require('./middleware/errorHandler')
 const { logger } = require('./middleware/logger')
 
 // Import controllers
+const investmentRouter = require('./routes/investmentRoutes')
 const userRoutes = require('./routes/userRoutes')
 const propertyRoutes = require('./routes/propertyRoutes')
 const vehicleRoutes = require('./routes/vehicleRoutes')
@@ -24,6 +25,7 @@ const authRoutes = require('./routes/authRoutes')
 const willRoutes = require('./routes/willRoutes')
 const calculatorRoutes = require('./routes/calculatorRoutes')
 const commodityRoutes = require('./routes/commodityRoutes')
+const fundRoutes = require('./routes/fundRoutes')
 
 const app = express()
 
@@ -56,13 +58,11 @@ Sentry.init({
 app.use(Sentry.Handlers.requestHandler())
 app.use(Sentry.Handlers.tracingHandler())
 
-app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>')
-})
-
 app.use(userRoutes)
 
 app.use(authRoutes)
+
+app.use(investmentRouter)
 
 app.use(propertyRoutes)
 
@@ -81,6 +81,8 @@ app.use(willRoutes)
 app.use(calculatorRoutes)
 
 app.use(commodityRoutes)
+
+app.use(fundRoutes)
 
 app.use(notFound)
 

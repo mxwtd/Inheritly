@@ -10,25 +10,54 @@ import SignUp from './pages/user/SignUp'
 import ForgotPassword from './pages/user/ForgotPassword'
 
 import Dashboard from './pages/Dashboard'
-import Overview from './pages/Overview'
-import Investments from './pages/investments/Investments'
 import Inbox from './pages/Inbox'
 import Settings from './pages/Settings'
 import Beneficiaries from './pages/Beneficiaries'
 import Report from './pages/Report'
 import Manage from './pages/Manage'
 
-import PropertiesList from './features/properties/components/PropertiesList'
-import Property from './features/properties/components/Property'
-import NewProperty from './features/properties/components/NewProperty'
-import EditProperty from './features/properties/components/EditProperty'
-// import DeleteProperty from './features/properties/components/DeleteProperty'
+import Overview from './features/overview/components/Overview'
+import Investments from './features/Investments/components/Investments'
 
-import VehiclesList from './features/vehicles/components/VehiclesList'
-import Vehicle from './features/vehicles/components/Vehicle'
-import NewVehicle from './features/vehicles/components/NewVehicle'
-import EditVehicle from './features/vehicles/components/EditVehicle'
-// import DeleteVehicle from './features/vehicles/components/DeleteVehicle'
+import PropertiesList from './features/InvestmentTypes/properties/components/PropertiesList'
+import Property from './features/InvestmentTypes/properties/components/Property'
+import NewProperty from './features/InvestmentTypes/properties/components/NewProperty'
+import EditProperty from './features/InvestmentTypes/properties/components/EditProperty'
+
+import VehiclesList from './features/InvestmentTypes/vehicles/components/VehiclesList'
+import Vehicle from './features/InvestmentTypes/vehicles/components/Vehicle'
+import NewVehicle from './features/InvestmentTypes/vehicles/components/NewVehicle'
+import EditVehicle from './features/InvestmentTypes/vehicles/components/EditVehicle'
+
+import BondsList from './features/InvestmentTypes/bonds/components/BondsList'
+import Bond from './features/InvestmentTypes/bonds/components/Bond'
+import NewBond from './features/InvestmentTypes/bonds/components/NewBond'
+import EditBond from './features/InvestmentTypes/bonds/components/EditBond'
+
+import CommoditiesList from './features/InvestmentTypes/commodities/components/CommoditiesList'
+import Commodity from './features/InvestmentTypes/commodities/components/Commodity'
+import NewCommodity from './features/InvestmentTypes/commodities/components/NewCommodity'
+import EditCommodity from './features/InvestmentTypes/commodities/components/EditCommodity'
+
+import CryptosList from './features/InvestmentTypes/cryptos/components/CryptosList'
+import Crypto from './features/InvestmentTypes/cryptos/components/Crypto'
+import NewCrypto from './features/InvestmentTypes/cryptos/components/NewCrypto'
+import EditCrypto from './features/InvestmentTypes/cryptos/components/EditCrypto'
+
+import FundsList from './features/InvestmentTypes/funds/components/FundsList'
+import Fund from './features/InvestmentTypes/funds/components/Fund'
+import NewFund from './features/InvestmentTypes/funds/components/NewFund'
+import EditFund from './features/InvestmentTypes/funds/components/EditFund'
+
+import JewelsList from './features/InvestmentTypes/jewels/components/JewelsList'
+import Jewel from './features/InvestmentTypes/jewels/components/Jewel'
+import NewJewel from './features/InvestmentTypes/jewels/components/NewJewel'
+import EditJewel from './features/InvestmentTypes/jewels/components/EditJewel'
+
+import StocksList from './features/InvestmentTypes/stocks/components/StocksList'
+import Stock from './features/InvestmentTypes/stocks/components/Stock'
+import NewStock from './features/InvestmentTypes/stocks/components/NewStock'
+import EditStock from './features/InvestmentTypes/stocks/components/EditStock'
 
 import Error from './pages/Error'
 import Footer from './components/Footer'
@@ -74,7 +103,48 @@ const App = () => {
                       <Route path='new' element={<NewVehicle />} />
                       <Route path=':id' element={<Vehicle />} />
                       <Route path=':id/edit' element={<EditVehicle />} />
-                      {/* <Route path=':id/delete' element={<DeleteVehicle />} /> */}
+                    </Route>
+
+                    <Route path='bonds'>
+                      <Route index element={<BondsList />} />
+                      <Route path='new' element={<NewBond />} />
+                      <Route path=':id' element={<Bond />} />
+                      <Route path=':id/edit' element={<EditBond />} />
+                    </Route>
+
+                    <Route path='commodities'>
+                      <Route index element={<CommoditiesList />} />
+                      <Route path='new' element={<NewCommodity />} />
+                      <Route path=':id' element={<Commodity />} />
+                      <Route path=':id/edit' element={<EditCommodity />} />
+                    </Route>
+
+                    <Route path='cryptos'>
+                      <Route index element={<CryptosList />} />
+                      <Route path='new' element={<NewCrypto />} />
+                      <Route path=':id' element={<Crypto />} />
+                      <Route path=':id/edit' element={<EditCrypto />} />
+                    </Route>
+
+                    <Route path='funds'>
+                      <Route index element={<FundsList />} />
+                      <Route path='new' element={<NewFund />} />
+                      <Route path=':id' element={<Fund />} />
+                      <Route path=':id/edit' element={<EditFund />} />
+                    </Route>
+
+                    <Route path='jewels'>
+                      <Route index element={<JewelsList />} />
+                      <Route path='new' element={<NewJewel />} />
+                      <Route path=':id' element={<Jewel />} />
+                      <Route path=':id/edit' element={<EditJewel />} />
+                    </Route>
+
+                    <Route path='stocks'>
+                      <Route index element={<StocksList />} />
+                      <Route path='new' element={<NewStock />} />
+                      <Route path=':id' element={<Stock />} />
+                      <Route path=':id/edit' element={<EditStock />} />
                     </Route>
                   </Route>
 

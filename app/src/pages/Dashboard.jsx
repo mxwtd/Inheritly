@@ -1,11 +1,11 @@
-import Overview from './Overview'
-import Investments from './investments/Investments'
+import Overview from './../features/overview/components/Overview'
+// import Investments from '../features/Investments/components/Investments'
 
 const Dashboard = () => {
   return (
     <>
       <Overview />
-      <Investments />
+      {/* <Investments /> */}
     </>
   )
 }

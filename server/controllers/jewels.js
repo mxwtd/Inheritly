@@ -110,7 +110,7 @@ const getAllUserJewels = async (req, res, next) => {
       } else {
         jewel.photo = {
           ...jewel.photo,
-          url: 'https://i.pinimg.com/564x/91/ed/eb/91edebb64768d1f00ca34807a6b74d73.jpg'
+          url: 'https://i.pinimg.com/564x/02/bd/e5/02bde5f657efdf0ad9ff32de6a7a6c7e.jpg'
         }
       }
 
@@ -152,7 +152,7 @@ const getJewelById = async (req, res, next) => {
       } else {
         jewel.photo = {
           ...jewel.photo,
-          url: 'https://i.pinimg.com/564x/91/ed/eb/91edebb64768d1f00ca34807a6b74d73.jpg'
+          url: 'https://i.pinimg.com/564x/02/bd/e5/02bde5f657efdf0ad9ff32de6a7a6c7e.jpg'
         }
       }
 
@@ -223,16 +223,16 @@ const updateJewel = async (req, res, next) => {
     }
 
     // Check for empty values in updates
-    const hasEmptyValues = Object.values(updates).some((value) => {
-      if (typeof value === 'string') {
-        return value.trim() === ''
-      }
-      return false
-    })
+    // const hasEmptyValues = Object.values(updates).some((value) => {
+    //   if (typeof value === 'string') {
+    //     return value.trim() === ''
+    //   }
+    //   return false
+    // })
 
-    if (hasEmptyValues) {
-      return res.status(400).json({ error: 'Empty values are not allowed' })
-    }
+    // if (hasEmptyValues) {
+    //   return res.status(400).json({ error: 'Empty values are not allowed' })
+    // }
 
     // add photo to updates if it exists
     if (photoPath) {

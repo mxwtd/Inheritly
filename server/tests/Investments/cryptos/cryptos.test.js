@@ -106,8 +106,7 @@ describe('Create Cryptos', () => {
       symbol: 'XPR',
       quantity: 100,
       purchasePrice: 100,
-      purchaseDate: new Date(),
-      additionalDetails: 'Good crypto',
+      detail: 'Good crypto',
       purchasedAt: 'Robinhood',
       walletAddress: '123456789',
 

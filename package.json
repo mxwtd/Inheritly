@@ -14,7 +14,7 @@
     "dev:server": "npm run build && npm run dev --workspace=server",
     "dev:app": "npm run dev --workspace=app",
     "dev": "concurrently \"npm run dev --workspace=server\" \"npm run dev:app\"",
-    "test": "NODE_ENV=test PORT=1234 jest --detectOpenHandles --verbose ./server/tests/Investments/commodities/commodities.test.js",
+    "test": "NODE_ENV=test PORT=1234 jest --detectOpenHandles --verbose ./server/tests/Investments/funds/funds.test.js",
     "lint": "eslint ./server ./app"
   },
   "eslintConfig": {
@@ -45,6 +45,7 @@
   },
   "homepage": "https://github.com/mxwtd/Inheritly#readme",
   "dependencies": {
+    "@fvilers/disable-react-devtools": "^1.3.0",
     "@google-cloud/storage": "6.11.0",
     "@hcaptcha/react-hcaptcha": "1.8.1",
     "axios": "^1.4.0",

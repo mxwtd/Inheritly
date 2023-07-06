@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { useRefreshMutation } from '../services/authApiSlice'
 import usePersist from '../../../hook/usePersist'
@@ -10,6 +10,7 @@ const PersistLogin = () => {
   const [persist] = usePersist()
   const token = useSelector(selectCurrentToken)
   const effectRan = useRef(false)
+  const navigate = useNavigate()
 
   const [trueSuccess, setTrueSuccess] = useState(false)
 
@@ -44,6 +45,7 @@ const PersistLogin = () => {
   let content
   if (!persist) { // persist: no
     console.log('no persist')
+    navigate('/login')
     content = <Outlet />
   } else if (isLoading) { // persist: yes, token: no
     console.log('loading')
@@ -70,6 +72,7 @@ const PersistLogin = () => {
     content = <Outlet />
   } else if (token && isUninitialized) { // persist: yes, token: yes
     console.log('token and uninitialized')
+    // navigate('/login')
     console.log(isUninitialized)
     content = <Outlet />
   }

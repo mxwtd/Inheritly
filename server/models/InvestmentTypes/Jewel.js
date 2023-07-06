@@ -4,15 +4,13 @@ const defaultData = require('./globalData')
 const jewelSchema = new Schema({
   ...defaultData,
   description: {
-    type: String,
-    required: true
+    type: String
   },
   history: {
     type: String
   },
   condition: {
-    type: String,
-    required: true
+    type: String
   }
 }, { timestamps: true })
 
