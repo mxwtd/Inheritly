@@ -58,6 +58,13 @@ Sentry.init({
 app.use(Sentry.Handlers.requestHandler())
 app.use(Sentry.Handlers.tracingHandler())
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('../app/dist'))
+  app.get('*', (req, res) => res.sendFile(path.resolve('app', 'dist', 'index.html')))
+}
+
+// app.use(express.static('../app/dist'))
+
 app.use(userRoutes)
 
 app.use(authRoutes)
@@ -91,19 +98,19 @@ app.use(notFound)
 //   app.use(express.static('../app/dist'))
 //   app.get('*', (req, res) => res.sendFile(path.resolve('app', 'dist', 'index.html')))
 // }
-const __dirname = path.resolve()
+// const __dirname = path.resolve()
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '/app/dist')))
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static(path.join(__dirname, '/app/dist')))
 
-  app.get('*', (req, res) =>
-    res.sendFile(path.resolve(__dirname, 'app', 'dist', 'index.html'))
-  )
-} else {
-  app.get('/', (req, res) => {
-    res.send(express.static('../app/dist'))
-  })
-}
+//   app.get('*', (req, res) =>
+//     res.sendFile(path.resolve(__dirname, 'app', 'dist', 'index.html'))
+//   )
+// } else {
+//   app.get('/', (req, res) => {
+//     res.send(express.static('../app/dist'))
+//   })
+// }
 // --------------------------deployment------------------------------
 
 app.use(Sentry.Handlers.errorHandler())
