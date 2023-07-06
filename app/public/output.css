@@ -2629,6 +2629,11 @@ input:checked + .toggle-bg {
   background-color: rgb(237 235 254 / var(--tw-bg-opacity));
 }
 
+.bg-purple-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 215 254 / var(--tw-bg-opacity));
+}
+
 .bg-purple-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(246 245 255 / var(--tw-bg-opacity));
@@ -4262,11 +4267,6 @@ body {
   background-color: rgb(71 85 105 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-slate-700:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(51 65 85 / var(--tw-bg-opacity));
-}
-
 .hover\:bg-teal-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(213 245 246 / var(--tw-bg-opacity));
@@ -5178,6 +5178,10 @@ body {
 :is(.dark .dark\:bg-purple-200) {
   --tw-bg-opacity: 1;
   background-color: rgb(220 215 254 / var(--tw-bg-opacity));
+}
+
+:is(.dark .dark\:bg-purple-200\/70) {
+  background-color: rgb(220 215 254 / 0.7);
 }
 
 :is(.dark .dark\:bg-purple-500) {
@@ -6428,10 +6432,6 @@ body {
     width: 40%;
   }
 
-  .md\:w-\[60\%\] {
-    width: 60%;
-  }
-
   .md\:w-auto {
     width: auto;
   }
@@ -6722,10 +6722,6 @@ body {
 
   .xl\:w-\[35\%\] {
     width: 35%;
-  }
-
-  .xl\:w-\[45\%\] {
-    width: 45%;
   }
 
   .xl\:grid-cols-4 {
