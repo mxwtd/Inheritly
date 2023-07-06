@@ -22,8 +22,8 @@ const cryptoRoutes = require('./routes/cryptoRoutes')
 const bondRoutes = require('./routes/bondRoutes')
 const authRoutes = require('./routes/authRoutes')
 const willRoutes = require('./routes/willRoutes')
+const calculatorRoutes = require('./routes/calculatorRoutes')
 const commodityRoutes = require('./routes/commodityRoutes')
-
 
 const app = express()
 
@@ -78,8 +78,9 @@ app.use(bondRoutes)
 
 app.use(willRoutes)
 
-app.use(commodityRoutes)
+app.use(calculatorRoutes)
 
+app.use(commodityRoutes)
 
 app.use(notFound)
 
