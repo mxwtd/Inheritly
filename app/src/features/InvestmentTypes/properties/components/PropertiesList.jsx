@@ -20,6 +20,8 @@ const PropertiesList = () => {
     pollingInterval: 300000
   })
 
+  console.log('properties: ', properties)
+
   let content
 
   if (isLoading) {

@@ -104,6 +104,7 @@ const getAllUserProperties = async (req, res, next) => {
   try {
     // Find properties that belong to the user with the given ID
     const properties = await Property.find({ user: userId })
+    const balanceAmount = properties.reduce((total, property) => total + property.value, 0)
 
     // Create an array of promises for changing the photo URLs
     const changePhotoPromises = properties.map(async (property) => {
@@ -136,6 +137,10 @@ const getAllUserProperties = async (req, res, next) => {
 
     // console.log('properties: ', properties)
 
+    // response properties and balance amount
+    console.log('balanceAmount: ', balanceAmount)
+
+    // res.json({ properties, balanceAmount })
     res.json(properties)
   } catch (error) {
     next(error)
