@@ -8,4 +8,7 @@ investmentRouter.use(verifyJWT)
 investmentRouter.route('/api/investments')
   .get(investmentsController.getAllBalances)
 
+investmentRouter.route('/api/assets')
+  .get(investmentsController.getAllAssets)
+
 module.exports = investmentRouter

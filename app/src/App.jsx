@@ -10,13 +10,13 @@ import SignUp from './pages/user/SignUp'
 import ForgotPassword from './pages/user/ForgotPassword'
 
 import Dashboard from './pages/Dashboard'
-import Overview from './pages/Overview'
 import Inbox from './pages/Inbox'
 import Settings from './pages/Settings'
 import Beneficiaries from './pages/Beneficiaries'
 import Report from './pages/Report'
 import Manage from './pages/Manage'
 
+import Overview from './features/overview/components/Overview'
 import Investments from './features/Investments/components/Investments'
 
 import PropertiesList from './features/InvestmentTypes/properties/components/PropertiesList'
