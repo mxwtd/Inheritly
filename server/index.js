@@ -57,10 +57,6 @@ Sentry.init({
 app.use(Sentry.Handlers.requestHandler())
 app.use(Sentry.Handlers.tracingHandler())
 
-app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>')
-})
-
 app.use(userRoutes)
 
 app.use(authRoutes)
