@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import Template from '../../components/form/user/template'
+import Template from '../../components/form/user/Template'
 
 import { useLoginMutation } from '../../features/authentication/services/authApiSlice'
 
