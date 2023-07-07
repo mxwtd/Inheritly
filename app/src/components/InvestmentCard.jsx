@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { formattedPrice } from '../hook/formatted'
 
 const InvestmentCard = ({ cardName, path, balance, currency }) => {
   return (
@@ -8,7 +9,7 @@ const InvestmentCard = ({ cardName, path, balance, currency }) => {
         <div className='flex justify-end'>
           <div className='flex flex-col text-right rounded-2xl'>
             <p className='text-md lg:text-2xl text-slate-600 dark:text-slate-200 font-bold'>Balance</p>
-            <p className='text-sm lg:text-lg text-slate-500 dark:text-slate-200'>${(balance) || 0}</p>
+            <p className='text-sm lg:text-lg text-slate-500 dark:text-slate-200'>${formattedPrice(balance)}</p>
           </div>
         </div>
       </div>

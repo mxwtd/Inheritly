@@ -1,6 +1,7 @@
 import MapChart from '../../../components/HoverMap'
 import { useState, useEffect } from 'react'
 import { useGetAssetsQuery } from '../services/assetsApiSlice'
+import { formattedPrice } from '../../../hook/formatted'
 
 const Balance = ({ price, pricesVisible }) => {
   return (
@@ -12,7 +13,7 @@ const Balance = ({ price, pricesVisible }) => {
             <p className='text-green-400'>▴ 21%</p>
           </div>
           <h1 className={`flex justify-end text-lg lg:text-xl xl:text-3xl 2xl:text-4xl font-semibold text-white mt-1 ${pricesVisible ? '' : 'blur-md'} select-none`}>
-            {pricesVisible ? price : 'X'.repeat(price.length)}
+            ${pricesVisible ? formattedPrice(price) : 'X'.repeat(price.length)}
           </h1>
         </div>
       </div>

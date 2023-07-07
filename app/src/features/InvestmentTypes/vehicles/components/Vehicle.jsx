@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useGetVehicleByIdQuery } from '../services/vehiclesApiSlice.js'
 import MapChart from '../../../../components/HoverMap.jsx'
 import { useState, useEffect } from 'react'
+import { formattedPrice } from '../../../../hook/formatted.js'
 
 import DeleteModal from '../../../../components/DeleteModal.jsx'
 
@@ -137,7 +138,7 @@ const Vehicle = () => {
                     </div>
                     <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Value</h2>
-                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{vehicle?.currency} {vehicle?.value}</h3>
+                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{vehicle?.currency} {formattedPrice(vehicle?.value)}</h3>
                     </div>
                     <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Type</h2>

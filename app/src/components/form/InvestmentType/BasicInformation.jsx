@@ -2,13 +2,13 @@ import { useState } from 'react'
 import PhotoInput from '../../ui/PhotoInput'
 import FieldInput from '../../ui/FieldInput'
 
-const BasicInformation = ({ errors }) => {
+const BasicInformation = ({ errors, investmentType }) => {
   const [name, setName] = useState('')
-  const [type, setType] = useState('')
+  const [, setType] = useState('')
   const [currency, setCurrency] = useState('')
   const [value, setValue] = useState('')
 
-  const onTypeChanged = e => setType(e.target.value)
+  const onTypeChanged = e => setType(investmentType)
   const onCurrencyChanged = e => setCurrency(e.target.value)
   const onValueChanged = e => setValue(e.target.value)
   const onNameChanged = e => setName(e.target.value)
@@ -21,7 +21,7 @@ const BasicInformation = ({ errors }) => {
           <FieldInput label='Investment name' value={name} onChange={onNameChanged} name='name' type='text' placeholder='Investment name' errors={errors} isRequire />
         </div>
         <div>
-          <FieldInput label='Type' value={type} onChange={onTypeChanged} name='type' type='text' placeholder='E.g. Property, Vehicle, etc.' errors={errors} isRequire />
+          <FieldInput label='Type' value={investmentType} onChange={onTypeChanged} name='type' type='text' errors={errors} isRequire />
         </div>
       </div>
       <div className='lg:w-1/2 lg:pl-2'>

@@ -104,7 +104,7 @@ const NewCryptoForm = () => {
             (error?.data?.message) ? error?.data?.message : error?.data?.error
             }
           </p>
-          <BasicInformation errors={errors} />
+          <BasicInformation errors={errors} investmentType='Crypto' />
           <div className='bg-slate-100 dark:bg-slate-900 rounded-2xl p-5'>
             <h3 className='text-xl font-semibold text-slate-800 dark:text-slate-100 text-left mb-2'>Crypto Information</h3>
             <div className='md:flex md:justify-between'>

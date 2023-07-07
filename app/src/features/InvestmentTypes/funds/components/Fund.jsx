@@ -4,6 +4,7 @@ import { useGetFundByIdQuery } from '../services/fundsApiSlice.js'
 import MapChart from '../../../../components/HoverMap.jsx'
 import { useState, useEffect } from 'react'
 import DeleteModal from '../../../../components/DeleteModal.jsx'
+import { formattedPrice } from '../../../../hook/formatted.js'
 
 import { getFileNameFromUrl } from '../../../../hook/getFileNameFromUrl.js'
 
@@ -162,7 +163,7 @@ const Fund = () => {
                     </div>
                     <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Value</h2>
-                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{fund?.currency} {fund?.value}</h3>
+                      <h3 className='text-md xl:text-xl text-slate-600 dark:text-slate-300'>{fund?.currency} {formattedPrice(fund?.value)}</h3>
                     </div>
                     <div className='bg-slate-200 dark:bg-slate-600 p-4 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center'>
                       <h2 className='text-lg xl:text-2xl font-semibold'>Type</h2>
