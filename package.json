@@ -1,7 +1,7 @@
 {
   "name": "inheritly",
   "private": true,
-  "proxy": "https://inheritly-app-d2c2366c08d3.herokuapp.com",
+  "proxy": "http://localhost:3001",
   "version": "1.0.0",
   "description": "",
   "workspaces": [
@@ -11,13 +11,13 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run build --workspace=app",
-    "start": "npm start --workspace=server",
     "dev:server": "npm run build && npm run dev --workspace=server",
     "dev:app": "npm run dev --workspace=app",
     "dev": "concurrently \"npm run dev --workspace=server\" \"npm run dev:app\"",
     "test": "NODE_ENV=test PORT=1234 jest --detectOpenHandles --verbose ./server/tests/Investments/funds/funds.test.js",
     "lint": "eslint ./server ./app",
-    "heroku-postbuild": "npm install --prefix server && npm install --prefix app && npm run build --prefix app"
+    "start": "node backend/server.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && run build"
   },
   "eslintConfig": {
     "ignorePatterns": "build",
