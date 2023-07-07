@@ -106,7 +106,7 @@ const getAllUserFunds = async (req, res, next) => {
       } else {
         fund.photo = {
           ...fund.photo,
-          url: 'https://i.pinimg.com/564x/91/ed/eb/91edebb64768d1f00ca34807a6b74d73.jpg'
+          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1688733996/Inheritly_-_Third_design_qodghx_ffzb1b.png'
         }
       }
 
@@ -148,7 +148,7 @@ const getFundById = async (req, res, next) => {
       } else {
         fund.photo = {
           ...fund.photo,
-          url: 'https://i.pinimg.com/564x/91/ed/eb/91edebb64768d1f00ca34807a6b74d73.jpg'
+          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1688733996/Inheritly_-_Third_design_qodghx_ffzb1b.png'
         }
       }
 

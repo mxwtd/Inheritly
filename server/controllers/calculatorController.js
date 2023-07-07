@@ -15,10 +15,12 @@ const calculatePension = async (req, res) => {
 
   try {
     const completion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo-16k",
+      model: 'gpt-3.5-turbo-16k',
       messages: [
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", content: `
+        { role: 'system', content: 'You are a helpful assistant.' },
+        {
+          role: 'user',
+          content: `
         "Based on your input data, let's calculate your potential retirement age and retirement income. Here are your input details:
 
         Current Age: ${data.currentAge}
@@ -35,8 +37,9 @@ const calculatePension = async (req, res) => {
         Do bear in mind that this model is highly simplified. It does not account for inflation, changes in living costs, changes in your income, unexpected expenses or potential increases in your desired retirement income. As you get closer to your retirement age, it may be prudent to switch to safer, lower-yield investments, which could require more capital.
 
         Considering your current age, capital, and retirement goals, it's recommended to review and adjust your retirement plans annually. Consider working with a financial advisor to develop a comprehensive and adaptable plan. It's also crucial to build an emergency fund, diversify your investments, and consider insurance policies as part of a well-rounded financial strategy."
-        `}
-      ],
+        `
+        }
+      ]
     })
 
     return res.status(200).json({ message: completion.data.choices[0].message.content })

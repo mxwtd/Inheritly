@@ -110,7 +110,7 @@ const getAllUserJewels = async (req, res, next) => {
       } else {
         jewel.photo = {
           ...jewel.photo,
-          url: 'https://i.pinimg.com/564x/02/bd/e5/02bde5f657efdf0ad9ff32de6a7a6c7e.jpg'
+          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1688733996/Inheritly_-_Third_design_qodghx_ffzb1b.png'
         }
       }
 
@@ -152,7 +152,7 @@ const getJewelById = async (req, res, next) => {
       } else {
         jewel.photo = {
           ...jewel.photo,
-          url: 'https://i.pinimg.com/564x/02/bd/e5/02bde5f657efdf0ad9ff32de6a7a6c7e.jpg'
+          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1688733996/Inheritly_-_Third_design_qodghx_ffzb1b.png'
         }
       }
 

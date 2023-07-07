@@ -116,7 +116,7 @@ const getAllUserProperties = async (req, res, next) => {
       } else {
         property.photo = {
           ...property.photo,
-          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1688733996/Inheritly_-_Third_design_qodghx_ffzb1b.png'
         }
       }
 
@@ -165,7 +165,7 @@ const getPropertyById = async (req, res, next) => {
       } else {
         property.photo = {
           ...property.photo,
-          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1684185588/fomstock-4ojhpgKpS68-unsplash_ytmxew.jpg'
+          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1688733996/Inheritly_-_Third_design_qodghx_ffzb1b.png'
         }
       }
 

@@ -118,7 +118,7 @@ const getAllUserCryptos = async (req, res, next) => {
       } else {
         crypto.photo = {
           ...crypto.photo,
-          url: 'https://i.pinimg.com/564x/dc/56/40/dc56402c003b214d53c13e8fdb1a96ed.jpg'
+          url: 'https://res.cloudinary.com/djr22sgp3/image/upload/v1688733996/Inheritly_-_Third_design_qodghx_ffzb1b.png'
         }
       }
 
