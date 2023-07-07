@@ -1,7 +1,6 @@
 const Multer = require('multer')
 const { Storage } = require('@google-cloud/storage')
 
-console.log('process.env.GCLOUD_PRIVATE_KEY ', process.env.GCLOUD_PRIVATE_KEY)
 const storage = new Storage({ projectId: process.env.GCLOUD_PROJECT, credentials: { client_email: process.env.GCLOUD_CLIENT_EMAIL, private_key: process.env.GCLOUD_PRIVATE_KEY } })
 
 const bucketName = process.env.GCS_BUCKET
