@@ -1,0 +1,42 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  deploy-dev:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Load environment variables
+        run: |
+          npm install dotenv
+          source .env
+
+      - name: Deploy to heroku
+        run: |
+          git remote add heroku https://heroku:${{ env.HEROKU_API_KEY_SANTI }}@git.heroku.com/ride2win-staging.git
+          git push heroku HEAD:master
+
+  deploy-prod:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Load environment variables
+        run: |
+          npm install dotenv
+          source .env
+
+      - name: Deploy to heroku
+        run: |
+          git remote add heroku https://heroku:${{ env.HEROKU_API_KEY_SANTI }}@git.heroku.com/ride2win-prod.git
+          git push heroku HEAD:master
