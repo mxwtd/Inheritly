@@ -21,11 +21,9 @@ jobs:
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Deploy to Heroku
+        uses: AkhileshNS/heroku-deploy@v3.6.8
         with:
-          fetch-depth: 0
-
-      - name: Deploy to heroku
-        run: |
-          git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY_SANTI }}@git.heroku.com/inheritly-app.git
-          git push heroku HEAD:main
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY_SANTI }}
+          heroku_app_name: "inheritly-app"
+          heroku_email: "santiagospidrobo15@gmail.com"
