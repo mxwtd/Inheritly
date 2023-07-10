@@ -14,7 +14,7 @@
     "start": "npm start --workspace=server",
     "dev:server": "npm run build && npm run dev --workspace=server",
     "dev:app": "npm run dev --workspace=app",
-    "dev": "concurrently \"npm run dev --workspace=server\" \"npm run dev:app\"",
+    "dev": "concurrently \"NODE_ENV=development npm run dev --workspace=server\" \"NODE_ENV=development npm run dev:app\"",
     "test": "NODE_ENV=test PORT=1234 jest --detectOpenHandles --verbose ./server/tests/Investments/funds/funds.test.js",
     "lint": "eslint ./server ./app",
     "heroku-postbuild": "npm install --prefix server && npm install --prefix app && npm run build --prefix app"
