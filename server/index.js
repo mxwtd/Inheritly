@@ -33,7 +33,7 @@ const app = express()
 
 app.use(logger)
 
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
 app.use(express.json()) // initial Parse JSON bodies
 
 app.use(cookieParser())
