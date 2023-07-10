@@ -9,6 +9,7 @@ const getBaseUrl = (node_env) => {
     default:
       url = 'http://localhost:3001'
   }
+  console.log('NODE ENV IS: ', node_env)
   return url
 }
 
