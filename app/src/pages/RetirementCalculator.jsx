@@ -5,12 +5,40 @@ import axios from 'axios'
 const RetirementCalculator = () => {
   const [currentAge, setCurrentAge] = useState('')
   const [ageOfRetirement, setAgeOfRetirement] = useState('')
-  const [yearlyPensionGrowth, setYearlyPensionGrowth] = useState('')
   const [currentCapital, setCurrentCapital] = useState('')
   const [desiredYearlyCapital, setDesiredYearlyCapital] = useState('')
   const [considerations, setConsiderations] = useState('')
   const token = useSelector(state => state.auth.token)
   const [calculatorContent, setcalculatorContent] = useState('')
+  const [yearlyPensionGrowth, setYearlyPensionGrowth] = useState('')
+
+  const handleChange = (e) => {
+    let { name, value } = e.target
+
+    if (name === 'currentCapital' || name === 'desiredYearlyCapital') {
+      value = value.replace(/,/g, '')
+      if (value.length > 0) {
+        if (name === 'currentCapital') {
+          setCurrentCapital(parseFloat(value).toLocaleString())
+        } else if (name === 'desiredYearlyCapital') {
+          setDesiredYearlyCapital(parseFloat(value).toLocaleString())
+        }
+      } else {
+        if (name === 'currentCapital') {
+          setCurrentCapital('')
+        } else if (name === 'desiredYearlyCapital') {
+          setDesiredYearlyCapital('')
+        }
+      }
+    } else if (name === 'yearlyPensionGrowth') {
+      value = value.replace('%', '')
+      if (value.length > 0) {
+        setYearlyPensionGrowth(value + '%')
+      } else {
+        setYearlyPensionGrowth(value)
+      }
+    }
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -85,27 +113,27 @@ const RetirementCalculator = () => {
                     </div>
                     <div className='mb-4 flex flex-row w-full gap-4'>
                       <div className='flex flex-col w-full'>
-                        <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>Yearly Pension Growth</label>
+                        <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>Expected Yearly Growth</label>
                         <input
-                          type='number'
+                          type='text'
                           name='yearlyPensionGrowth'
                           id='yearlyPensionGrowth'
                           value={yearlyPensionGrowth}
-                          onChange={e => setYearlyPensionGrowth(e.target.value)}
+                          onChange={handleChange}
                           className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                          placeholder='Yearly Pension Growth'
+                          placeholder='Yearly Pension Growth in %'
                         />
                       </div>
                       <div className='flex flex-col w-full'>
-                        <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>Current Capital</label>
+                        <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>Current Capital Value</label>
                         <input
-                          type='number'
+                          type='text'
                           name='currentCapital'
                           id='currentCapital'
                           value={currentCapital}
-                          onChange={e => setCurrentCapital(e.target.value)}
+                          onChange={handleChange}
                           className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                          placeholder='Current Capital'
+                          placeholder='E.g. 100,000'
                         />
                       </div>
                     </div>
@@ -113,11 +141,11 @@ const RetirementCalculator = () => {
                       <div className='flex flex-col w-full'>
                         <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>Desired Yearly Capital for Retirement</label>
                         <input
-                          type='number'
+                          type='text'
                           name='desiredYearlyCapital'
                           id='desiredYearlyCapital'
                           value={desiredYearlyCapital}
-                          onChange={e => setDesiredYearlyCapital(e.target.value)}
+                          onChange={handleChange}
                           className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                           placeholder='Desired Yearly Capital'
                         />
@@ -156,7 +184,8 @@ const RetirementCalculator = () => {
                       value={considerations}
                       onChange={e => setConsiderations(e.target.value)}
                       className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 h-40 resize-none dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                      placeholder='Details...'
+                      placeholder='E.g. The inflation rate is expected to be 2% per year, I expect to live until 90, Capital Gains Tax is 20%.
+                      '
                     />
                   </div>
                 </div>

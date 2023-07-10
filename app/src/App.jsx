@@ -13,7 +13,7 @@ import Dashboard from './pages/Dashboard'
 import Inbox from './pages/Inbox'
 import Settings from './pages/Settings'
 import Beneficiaries from './pages/Beneficiaries'
-import Entities from './features/entities/components/Entities'
+// import Entities from './features/entities/components/Entities'
 import Report from './pages/Report'
 import Manage from './pages/Manage'
 
@@ -151,7 +151,7 @@ const App = () => {
 
                   <Route path='inbox' element={<Inbox />} />
                   <Route path='beneficiaries' element={<Beneficiaries />} />
-                  <Route path='entities' element={<Entities />} />
+                  {/* <Route path='entities' element={<Entities />} /> */}
                   <Route path='manage' element={<Manage />} />
                   <Route path='generate' element={<GenerateWill />} />
                   <Route path='calculator' element={<RetirementCalculator />} />
