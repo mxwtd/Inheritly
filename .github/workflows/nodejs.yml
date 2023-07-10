@@ -20,11 +20,11 @@ jobs:
       - name: Deploy to heroku
         run: |
           git remote add heroku https://heroku:${{ env.HEROKU_API_KEY_SANTI }}@git.heroku.com/ride2win-staging.git
-          git push heroku HEAD:master
+          git push heroku HEAD:main
 
   deploy-prod:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - uses: actions/checkout@v3
@@ -39,4 +39,4 @@ jobs:
       - name: Deploy to heroku
         run: |
           git remote add heroku https://heroku:${{ env.HEROKU_API_KEY_SANTI }}@git.heroku.com/ride2win-prod.git
-          git push heroku HEAD:master
+          git push heroku HEAD:main
