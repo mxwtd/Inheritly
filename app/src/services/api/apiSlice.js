@@ -10,6 +10,7 @@ const getBaseUrl = (node_env) => {
       url = 'http://localhost:3001'
   }
   console.log('NODE ENV IS: ', node_env)
+  console.log('URL is: ', url)
   return url
 }
 
