@@ -1,7 +1,7 @@
 {
   "name": "inheritly",
   "private": true,
-  "proxy": "http://localhost:3001",
+  "proxy": "https://lustrous-belekoy-8fb80a.netlify.app",
   "version": "1.0.0",
   "description": "",
   "workspaces": [
