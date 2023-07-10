@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import axios from 'axios'
+import { useGetWillQuery } from '../services/openAIApiSlice'
 
 const GenerateWill = () => {
   const [name, setName] = useState('')
@@ -15,14 +15,12 @@ const GenerateWill = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    try {
-      const response = await axios.post('/api/wills', { name, surname, jurisdiction, dateOfBirth, address, considerations }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+    const formData = new FormData(e.target)
+
+    try { 
+      const response = await useGetWillQuery(formData)
       setWillContent(response.data.message)
-    } catch (error) {
+    }catch (error) {
       console.error(error.response ? error.response.data : error)
     }
   }

@@ -63,7 +63,7 @@ import Error from './pages/Error'
 import Footer from './components/Footer'
 
 import { AuthProvider } from './features/authentication/hooks/authProvider'
-import GenerateWill from './pages/GenerateWill'
+import GenerateWill from './features/willGenerator/components/GenerateWill'
 import RetirementCalculator from './pages/RetirementCalculator'
 
 const App = () => {
