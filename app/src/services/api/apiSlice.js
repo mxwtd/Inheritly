@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { setCredentials } from '../../features/authentication/hooks/authSlice'
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://inheritly-app-d2c2366c08d3.herokuapp.com/api',
+  baseUrl: 'https://inheritly-app-d2c2366c08d3.herokuapp.com',
   // baseUrl: '/api',
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
