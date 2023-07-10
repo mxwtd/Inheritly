@@ -25,7 +25,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Deploy to heroku ${{ secrets.HEROKU_API_KEY_SANTI }}
+      - name: Deploy to heroku
         run: |
           git remote add heroku https://:${{ secrets.HEROKU_API_KEY_SANTI }}@git.heroku.com/inheritly-app.git
           git push heroku HEAD:main
