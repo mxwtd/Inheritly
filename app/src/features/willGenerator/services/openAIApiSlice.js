@@ -1,5 +1,5 @@
 import { apiSlice } from '../../../services/api/apiSlice'
-import { investmentsAdapter } from '../hooks/investmentsSlice.js'
+// import { investmentsAdapter } from '../hooks/investmentsSlice.js'
 
 export const investmentsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -22,6 +22,6 @@ export const {
   useGetWillQuery
 } = investmentsApiSlice
 
-export const { selectById: selectInvestmentById } = investmentsAdapter.getSelectors(
-  (state) => state.investments
-)
+// export const { selectById: selectInvestmentById } = investmentsAdapter.getSelectors(
+//   (state) => state.investments
+// )
