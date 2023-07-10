@@ -13,7 +13,7 @@ const Balance = ({ price, pricesVisible }) => {
             <p className='text-green-400'>▴ 21%</p>
           </div>
           <h1 className={`flex justify-end text-lg lg:text-xl xl:text-3xl 2xl:text-4xl font-semibold text-white mt-1 ${pricesVisible ? '' : 'blur-md'} select-none`}>
-            !!{pricesVisible ? formattedPrice(price) : 'X'.repeat(price.length)}
+            !{pricesVisible ? formattedPrice(price) : 'X'.repeat(price.length)}
           </h1>
         </div>
       </div>
