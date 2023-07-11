@@ -6,6 +6,7 @@ const getBaseUrl = (node_env) => {
   switch (node_env) {
     case 'production':
       url = 'https://inheritly-app-d2c2366c08d3.herokuapp.com'
+      break;
     default:
       url = 'http://localhost:3001'
   }
