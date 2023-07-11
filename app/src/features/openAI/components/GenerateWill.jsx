@@ -18,9 +18,6 @@ const GenerateWill = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    // const formData = new FormData(e.target)
-    console.log('name: ', name)
-  
     try {
       const response = await willGenerator({name, surname, jurisdiction, dateOfBirth, address, considerations})
       setWillContent(response.data.message)

@@ -2,11 +2,14 @@ const express = require('express')
 const openAIController = require('../controllers/openAI')
 const verifyJWT = require('../middleware/verifyJWT')
 
-const willRouter = express.Router()
+const openAIRouter = express.Router()
 
-willRouter.use(verifyJWT)
+openAIRouter.use(verifyJWT)
 
-willRouter.route('/api/wills')
+openAIRouter.route('/api/wills')
   .post(openAIController.generateWill)
 
-module.exports = willRouter
+openAIRouter.route('/api/calculator')
+  .post(openAIController.calculatePension)
+
+module.exports = openAIRouter
