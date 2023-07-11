@@ -63,8 +63,8 @@ import Error from './pages/Error'
 import Footer from './components/Footer'
 
 import { AuthProvider } from './features/authentication/hooks/authProvider'
-import GenerateWill from './features/willGenerator/components/GenerateWill'
-import RetirementCalculator from './pages/RetirementCalculator'
+import GenerateWill from './features/openAI/components/GenerateWill'
+import RetirementCalculator from './features/openAI/components/RetirementCalculator'
 
 const App = () => {
   const location = useLocation()

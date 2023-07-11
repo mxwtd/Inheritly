@@ -8,9 +8,6 @@ const authSlice = createSlice({
       const { accessToken, userEmail, name, lastNames, userId } = action.payload
       state.token = accessToken
 
-      console.log('setCredentials: ')
-      console.log('userID: ', userId)
-
       state.userInformation = {
         email: userEmail,
         id: userId,

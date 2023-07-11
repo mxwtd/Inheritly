@@ -7,14 +7,14 @@ export const vehiclesApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: '/vehicles'
       }),
-      async onQueryStarted (arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled
-          console.log('work', data)
-        } catch (err) {
-          console.log('getProperties: ', err)
-        }
-      },
+      // async onQueryStarted (arg, { dispatch, queryFulfilled }) {
+      //   try {
+      //     const { data } = await queryFulfilled
+      //     console.log('work', data)
+      //   } catch (err) {
+      //     console.log('getProperties: ', err)
+      //   }
+      // },
       validateStatus: (response, result) => {
         return response.status === 200 && !result.isError
       },

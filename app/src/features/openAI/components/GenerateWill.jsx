@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { useGetWillQuery } from '../services/openAIApiSlice'
+import { useGetWillMutation } from '../services/openAIApiSlice'
 
 const GenerateWill = () => {
   const [name, setName] = useState('')
@@ -9,22 +9,23 @@ const GenerateWill = () => {
   const [dateOfBirth, setDateOfBirth] = useState('')
   const [address, setAddress] = useState('')
   const [considerations, setConsiderations] = useState('')
-  const token = useSelector(state => state.auth.token)
   const [willContent, setWillContent] = useState('')
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
+  const [willGenerator, {
+    isSuccess
+  }] = useGetWillMutation()
 
-    const formData = new FormData(e.target)
-
-    try { 
-      const response = await useGetWillQuery(formData)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    try {
+      const response = await willGenerator({name, surname, jurisdiction, dateOfBirth, address, considerations})
       setWillContent(response.data.message)
-    }catch (error) {
+    } catch (error) {
       console.error(error.response ? error.response.data : error)
     }
-  }
-
+  };
+  
   useEffect(() => {
     setContent(willContent)
   }, [willContent])
@@ -58,8 +59,8 @@ const GenerateWill = () => {
                         <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>First Name</label>
                         <input
                           type='text'
-                          name='firstName'
-                          id='firstName'
+                          name='name'
+                          id='name'
                           value={name}
                           onChange={e => setName(e.target.value)}
                           className='bg-slate-200 border border-slate-500 text-slate-700 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
