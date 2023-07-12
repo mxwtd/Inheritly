@@ -1,10 +1,22 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { setCredentials } from '../../features/authentication/hooks/authSlice'
 
+const getBaseUrl = (node_env) => {
+  let url
+  switch (node_env) {
+    case 'production':
+      url = 'https://inheritly-app-d2c2366c08d3.herokuapp.com'
+      break;
+    default:
+      url = 'http://localhost:3001'
+  }
+  return url
+}
+
 const baseQuery = fetchBaseQuery({
+  baseUrl: `${getBaseUrl(process.env.NODE_ENV)}/api`,
   // baseUrl: 'https://inheritly-app-d2c2366c08d3.herokuapp.com/api',
-  // baseUrl: 'http://localhost:3001/api',
-  baseUrl: '/api',
+  // baseUrl: '/api',
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token
