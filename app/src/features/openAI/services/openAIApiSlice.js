@@ -9,7 +9,7 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
           method: 'POST',
           body: willData
         }
-      },
+      }
     }),
     getRetirementCalculator: builder.mutation({
       query: (retirementData) => {
@@ -20,12 +20,10 @@ export const investmentsApiSlice = apiSlice.injectEndpoints({
         }
       }
     })
-  }),
-});
-
+  })
+})
 
 export const {
   useGetWillMutation,
   useGetRetirementCalculatorMutation
 } = investmentsApiSlice
-
