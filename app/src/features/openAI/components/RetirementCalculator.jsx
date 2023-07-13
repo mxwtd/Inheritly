@@ -19,7 +19,7 @@ const RetirementCalculator = () => {
     event.preventDefault()
 
     try {
-      const response = await retirementCalculator({ currentAge, ageOfRetirement, yearlyPensionGrowth, currentCapital, desiredYearlyCapital, considerations })
+      const response = await retirementCalculator({currentAge, ageOfRetirement, yearlyPensionGrowth, currentCapital, desiredYearlyCapital, considerations})
       setCalculatorContent(response.data.message)
     } catch (error) {
       console.error(error.response ? error.response.data : error)
