@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { useGetRetirementCalculatorMutation } from '../services/openAIApiSlice'
 import axios from 'axios'
 
 const RetirementCalculator = () => {
@@ -9,8 +10,10 @@ const RetirementCalculator = () => {
   const [desiredYearlyCapital, setDesiredYearlyCapital] = useState('')
   const [considerations, setConsiderations] = useState('')
   const token = useSelector(state => state.auth.token)
-  const [calculatorContent, setcalculatorContent] = useState('')
+  // const [calculatorContent, setcalculatorContent] = useState('')
+  const [calculatorContent, setCalculatorContent] = useState('')
   const [yearlyPensionGrowth, setYearlyPensionGrowth] = useState('')
+  const [retirementCalculator, { data, isLoading, isError, error }] = useGetRetirementCalculatorMutation()
 
   const handleChange = (e) => {
     let { name, value } = e.target
@@ -44,19 +47,8 @@ const RetirementCalculator = () => {
     event.preventDefault()
 
     try {
-      const response = await axios.post('/api/calculator', {
-        currentAge,
-        ageOfRetirement,
-        yearlyPensionGrowth,
-        currentCapital,
-        desiredYearlyCapital,
-        considerations
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      setcalculatorContent(response.data.message)
+      const response = await retirementCalculator({ currentAge, ageOfRetirement, yearlyPensionGrowth, currentCapital, desiredYearlyCapital, considerations })
+      setCalculatorContent(response.data.message)
     } catch (error) {
       console.error(error.response ? error.response.data : error)
     }

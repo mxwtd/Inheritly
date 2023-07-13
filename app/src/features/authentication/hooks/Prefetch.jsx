@@ -12,7 +12,7 @@ import { Outlet } from 'react-router-dom'
 
 const Prefetch = () => {
   useEffect(() => {
-    console.log('subscribing')
+    // console.log('subscribing')
     const properties = store.dispatch(propertiesApiSlice.endpoints.getProperties.initiate())
     const vehicles = store.dispatch(vehiclesApiSlice.endpoints.getVehicles.initiate())
     const bonds = store.dispatch(bondsApiSlice.endpoints.getBonds.initiate())
@@ -23,7 +23,7 @@ const Prefetch = () => {
     const stocks = store.dispatch(stocksApiSlice.endpoints.getStocks.initiate())
 
     return () => {
-      console.log('unsubscribing')
+      // console.log('unsubscribing')
       properties.unsubscribe()
       vehicles.unsubscribe()
       bonds.unsubscribe()

@@ -43,7 +43,7 @@ const Login = () => {
   const handlePasswordInput = (e) => setPassword(e.target.value)
   const handleToggle = () => {
     setPersist(prev => !prev)
-    console.log('handleToggle', persist)
+    // console.log('handleToggle', persist)
   }
 
   if (isLoading) {

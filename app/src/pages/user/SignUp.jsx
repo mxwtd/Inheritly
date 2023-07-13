@@ -69,7 +69,6 @@ const SignUp = ({ toggleSignUp }) => {
 
       try {
         const userCreated = await createUser({ email, name, username, question, answer, password, lastNames }).unwrap()
-        console.log('userCreated', userCreated)
         setPersist(true)
         const accessToken = await login({ email, password }).unwrap()
         dispatch(setCredentials({ accessToken }))

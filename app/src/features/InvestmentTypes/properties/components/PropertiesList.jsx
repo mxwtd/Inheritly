@@ -56,8 +56,6 @@ const PropertiesList = () => {
 
   if (isSuccess) {
     const { properties: propertiesData, balanceAmount } = properties || {} // Extract properties and balanceAmount from the properties data object
-    console.log('propertiesData: ', propertiesData)
-    console.log('balanceAmount: ', balanceAmount)
 
     const listContent = propertiesData?.length
       ? propertiesData.map(property => <PropertyCard key={property.id} property={property} />)
